@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import AsymmetricHero from '../components/AsymmetricHero.astro';
+import ViewSwitcherDock from '../components/ViewSwitcherDock.astro';
+import AISystemsView from '../components/views/AISystemsView.astro';
+import SpeakingView from '../components/views/SpeakingView.astro';
+import CareerImpactView from '../components/views/CareerImpactView.astro';
+import FieldNotesView from '../components/views/FieldNotesView.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="From Test to Trust — Maneesh Maddala | AI-First Quality Engineering Leader"
+  description="Personal portfolio of Maneesh Maddala, Principal QA Automation Engineer at Morningstar. Engineering quality, risk, and trust across modern AI systems, multi-agent SDLC, and enterprise test architecture."
+>
+  <Header />
+
+  <main id="main-content" class="flex-1">
+    <AsymmetricHero />
+    <ViewSwitcherDock />
+
+    <div class="min-h-[500px]">
+      <FieldNotesView />
+      <CareerImpactView />
+      <AISystemsView />
+      <SpeakingView />
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

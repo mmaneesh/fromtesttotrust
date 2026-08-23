@@ -1,0 +1,437 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import TechTag from '../../components/TechTag.astro';
+import TechIcon from '../../components/TechIcon.astro';
+import { aiSystems, type AISystem } from '../../data/ai-systems';
+
+export function getStaticPaths() {
+  return aiSystems.map((system) => ({
+    params: { id: system.id },
+    props: { system },
+  }));
+}
+
+interface Props {
+  system: AISystem;
+}
+
+const { system } = Astro.props;
+
+// Detailed system blueprints and implementation context
+const systemDetails: Record<
+  string,
+  {
+    riskAnalysis: { risk: string; mitigation: string }[];
+    technicalDecisions: string[];
+    workflowSteps: { step: string; detail: string }[];
+    metricsSummary: string[];
+  }
+> = {
+  'multi-agent-sdlc': {
+    riskAnalysis: [
+      {
+        risk: 'Uncontrolled agent loops or infinite tool execution',
+        mitigation:
+          'Strict recursion depth limits (max 5 hops), timeout boundaries, and deterministic token quotas per task.',
+      },
+      {
+        risk: 'Drift in accessibility compliance (WCAG 2.2 AA)',
+        mitigation:
+          'Automated Playwright axe-core audits executed in headless CI/CD before any agent-generated PR merge.',
+      },
+      {
+        risk: 'Security & prompt injection via user-supplied Jira tickets',
+        mitigation:
+          'Input sanitization layer and scoped system prompts with strictly non-executable payload wrappers.',
+      },
+    ],
+    technicalDecisions: [
+      'Event-Driven Webhook Integration: Connected Jira status transitions directly to Azure DevOps pipeline triggers.',
+      'Specialized Role Decomposition: Split monolithic agent into 4 focused personas (SEO Auditor, A11y Validator, Copy Compliance, Playwright Orchestrator).',
+      'Automated Git Operations: Agents push atomic branches and generate structured PR comments with verifiable diff evidence.',
+    ],
+    workflowSteps: [
+      {
+        step: '01. Jira Issue Transition',
+        detail:
+          "Ticket moved to 'Ready for AI Validation' triggers an event webhook containing issue metadata.",
+      },
+      {
+        step: '02. Agent Swarm Dispatch',
+        detail:
+          'The orchestrator provisions specialized worker agents based on ticket labels (e.g. #marketing, #seo).',
+      },
+      {
+        step: '03. Tool Execution in Sandbox',
+        detail:
+          'Agents run Playwright tests, validate schema structures, and check WCAG compliance in isolated containers.',
+      },
+      {
+        step: '04. Evidence Synthesis & PR Report',
+        detail:
+          'Results are aggregated into a structured markdown report and posted back to Jira and GitHub/Azure PRs.',
+      },
+    ],
+    metricsSummary: [
+      'Reduced QA cycle time across squads by 20%',
+      'Automated validation for 100% of marketing and content releases',
+      'Near-zero accessibility defect escape rate',
+    ],
+  },
+  'litellm-gateway': {
+    riskAnalysis: [
+      {
+        risk: 'Provider outages causing systemic QA pipeline downtime',
+        mitigation:
+          'Multi-tier fallback cascades: Claude 3.5 Sonnet → GPT-4o → Mistral Large with automated health checks.',
+      },
+      {
+        risk: 'Unmonitored token spend & runaway queries',
+        mitigation:
+          'Centralized budget caps per team, prompt caching via Redis, and real-time cost telemetry dashboards.',
+      },
+      {
+        risk: 'Latency spikes during high-concurrency test runs',
+        mitigation:
+          'Latency-based routing with circuit breakers that bypass degraded endpoints in under 500ms.',
+      },
+    ],
+    technicalDecisions: [
+      'LiteLLM Gateway Deployment: Decoupled client agents from proprietary SDKs, exposing a unified OpenAI-compatible endpoint.',
+      'Distributed Redis Caching: Cached deterministic evaluation prompts, saving ~35% on redundant token requests.',
+      'OpenTelemetry Instrumentation: Emitted granular spans for latency, token consumption, and response drift to Grafana/Kibana.',
+    ],
+    workflowSteps: [
+      {
+        step: '01. Unified Client Request',
+        detail:
+          'Agent SDK sends standard request to LiteLLM proxy with squad metadata.',
+      },
+      {
+        step: '02. Routing & Budget Check',
+        detail:
+          'Proxy verifies team budget, checks Redis cache for existing prompt matches, and evaluates endpoint health.',
+      },
+      {
+        step: '03. Dynamic Model Dispatch',
+        detail:
+          "Dispatches to the lowest-latency model matching the task's complexity tier.",
+      },
+      {
+        step: '04. Telemetry Logging',
+        detail:
+          'Logs token counts, latency, and costs to central observability storage.',
+      },
+    ],
+    metricsSummary: [
+      '99.9% uptime for AI-assisted QA infrastructure',
+      'Zero vendor lock-in across major LLM providers',
+      'Actionable cost governance across engineering teams',
+    ],
+  },
+  'llm-guardrails-evals': {
+    riskAnalysis: [
+      {
+        risk: 'Probabilistic output hallucinations in client-facing features',
+        mitigation:
+          'Statistical evaluation suites measuring semantic distance and factuality against verified ground truth.',
+      },
+      {
+        risk: 'Prompt injection & boundary bypass',
+        mitigation:
+          'Continuous adversarial red-teaming datasets crash-testing models in CI/CD pull request gates.',
+      },
+      {
+        risk: 'Silent regression when underlying foundational models update',
+        mitigation:
+          'Non-deterministic benchmark suites executed nightly to track output drift and semantic consistency.',
+      },
+    ],
+    technicalDecisions: [
+      'Replacing Assertions with Evals: Built Python/TypeScript statistical harnesses that score outputs probabilistically.',
+      'Multi-Layer Guardrail Architecture: Enforced schema constraints (JSON Schema), PII scrubbers, and LLM-as-a-judge scoring.',
+      'Non-Negotiable CI/CD Gates: Pull requests fail if hallucination indices exceed strict threshold tolerances.',
+    ],
+    workflowSteps: [
+      {
+        step: '01. Adversarial Test Generation',
+        detail:
+          'Synthetically generate edge-case prompts and jailbreak attempts targeting system boundaries.',
+      },
+      {
+        step: '02. Parallel Execution',
+        detail:
+          'Harness runs prompt variations across temperature matrices to measure output variance.',
+      },
+      {
+        step: '03. Multi-Metric Scoring',
+        detail:
+          'Scores output for semantic similarity, schema validity, tone adherence, and factual accuracy.',
+      },
+      {
+        step: '04. CI/CD Gate Enforcement',
+        detail:
+          'Generates pass/fail evaluation report determining release deployment readiness.',
+      },
+    ],
+    metricsSummary: [
+      'Near-zero critical defect escape across generative features',
+      'Presented as an industry benchmark at Ministry of Testing 2024',
+      'Continuous hallucination and prompt injection protection',
+    ],
+  },
+  'shared-skills-platform': {
+    riskAnalysis: [
+      {
+        risk: 'Insecure custom scripts authored by non-technical teams',
+        mitigation:
+          'Strict schema validation and isolated container execution sandboxes.',
+      },
+      {
+        risk: 'Duplication of custom AI tools across squads',
+        mitigation:
+          'Centralized version-controlled skill registry with discoverability and usage metrics.',
+      },
+      {
+        risk: 'Breaking API changes across skill updates',
+        mitigation:
+          'Semantic versioning (semver) with automated integration tests for published skills.',
+      },
+    ],
+    technicalDecisions: [
+      'Standardized Skill Schema: Defined typed parameter schemas and return types using JSON Schema.',
+      'Shared Registry Bus: Built create-skill, publish-skill, and invoke-skill commands accessible across engineering squads.',
+      'Cross-Functional Enablement: Extended skill creation tools to Creative Services, Marketing Ops, and Content teams.',
+    ],
+    workflowSteps: [
+      {
+        step: '01. Skill Authoring',
+        detail:
+          'Team defines tool parameters, system prompts, and execution scripts in a standard schema.',
+      },
+      {
+        step: '02. Automated Lint & Test',
+        detail:
+          'CI pipeline runs security audits and schema validation on the submitted skill.',
+      },
+      {
+        step: '03. Registry Publishing',
+        detail: 'Skill is versioned and published to the company-wide catalog.',
+      },
+      {
+        step: '04. Universal Invocation',
+        detail:
+          'Other squads invoke the skill across Playwright tests, CLI tools, or autonomous workflows.',
+      },
+    ],
+    metricsSummary: [
+      'Democratized AI tooling across engineering and business units',
+      'Standardized security and quality baselines across custom plugins',
+      "Featured in 'Everyday AI Coding' keynote",
+    ],
+  },
+};
+
+const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
+---
+
+<BaseLayout
+  title={`${system.title} — From Test to Trust | Maneesh Maddala`}
+  description={system.summary}
+>
+  <Header />
+
+  <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <!-- Back to Hub -->
+    <div class="mb-8">
+      <a
+        href="/#ai-systems"
+        class="inline-flex items-center gap-2 text-xs font-mono text-cyan-accent hover:text-cyan-300 transition-colors"
+      >
+        <span>← Back to Architecture Index</span>
+      </a>
+    </div>
+
+    <!-- Header Block -->
+    <header class="mb-10 pb-8 border-b border-white/[0.08]">
+      <div class="flex items-center gap-2 mb-3">
+        <span
+          class="text-xs font-mono text-cyan-accent font-semibold uppercase tracking-wider"
+        >
+          {system.category}
+        </span>
+        <span class="text-slate-600">·</span>
+        <span class="text-xs font-mono text-emerald-400">Production System</span
+        >
+      </div>
+
+      <h1
+        class="text-2xl sm:text-4xl font-display font-extrabold text-white leading-tight tracking-tight mb-3"
+      >
+        {system.title}
+      </h1>
+
+      <p class="text-sm sm:text-base font-mono text-slate-300 mb-6">
+        {system.subtitle}
+      </p>
+
+      <!-- Tech stack pills -->
+      <div class="flex flex-wrap gap-2">
+        {system.technologies.map((tech) => <TechTag tag={tech} />)}
+      </div>
+    </header>
+
+    <!-- Executive Summary & Problem Space -->
+    <section class="mb-10 space-y-6">
+      <div class="p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+        <h2
+          class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2"
+        >
+          <span>01 // The Problem Space</span>
+        </h2>
+        <p class="text-sm text-slate-300 leading-relaxed font-light">
+          {system.problem}
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+        <h2
+          class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2"
+        >
+          <span>02 // The Solution & Architecture</span>
+        </h2>
+        <p class="text-sm text-slate-300 leading-relaxed font-light mb-4">
+          {system.summary}
+        </p>
+
+        <div class="space-y-2.5">
+          {
+            system.architecture.map((arch) => (
+              <div class="text-xs sm:text-sm text-slate-300 flex items-start gap-2.5 leading-relaxed">
+                <span class="text-cyan-accent font-mono text-xs mt-0.5">▸</span>
+                <span>{arch}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow Sequence -->
+    <section
+      class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]"
+    >
+      <h2
+        class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-6 flex items-center gap-2"
+      >
+        <span>03 // Execution Sequence & Workflow</span>
+      </h2>
+
+      <div class="space-y-4">
+        {
+          details.workflowSteps.map((step) => (
+            <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-baseline gap-2">
+              <span class="text-xs font-mono font-bold text-cyan-accent shrink-0">
+                {step.step}
+              </span>
+              <span class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {step.detail}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Risk Calculation & Failure Modes (The Practitioner Core) -->
+    <section
+      class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-cyan-accent/20 shadow-[0_0_30px_-10px_rgba(56,189,248,0.15)]"
+    >
+      <h2
+        class="text-sm font-mono font-bold uppercase tracking-wider text-cyan-300 mb-2 flex items-center gap-2"
+      >
+        <span>04 // Risk Analysis & Calculated Mitigations</span>
+      </h2>
+      <p class="text-xs text-slate-400 mb-6">
+        How we engineer deterministic trust and governance around
+        non-deterministic probabilistic operations.
+      </p>
+
+      <div class="space-y-4">
+        {
+          details.riskAnalysis.map((item) => (
+            <div class="p-4 rounded-xl bg-[#121824]/70 border border-white/[0.06] space-y-1.5">
+              <div class="text-xs font-mono font-semibold text-rose-300 flex items-center gap-2">
+                <span>⚠️ Calculated Risk:</span>
+                <span class="text-slate-200">{item.risk}</span>
+              </div>
+              <div class="text-xs text-emerald-300 flex items-start gap-2 leading-relaxed">
+                <span class="text-emerald-400 font-bold shrink-0">
+                  ✓ Engineered Mitigation:
+                </span>
+                <span class="text-slate-300">{item.mitigation}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Verified Outcomes -->
+    <section
+      class="mb-12 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]"
+    >
+      <h2
+        class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2"
+      >
+        <span>05 // Verified Impact Proof</span>
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {
+          details.metricsSummary.map((metric) => (
+            <div class="p-3.5 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 text-xs font-mono text-emerald-200 flex items-center gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span>{metric}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Outbound Actions & Links -->
+    <div
+      class="p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4"
+    >
+      <div>
+        <div class="text-sm font-bold text-white mb-0.5">
+          Explore Next System Brief
+        </div>
+        <p class="text-xs text-slate-400 font-mono">
+          Principal QA Automation Engineer · Morningstar
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a
+          href="/#ai-systems"
+          class="px-4 py-2 rounded-xl text-xs font-mono text-slate-300 hover:text-white bg-white/[0.04] border border-white/10 transition-colors"
+        >
+          View All Systems
+        </a>
+        <a
+          href="https://www.linkedin.com/in/maneesh-maddala/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-cyan-accent/20 hover:bg-cyan-accent/30 border border-cyan-accent/40 transition-colors"
+        >
+          Connect on LinkedIn ↗
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

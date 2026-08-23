@@ -1,0 +1,156 @@
+---
+import { careerTimeline, educationAndCredentials } from '../../data/career';
+import TechTag from '../TechTag.astro';
+---
+
+<section
+  id="view-career"
+  role="tabpanel"
+  aria-labelledby="tab-career"
+  class="portfolio-view hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6"
+>
+  <div class="mb-8">
+    <h2
+      class="text-xl sm:text-2xl font-display font-bold text-white tracking-tight flex items-center gap-2.5"
+    >
+      <span>Career Ledger & Track Record</span>
+      <span
+        class="text-xs font-mono font-normal text-cyan-accent px-2 py-0.5 rounded-full bg-cyan-accent/10 border border-cyan-accent/20"
+      >
+        15+ Years Evolution
+      </span>
+    </h2>
+    <p class="text-xs sm:text-sm text-slate-400 mt-1">
+      Complete verified chronology spanning Morningstar progression, fintech,
+      enterprise automation, and AI systems leadership.
+    </p>
+  </div>
+
+  <div class="space-y-8">
+    {
+      careerTimeline.map((company) => (
+        <article
+          class={`rounded-2xl bg-[#0B0F19] border ${company.isCurrent ? 'border-cyan-accent/40 shadow-[0_0_30px_-10px_rgba(56,189,248,0.2)]' : 'border-white/[0.08]'} p-6 sm:p-8 relative`}
+        >
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-5 mb-6 border-b border-white/[0.08] gap-2">
+            <div class="flex items-center gap-3">
+              <div
+                class={`w-3 h-3 rounded-full ${company.isCurrent ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`}
+              />
+              <div>
+                <h3 class="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
+                  {company.company}
+                </h3>
+                <p class="text-xs font-mono text-slate-400 mt-0.5">
+                  {company.location}
+                </p>
+              </div>
+            </div>
+
+            <div class="text-xs font-mono font-semibold text-cyan-accent bg-cyan-accent/10 px-3 py-1.5 rounded-lg border border-cyan-accent/20 self-start sm:self-auto">
+              {company.totalTenure}
+            </div>
+          </div>
+
+          <div class="space-y-8">
+            {company.roles.map((role, rIndex) => (
+              <div
+                class={`relative ${rIndex > 0 ? 'pt-6 border-t border-white/[0.05]' : ''}`}
+              >
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
+                  <h4 class="text-base sm:text-lg font-display font-bold text-slate-100 flex items-center gap-2">
+                    <span class="text-cyan-400 text-xs">▸</span>
+                    <span>{role.title}</span>
+                  </h4>
+                  <span class="text-xs font-mono text-slate-400 font-medium">
+                    {role.period}
+                  </span>
+                </div>
+
+                {role.metrics && (
+                  <div class="mb-4 p-3.5 rounded-xl bg-cyan-500/[0.05] border border-cyan-500/20">
+                    <div class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-2">
+                      Verified Key Outcomes:
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                      {role.metrics.map((metric) => (
+                        <div class="flex items-center gap-2 text-xs font-mono text-cyan-200">
+                          <span class="text-cyan-400 font-bold">✓</span>
+                          <span>{metric}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div class="space-y-2 mb-4">
+                  {role.highlights.map((highlight) => (
+                    <div class="text-xs sm:text-sm text-slate-300 leading-relaxed flex items-start gap-2.5">
+                      <span class="text-slate-500 font-mono text-xs mt-1 shrink-0">
+                        •
+                      </span>
+                      <span>{highlight}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {role.skills && (
+                  <div class="flex flex-wrap gap-1.5 pt-2">
+                    {role.skills.map((skill) => (
+                      <TechTag tag={skill} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </article>
+      ))
+    }
+
+    <article
+      class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-6 sm:p-8"
+    >
+      <h3
+        class="text-lg font-display font-bold text-white mb-4 flex items-center gap-2"
+      >
+        <span>🎓 Education & Industry Certifications</span>
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+          <div
+            class="text-xs font-mono text-cyan-accent uppercase tracking-wider mb-1 font-semibold"
+          >
+            Degree
+          </div>
+          <div class="text-sm font-semibold text-white mb-0.5">
+            {educationAndCredentials.education.degree}
+          </div>
+          <div class="text-xs font-mono text-slate-400">
+            {educationAndCredentials.education.institution} · {
+              educationAndCredentials.education.period
+            }
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+          <div
+            class="text-xs font-mono text-cyan-accent uppercase tracking-wider mb-2 font-semibold"
+          >
+            Certifications
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            {
+              educationAndCredentials.certifications.map((cert) => (
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white/[0.04] text-slate-300 border border-white/[0.08]">
+                  {cert}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

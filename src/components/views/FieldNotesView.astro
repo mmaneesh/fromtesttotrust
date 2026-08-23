@@ -1,0 +1,133 @@
+---
+import { aboutData } from '../../data/about';
+---
+
+<section
+  id="view-about"
+  role="tabpanel"
+  aria-labelledby="tab-about"
+  class="portfolio-view max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6"
+>
+  <div class="mb-8">
+    <h2
+      class="text-xl sm:text-2xl font-display font-bold text-white tracking-tight flex items-center gap-2.5"
+    >
+      <span>About & Evolution of Practice</span>
+      <span
+        class="text-xs font-mono font-normal text-cyan-accent px-2 py-0.5 rounded-full bg-cyan-accent/10 border border-cyan-accent/20"
+      >
+        Personal Philosophy
+      </span>
+    </h2>
+    <p class="text-xs sm:text-sm text-slate-400 mt-1">
+      A direct look at how I think about quality, how my approach evolved across
+      15+ years, and how I build trustworthy AI systems today.
+    </p>
+  </div>
+
+  <article
+    class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-6 sm:p-8 mb-8 shadow-2xl relative overflow-hidden"
+  >
+    <div
+      class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-accent via-blue-500 to-emerald-accent"
+    >
+    </div>
+
+    <h3
+      class="text-xl sm:text-2xl font-display font-extrabold text-white mb-3 leading-tight tracking-tight"
+    >
+      {aboutData.headline}
+    </h3>
+
+    <p
+      class="text-sm sm:text-base font-mono text-cyan-accent/90 mb-4 leading-relaxed"
+    >
+      {aboutData.openingQuote}
+    </p>
+
+    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+      {aboutData.subheadline}
+    </p>
+  </article>
+
+  <div class="space-y-6 mb-10">
+    <div class="flex items-center justify-between">
+      <h3
+        class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300"
+      >
+        The 3 Chapters of My Quality Journey
+      </h3>
+      <span class="text-xs font-mono text-cyan-accent">15+ Year Evolution</span>
+    </div>
+
+    {
+      aboutData.evolutionStages.map((stage) => (
+        <article class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] hover:border-cyan-accent/40 p-6 sm:p-8 transition-all duration-200 shadow-xl group">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 pb-4 mb-4 border-b border-white/[0.06]">
+            <div class="flex items-center gap-3">
+              <span class="text-xl sm:text-2xl font-display font-extrabold text-cyan-accent/70 group-hover:text-cyan-accent font-mono">
+                {stage.stageNumber}
+              </span>
+              <div>
+                <h4 class="text-lg sm:text-xl font-display font-bold text-white group-hover:text-cyan-accent transition-colors leading-snug">
+                  {stage.title}
+                </h4>
+                <p class="text-xs font-mono text-slate-400 mt-0.5">
+                  {stage.subtitle}
+                </p>
+              </div>
+            </div>
+
+            <span class="text-[11px] font-mono text-slate-400 px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.06] self-start sm:self-auto">
+              {stage.era}
+            </span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light mb-5">
+            {stage.narrative}
+          </p>
+
+          <div class="space-y-2.5 p-4 rounded-xl bg-[#121824]/60 border border-white/[0.05]">
+            <div class="text-[11px] font-mono text-cyan-accent uppercase tracking-wider font-semibold mb-1">
+              How I put this into practice:
+            </div>
+            {stage.keyPoints.map((point) => (
+              <div class="text-xs sm:text-sm text-slate-200 flex items-start gap-2.5 leading-relaxed">
+                <span class="text-cyan-400 font-mono font-bold mt-0.5 shrink-0">
+                  ▸
+                </span>
+                <div>
+                  <strong class="text-white font-medium">{point.label}</strong>{' '}
+                  <span class="text-slate-300">{point.text}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-6 sm:p-8">
+    <h3
+      class="text-base sm:text-lg font-display font-bold text-white mb-6 flex items-center gap-2"
+    >
+      <span>🛡️ Three Rules I Follow Every Day</span>
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        aboutData.coreRules.map((rule) => (
+          <div class="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+            <h4 class="text-sm font-display font-bold text-white">
+              {rule.title}
+            </h4>
+            <p class="text-xs text-slate-300 leading-relaxed font-light">
+              {rule.detail}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

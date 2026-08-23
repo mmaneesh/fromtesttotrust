@@ -1,0 +1,151 @@
+---
+
+---
+
+<div class="relative w-full my-6">
+  <!-- Center separator line spanning across -->
+  <div class="absolute inset-0 flex items-center" aria-hidden="true">
+    <div class="w-full border-t border-white/[0.08]"></div>
+  </div>
+
+  <!-- Centered Floating Pill Switcher Dock -->
+  <nav
+    aria-label="Portfolio Sections"
+    class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center"
+  >
+    <div
+      role="tablist"
+      aria-label="View Navigation"
+      class="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-[#0B0F19] border border-white/10 shadow-2xl backdrop-blur-md overflow-x-auto max-w-full"
+    >
+      <!-- Tab 1: About & Evolution -->
+      <button
+        id="tab-about"
+        role="tab"
+        aria-selected="true"
+        aria-controls="view-about"
+        data-target="view-about"
+        tabindex="0"
+        class="nav-tab-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
+      >
+        <span class="text-cyan-accent text-sm">✦</span>
+        <span>About & Evolution</span>
+      </button>
+
+      <!-- Tab 2: Experience Ledger -->
+      <button
+        id="tab-career"
+        role="tab"
+        aria-selected="false"
+        aria-controls="view-career"
+        data-target="view-career"
+        tabindex="-1"
+        class="nav-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
+      >
+        <span>Experience Ledger</span>
+      </button>
+
+      <!-- Tab 3: AI Systems & Architecture -->
+      <button
+        id="tab-ai-systems"
+        role="tab"
+        aria-selected="false"
+        aria-controls="view-ai-systems"
+        data-target="view-ai-systems"
+        tabindex="-1"
+        class="nav-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
+      >
+        <span>AI Systems</span>
+      </button>
+
+      <!-- Tab 4: Speaking & Live Decks -->
+      <button
+        id="tab-speaking"
+        role="tab"
+        aria-selected="false"
+        aria-controls="view-speaking"
+        data-target="view-speaking"
+        tabindex="-1"
+        class="nav-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
+      >
+        <span>Speaking</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .nav-tab-btn.active {
+    background-color: rgba(56, 189, 248, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 20px -3px rgba(56, 189, 248, 0.3);
+  }
+
+  .nav-tab-btn:not(.active) {
+    border: 1px solid transparent;
+  }
+</style>
+
+<script>
+  function setupTabs() {
+    const tabButtons =
+      document.querySelectorAll<HTMLButtonElement>('.nav-tab-btn');
+    const views = document.querySelectorAll<HTMLElement>('.portfolio-view');
+
+    function activateTab(targetId: string, updateHash = true) {
+      tabButtons.forEach((btn) => {
+        const isMatch = btn.dataset.target === targetId;
+        btn.classList.toggle('active', isMatch);
+        btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+        btn.setAttribute('tabindex', isMatch ? '0' : '-1');
+      });
+
+      views.forEach((view) => {
+        const isMatch = view.id === targetId;
+        view.classList.toggle('hidden', !isMatch);
+        if (isMatch) {
+          view.classList.add('animate-fade-in');
+        }
+      });
+
+      if (updateHash) {
+        const hash = targetId.replace('view-', '');
+        history.replaceState(null, '', `#${hash}`);
+      }
+    }
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        if (targetId) activateTab(targetId);
+      });
+
+      btn.addEventListener('keydown', (e) => {
+        let index = Array.from(tabButtons).indexOf(btn);
+        if (e.key === 'ArrowRight') {
+          index = (index + 1) % tabButtons.length;
+          tabButtons[index].focus();
+          tabButtons[index].click();
+        } else if (e.key === 'ArrowLeft') {
+          index = (index - 1 + tabButtons.length) % tabButtons.length;
+          tabButtons[index].focus();
+          tabButtons[index].click();
+        }
+      });
+    });
+
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const targetView = `view-${hash}`;
+      const matchingBtn = document.querySelector<HTMLButtonElement>(
+        `[data-target="${targetView}"]`,
+      );
+      if (matchingBtn) {
+        activateTab(targetView, false);
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', setupTabs);
+</script>

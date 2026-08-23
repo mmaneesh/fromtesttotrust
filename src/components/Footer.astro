@@ -1,0 +1,54 @@
+---
+import { siteConfig } from '../data/site-config';
+---
+
+<footer class="w-full border-t border-white/[0.06] bg-[#070A0F] py-12 mt-auto">
+  <div
+    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6"
+  >
+    <div
+      class="flex flex-col items-center sm:items-start text-center sm:text-left"
+    >
+      <div class="flex items-center gap-2">
+        <span class="font-display font-bold text-white text-sm tracking-tight"
+          >{siteConfig.brandName}</span
+        >
+        <span class="text-slate-500 text-xs">/</span>
+        <span class="text-xs font-mono text-cyan-accent">{siteConfig.name}</span
+        >
+      </div>
+      <p class="text-xs text-slate-400 mt-1 font-mono">
+        {siteConfig.role} · Morningstar
+      </p>
+    </div>
+
+    <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
+      <a
+        href="https://www.linkedin.com/in/maneesh-maddala/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-cyan-accent transition-colors"
+      >
+        LinkedIn
+      </a>
+      <span>·</span>
+      <a
+        href="https://github.com/mmaneesh"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-cyan-accent transition-colors"
+      >
+        GitHub
+      </a>
+      <span>·</span>
+      <a
+        href="https://guardrails-with-evals.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-cyan-accent transition-colors"
+      >
+        Live Keynotes
+      </a>
+    </div>
+  </div>
+</footer>

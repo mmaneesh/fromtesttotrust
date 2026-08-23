@@ -1,0 +1,98 @@
+---
+import { speakingEvents } from '../../data/speaking';
+import TechIcon from '../TechIcon.astro';
+import TechTag from '../TechTag.astro';
+---
+
+<section
+  id="view-speaking"
+  role="tabpanel"
+  aria-labelledby="tab-speaking"
+  class="portfolio-view hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6"
+>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {
+      speakingEvents.map((event) => (
+        <article class="interactive-spotlight-card rounded-2xl bg-[#0B0F19] border border-white/[0.08] hover:border-cyan-400/60 p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_-5px_rgba(56,189,248,0.25)]">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <div class="flex items-center gap-2">
+                <TechIcon name="openai" size="w-7 h-7" />
+                <TechIcon name="python" size="w-7 h-7" />
+                <TechIcon name="typescript" size="w-7 h-7" />
+                <TechIcon name="playwright" size="w-7 h-7" />
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-cyan-accent/10 text-cyan-300 border border-cyan-accent/20">
+                <span>🎙️</span>
+                <span>{event.organization}</span>
+              </span>
+            </div>
+
+            <div class="mb-4">
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono bg-emerald-500/[0.08] text-emerald-200 border border-emerald-500/20">
+                <span class="text-emerald-400 font-bold">✓</span>
+                <span>Ministry of Testing Featured Keynote & Workshop</span>
+              </div>
+            </div>
+
+            <a href={`/speaking/${event.id}`} class="group/title block">
+              <h3 class="text-lg sm:text-xl font-display font-bold text-white group-hover/title:text-cyan-accent transition-colors leading-snug mb-1">
+                {event.title}
+              </h3>
+            </a>
+            <p class="text-xs font-mono text-cyan-accent/90 mb-4">
+              {event.subtitle}
+            </p>
+
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-5">
+              {event.abstract}
+            </p>
+
+            <div class="mb-6 rounded-xl bg-[#121824]/60 border border-white/[0.05] p-4">
+              <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2 font-semibold">
+                Key Engineering Takeaways:
+              </div>
+              <ul class="space-y-2">
+                {event.keyTakeaways.map((takeaway) => (
+                  <li class="text-xs text-slate-300 flex items-start gap-2 leading-relaxed">
+                    <span class="text-emerald-400 font-mono">✓</span>
+                    <span>{takeaway}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              {event.tags.map((tag) => (
+                <TechTag tag={tag} />
+              ))}
+            </div>
+
+            <div class="pt-4 border-t border-white/[0.06] flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
+              <a
+                href={`/speaking/${event.id}`}
+                class="font-semibold text-cyan-accent hover:text-cyan-300 hover:underline"
+              >
+                <span>Session Brief →</span>
+              </a>
+
+              <a
+                href={event.deckUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-white bg-cyan-accent/15 hover:bg-cyan-accent/25 border border-cyan-accent/35 transition-all shadow-glow-cyan/15 group"
+              >
+                <span>Open Slides</span>
+                <span class="group-hover:translate-x-0.5 transition-transform">
+                  ↗
+                </span>
+              </a>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>

@@ -1,39 +1,36 @@
 ---
 import { siteConfig } from '../data/site-config';
+import BrandMark from './BrandMark.astro';
 ---
 
 <header
   class="w-full border-b border-white/[0.06] bg-[#070A0F]/80 backdrop-blur-md sticky top-0 z-40"
 >
   <div
-    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4"
   >
     <!-- Brand / Name Identity -->
     <a
       href="/"
-      class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-accent rounded-lg p-1"
+      class="flex items-center gap-2 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-accent rounded-lg p-1 shrink-0"
     >
-      <div
-        class="w-7 h-7 rounded-lg bg-surface border border-cyan-accent/30 flex items-center justify-center text-cyan-accent font-mono text-xs font-bold shadow-glow-cyan/20 group-hover:border-cyan-accent/60 transition-colors"
-      >
-        M
-      </div>
-      <div class="flex flex-col">
+      <BrandMark class="w-[76px] h-11 sm:w-[86px] sm:h-12 shrink-0" />
+      <div class="hidden sm:flex flex-col">
         <span
-          class="text-sm font-bold text-white tracking-tight flex items-center gap-2"
+          class="text-xs sm:text-base font-display font-bold text-white tracking-tight"
         >
-          {siteConfig.brandName}
-          <span
-            class="text-[10px] font-mono font-normal text-cyan-accent px-1.5 py-0.5 rounded bg-cyan-accent/10 border border-cyan-accent/20 hidden sm:inline-block"
-          >
-            {siteConfig.name}
-          </span>
+          From Test to <span class="text-cyan-accent">Trust</span>
+        </span>
+        <span
+          class="hidden sm:block mt-1 text-[9px] font-mono font-medium uppercase tracking-[0.24em] text-slate-400"
+        >
+          {siteConfig.name}
         </span>
       </div>
     </a>
 
     <!-- Top Links & Actions -->
-    <div class="flex items-center gap-3 sm:gap-4">
+    <div class="flex items-center gap-2 sm:gap-3">
       <a
         href="https://www.linkedin.com/in/maneesh-maddala/"
         target="_blank"
@@ -75,12 +72,24 @@ import { siteConfig } from '../data/site-config';
       </a>
 
       <a
-        href="https://guardrails-with-evals.vercel.app/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-cyan-200 bg-cyan-accent/10 hover:bg-cyan-accent/20 border border-cyan-accent/30 hover:border-cyan-accent/50 transition-all duration-150 shadow-glow-cyan/10"
+        href="mailto:maneesh.maddala@gmail.com"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 transition-all duration-150"
+        aria-label="Email Maneesh Maddala at maneesh.maddala@gmail.com"
       >
-        <span>Live Talks ↗</span>
+        <svg
+          class="w-3.5 h-3.5 text-cyan-accent"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+          <path d="m3 7 9 6 9-6"></path>
+        </svg>
+        <span class="hidden sm:inline">Email</span>
       </a>
     </div>
   </div>

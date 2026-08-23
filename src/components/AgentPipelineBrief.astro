@@ -1,0 +1,372 @@
+---
+import type { AISystem } from '../data/ai-systems';
+
+interface Props {
+  workflow: NonNullable<AISystem['workflow']>;
+}
+
+const { workflow } = Astro.props;
+const lanes = workflow.roles.map((role) => role.name);
+const handoffs = workflow.handoffs.map((handoff) => {
+  const from = lanes.indexOf(handoff.from) + 1;
+  const to = lanes.indexOf(handoff.to) + 1;
+  const span = Math.abs(to - from) + 1;
+
+  return {
+    ...handoff,
+    start: Math.min(from, to),
+    end: Math.max(from, to),
+    fromIndex: from,
+    reverse: from > to,
+    endpointInset: `calc(${50 / span}% - ${(6 * (span - 1)) / span}px)`,
+  };
+});
+---
+
+<section class="mb-10 space-y-6" aria-labelledby="pipeline-workflow-heading">
+  <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+    <div
+      class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6"
+    >
+      <div>
+        <div
+          class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-cyan-accent mb-2"
+        >
+          03 // Command lifecycle
+        </div>
+        <h2
+          id="pipeline-workflow-heading"
+          class="text-lg sm:text-xl font-display font-bold text-white"
+        >
+          From sprint-ready ticket to final verdict
+        </h2>
+      </div>
+      <span
+        class="inline-flex items-center gap-2 text-[11px] font-mono font-semibold text-emerald-300"
+      >
+        <span class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"
+        ></span>
+        {workflow.reviewLabel}
+      </span>
+    </div>
+
+    <div class="overflow-x-auto pb-2">
+      <ol class="min-w-[760px] grid grid-cols-7">
+        {
+          workflow.nodes.map((node) => (
+            <li
+              class:list={[
+                'pipeline-node relative text-center pt-7 px-2 text-[10px] font-mono font-semibold uppercase leading-tight text-slate-300',
+                { 'human-gate': node.humanGate },
+              ]}
+            >
+              <span>{node.label}</span>
+              {node.command && (
+                <code class="block mt-1.5 text-[10px] normal-case text-cyan-accent">
+                  {node.command}
+                </code>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    {
+      workflow.phases.map((phase) => (
+        <article class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-5">
+          <div class="text-[10px] font-mono font-semibold uppercase tracking-[0.16em] text-cyan-accent mb-3">
+            {phase.label}
+          </div>
+          <code class="inline-block rounded-md bg-cyan-500/[0.08] border border-cyan-500/20 px-2 py-1 text-[11px] font-mono font-semibold text-cyan-200 mb-3">
+            {phase.command}
+          </code>
+          <h3 class="text-sm font-semibold text-white mb-2">{phase.title}</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">{phase.summary}</p>
+          {phase.scenarioFloors && (
+            <div class="grid grid-cols-3 gap-2 mt-4">
+              {phase.scenarioFloors.map((floor) => (
+                <div class="rounded-lg bg-white/[0.025] border border-white/[0.06] p-2 text-center">
+                  <span class="block text-[9px] text-slate-500">
+                    {floor.label}
+                  </span>
+                  <strong class="block text-xs font-mono text-white">
+                    {floor.value}
+                  </strong>
+                </div>
+              ))}
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+    <div
+      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-cyan-accent mb-2"
+    >
+      04 // Architecture &amp; artifact flow
+    </div>
+    <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-2">
+      Bounded agents, explicit evidence, human-controlled transitions
+    </h2>
+    <p class="max-w-3xl text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+      Every lane owns one job. Solid exchanges delegate approved work; returning
+      exchanges produce a reviewable artifact before the next stage can begin.
+    </p>
+
+    <div class="overflow-x-auto pb-3">
+      <div
+        class="architecture-diagram min-w-[900px] rounded-xl bg-[#080C14] border border-white/[0.06] p-4"
+      >
+        <div class="grid grid-cols-6 gap-3 mb-3">
+          {
+            workflow.roles.map((role) => (
+              <div
+                class="rounded-lg bg-[#121824] border border-white/[0.08] p-2.5 text-center"
+                aria-label={`${role.name} lane`}
+              >
+                <strong class="block text-[11px] text-white">
+                  {role.name}
+                </strong>
+                <span class="block mt-0.5 text-[9px] font-mono uppercase tracking-wider text-slate-500">
+                  {role.model}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="sequence-grid relative">
+          <div
+            class="lane-guides absolute inset-0 grid grid-cols-6 gap-3 pointer-events-none"
+            aria-hidden="true"
+          >
+            {lanes.map(() => <span />)}
+          </div>
+
+          <ol class="relative space-y-2 py-2">
+            {
+              handoffs.map((handoff, index) => (
+                <>
+                  {handoff.artifact && (
+                    <li class="grid grid-cols-6 gap-3 min-h-12 items-center">
+                      <div
+                        class="processing-loop mx-auto inline-flex items-center gap-2 rounded-lg bg-emerald-500/[0.04] border border-emerald-500/20 px-2.5 py-2"
+                        style={`grid-column: ${handoff.fromIndex}`}
+                        aria-label={`${handoff.from} output: ${handoff.artifact}`}
+                      >
+                        <span
+                          class="text-base leading-none text-emerald-400"
+                          aria-hidden="true"
+                        >
+                          ↻
+                        </span>
+                        <code class="text-[9px] font-mono font-semibold text-emerald-200 whitespace-nowrap">
+                          {handoff.artifact}
+                        </code>
+                      </div>
+                    </li>
+                  )}
+
+                  <li class="grid grid-cols-6 gap-3 min-h-14 items-center">
+                    <div
+                      class:list={[
+                        'sequence-exchange relative flex items-center px-5 py-2',
+                        { reverse: handoff.reverse },
+                        { 'human-review': handoff.humanReview },
+                      ]}
+                      style={`grid-column: ${handoff.start} / ${handoff.end + 1}; --endpoint-inset: ${handoff.endpointInset}`}
+                    >
+                      <div class="sequence-label mx-auto max-w-[150px] rounded-md bg-[#111827] border border-white/[0.08] px-2.5 py-1.5 text-center">
+                        <span class="block text-[9px] font-mono text-slate-400">
+                          {String(index + 1).padStart(2, '0')} ·{' '}
+                          {handoff.artifact ?? handoff.label}
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                </>
+              ))
+            }
+          </ol>
+        </div>
+
+        <div
+          class="mt-3 flex items-center justify-between gap-4 rounded-lg bg-emerald-500/[0.04] border border-emerald-500/15 px-3 py-2 text-[9px] font-mono"
+        >
+          <span class="text-emerald-300">● Human approval checkpoint</span>
+          <span class="text-slate-400"
+            >Final PR and merge decision remains manual</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+    <div
+      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-cyan-accent mb-2"
+    >
+      05 // Role contracts
+    </div>
+    <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-6">
+      Deliberately narrow responsibilities
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {
+        workflow.roles.map((role) => (
+          <article class="rounded-xl bg-[#121824]/70 border border-white/[0.07] p-4">
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <h3 class="text-sm font-semibold text-white">{role.name}</h3>
+              <span class="rounded-full bg-cyan-500/[0.07] border border-cyan-500/15 px-2 py-1 text-[9px] font-mono uppercase tracking-wider text-cyan-200">
+                {role.model}
+              </span>
+            </div>
+            <dl class="space-y-3 text-xs leading-relaxed">
+              <div>
+                <dt class="font-mono text-[9px] uppercase tracking-wider text-slate-500 mb-0.5">
+                  Reads
+                </dt>
+                <dd class="text-slate-300">{role.reads}</dd>
+              </div>
+              <div>
+                <dt class="font-mono text-[9px] uppercase tracking-wider text-slate-500 mb-0.5">
+                  Writes
+                </dt>
+                <dd class="text-slate-300">{role.writes}</dd>
+              </div>
+              <div class="pt-3 border-t border-white/[0.06]">
+                <dt class="font-mono text-[9px] uppercase tracking-wider text-rose-300 mb-0.5">
+                  Boundary
+                </dt>
+                <dd class="text-slate-400">{role.boundary}</dd>
+              </div>
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <div
+    class="p-5 sm:p-6 rounded-2xl bg-emerald-500/[0.035] border border-emerald-500/20"
+  >
+    <div
+      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-emerald-300 mb-2"
+    >
+      06 // Guardrails across every stage
+    </div>
+    <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-5">
+      Human authority is structural, not ceremonial
+    </h2>
+    <ul class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      {
+        workflow.guardrails.map((guardrail) => (
+          <li class="rounded-xl bg-[#0B0F19]/70 border border-emerald-500/10 p-4 text-xs sm:text-sm text-slate-300 leading-relaxed flex items-start gap-3">
+            <span class="text-emerald-400 font-bold" aria-hidden="true">
+              ✓
+            </span>
+            <span>{guardrail}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .pipeline-node::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 0.2rem;
+    left: 50%;
+    width: 0.7rem;
+    height: 0.7rem;
+    transform: translateX(-50%);
+    border: 2px solid #38bdf8;
+    border-radius: 9999px;
+    background: #0b0f19;
+  }
+
+  .pipeline-node::after {
+    content: '';
+    position: absolute;
+    top: 0.53rem;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  .pipeline-node:first-child::after {
+    left: 50%;
+  }
+
+  .pipeline-node:last-child::after {
+    right: 50%;
+  }
+
+  .pipeline-node.human-gate::before {
+    border-color: #34d399;
+    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.08);
+  }
+
+  .lane-guides span {
+    height: 100%;
+    margin-left: 50%;
+    border-left: 1px solid rgba(148, 163, 184, 0.14);
+  }
+
+  .sequence-exchange::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: var(--endpoint-inset);
+    left: var(--endpoint-inset);
+    height: 1px;
+    background: rgba(56, 189, 248, 0.58);
+  }
+
+  .sequence-exchange::after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 3px);
+    right: calc(var(--endpoint-inset) - 1px);
+    width: 7px;
+    height: 7px;
+    border-top: 1px solid #38bdf8;
+    border-right: 1px solid #38bdf8;
+    transform: rotate(45deg);
+  }
+
+  .sequence-exchange.reverse::after {
+    right: auto;
+    left: calc(var(--endpoint-inset) - 1px);
+    transform: rotate(-135deg);
+  }
+
+  .sequence-exchange.human-review::before {
+    background: repeating-linear-gradient(
+      to right,
+      rgba(52, 211, 153, 0.72) 0,
+      rgba(52, 211, 153, 0.72) 5px,
+      transparent 5px,
+      transparent 9px
+    );
+  }
+
+  .sequence-exchange.human-review::after {
+    border-color: #34d399;
+  }
+
+  .sequence-label {
+    position: relative;
+    z-index: 1;
+  }
+</style>

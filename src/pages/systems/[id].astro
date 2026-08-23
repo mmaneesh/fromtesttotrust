@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import TechTag from '../../components/TechTag.astro';
-import TechIcon from '../../components/TechIcon.astro';
+import AgentPipelineBrief from '../../components/AgentPipelineBrief.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 
 export function getStaticPaths() {
@@ -25,59 +25,32 @@ const systemDetails: Record<
   {
     riskAnalysis: { risk: string; mitigation: string }[];
     technicalDecisions: string[];
-    workflowSteps: { step: string; detail: string }[];
-    metricsSummary: string[];
+    workflowSteps?: { step: string; detail: string }[];
+    metricsSummary?: string[];
   }
 > = {
   'multi-agent-sdlc': {
     riskAnalysis: [
       {
-        risk: 'Uncontrolled agent loops or infinite tool execution',
+        risk: 'Incomplete or ambiguous Jira context producing weak scenarios',
         mitigation:
-          'Strict recursion depth limits (max 5 hops), timeout boundaries, and deterministic token quotas per task.',
+          'Jira MCP gathers acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets before planning begins.',
       },
       {
-        risk: 'Drift in accessibility compliance (WCAG 2.2 AA)',
+        risk: 'Duplicate or misplaced test coverage in TestRail',
         mitigation:
-          'Automated Playwright axe-core audits executed in headless CI/CD before any agent-generated PR merge.',
+          'TestRail MCP inspects the existing project and folder hierarchy, compares similar functionality, and returns every updated or created case link for human review.',
       },
       {
-        risk: 'Security & prompt injection via user-supplied Jira tickets',
+        risk: 'Brittle automation that ignores repository conventions',
         mitigation:
-          'Input sanitization layer and scoped system prompts with strictly non-executable payload wrappers.',
+          'Playwright MCP reads the repository structure, routes work to UI, API, visual, or component suites, reuses page objects and fixtures, and prefers user-facing locators.',
       },
     ],
     technicalDecisions: [
-      'Event-Driven Webhook Integration: Connected Jira status transitions directly to Azure DevOps pipeline triggers.',
-      'Specialized Role Decomposition: Split monolithic agent into 4 focused personas (SEO Auditor, A11y Validator, Copy Compliance, Playwright Orchestrator).',
-      'Automated Git Operations: Agents push atomic branches and generate structured PR comments with verifiable diff evidence.',
-    ],
-    workflowSteps: [
-      {
-        step: '01. Jira Issue Transition',
-        detail:
-          "Ticket moved to 'Ready for AI Validation' triggers an event webhook containing issue metadata.",
-      },
-      {
-        step: '02. Agent Swarm Dispatch',
-        detail:
-          'The orchestrator provisions specialized worker agents based on ticket labels (e.g. #marketing, #seo).',
-      },
-      {
-        step: '03. Tool Execution in Sandbox',
-        detail:
-          'Agents run Playwright tests, validate schema structures, and check WCAG compliance in isolated containers.',
-      },
-      {
-        step: '04. Evidence Synthesis & PR Report',
-        detail:
-          'Results are aggregated into a structured markdown report and posted back to Jira and GitHub/Azure PRs.',
-      },
-    ],
-    metricsSummary: [
-      'Reduced QA cycle time across squads by 20%',
-      'Automated validation for 100% of marketing and content releases',
-      'Near-zero accessibility defect escape rate',
+      'Command-Gated Execution: /start-planning, /test-cases, and /automate create explicit, independently reviewable transitions.',
+      'Risk-Tiered Scenario Floors: Generate at least 5 low-criticality, 6–8 medium-criticality, or 10–15 critical scenarios before human refinement.',
+      'Tool-Specific MCP Boundaries: Jira, TestRail, and Playwright integrations each own one phase while shared repository context preserves continuity.',
     ],
   },
   'litellm-gateway': {
@@ -243,7 +216,12 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
 >
   <Header />
 
-  <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+  <main
+    class:list={[
+      'flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16',
+      system.workflow ? 'max-w-6xl' : 'max-w-4xl',
+    ]}
+  >
     <!-- Back to Hub -->
     <div class="mb-8">
       <a
@@ -300,50 +278,53 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
         <h2
           class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2"
         >
-          <span>02 // The Solution & Architecture</span>
+          <span>02 // The Solution Overview</span>
         </h2>
         <p class="text-sm text-slate-300 leading-relaxed font-light mb-4">
           {system.summary}
         </p>
 
-        <div class="space-y-2.5">
-          {
-            system.architecture.map((arch) => (
-              <div class="text-xs sm:text-sm text-slate-300 flex items-start gap-2.5 leading-relaxed">
-                <span class="text-cyan-accent font-mono text-xs mt-0.5">▸</span>
-                <span>{arch}</span>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <!-- Workflow Sequence -->
-    <section
-      class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]"
-    >
-      <h2
-        class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-6 flex items-center gap-2"
-      >
-        <span>03 // Execution Sequence & Workflow</span>
-      </h2>
-
-      <div class="space-y-4">
         {
-          details.workflowSteps.map((step) => (
-            <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-baseline gap-2">
-              <span class="text-xs font-mono font-bold text-cyan-accent shrink-0">
-                {step.step}
-              </span>
-              <span class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                {step.detail}
-              </span>
+          !system.workflow && (
+            <div class="space-y-2.5">
+              {system.architecture.map((arch) => (
+                <div class="text-xs sm:text-sm text-slate-300 flex items-start gap-2.5 leading-relaxed">
+                  <span class="text-cyan-accent font-mono text-xs mt-0.5">
+                    ▸
+                  </span>
+                  <span>{arch}</span>
+                </div>
+              ))}
             </div>
-          ))
+          )
         }
       </div>
     </section>
+
+    {
+      system.workflow ? (
+        <AgentPipelineBrief workflow={system.workflow} />
+      ) : (
+        <section class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+          <h2 class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-6 flex items-center gap-2">
+            <span>03 // Execution Sequence &amp; Workflow</span>
+          </h2>
+
+          <div class="space-y-4">
+            {details.workflowSteps?.map((step) => (
+              <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-baseline gap-2">
+                <span class="text-xs font-mono font-bold text-cyan-accent shrink-0">
+                  {step.step}
+                </span>
+                <span class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  {step.detail}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <!-- Risk Calculation & Failure Modes (The Practitioner Core) -->
     <section
@@ -352,7 +333,13 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
       <h2
         class="text-sm font-mono font-bold uppercase tracking-wider text-cyan-300 mb-2 flex items-center gap-2"
       >
-        <span>04 // Risk Analysis & Calculated Mitigations</span>
+        <span>
+          {
+            system.workflow
+              ? '07 // Risk Analysis & Calculated Mitigations'
+              : '04 // Risk Analysis & Calculated Mitigations'
+          }
+        </span>
       </h2>
       <p class="text-xs text-slate-400 mb-6">
         How we engineer deterministic trust and governance around
@@ -379,27 +366,24 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
       </div>
     </section>
 
-    <!-- Verified Outcomes -->
-    <section
-      class="mb-12 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]"
-    >
-      <h2
-        class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2"
-      >
-        <span>05 // Verified Impact Proof</span>
-      </h2>
+    {
+      !system.workflow && (
+        <section class="mb-12 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+          <h2 class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
+            <span>05 // Verified Impact Proof</span>
+          </h2>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {
-          details.metricsSummary.map((metric) => (
-            <div class="p-3.5 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 text-xs font-mono text-emerald-200 flex items-center gap-2">
-              <span class="text-emerald-400 font-bold">✓</span>
-              <span>{metric}</span>
-            </div>
-          ))
-        }
-      </div>
-    </section>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {details.metricsSummary?.map((metric) => (
+              <div class="p-3.5 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 text-xs font-mono text-emerald-200 flex items-center gap-2">
+                <span class="text-emerald-400 font-bold">✓</span>
+                <span>{metric}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <!-- Outbound Actions & Links -->
     <div

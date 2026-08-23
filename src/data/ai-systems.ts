@@ -18,38 +18,235 @@ export interface AISystem {
     type: 'deck' | 'code' | 'article' | 'external';
   }[];
   featured: boolean;
+  workflow?: {
+    nodes: { label: string; command?: string; humanGate?: boolean }[];
+    phases: {
+      label: string;
+      title: string;
+      command: string;
+      summary: string;
+      scenarioFloors?: { label: string; value: string }[];
+    }[];
+    handoffs: {
+      from: string;
+      to: string;
+      label: string;
+      artifact?: string;
+      humanReview?: boolean;
+    }[];
+    roles: {
+      name: string;
+      model: string;
+      reads: string;
+      writes: string;
+      boundary: string;
+    }[];
+    guardrails: string[];
+    reviewLabel: string;
+    futureDirection: string;
+  };
 }
 
 export const aiSystems: AISystem[] = [
   {
     id: 'multi-agent-sdlc',
-    title: 'Multi-Agent SDLC Orchestration & Jira Triggers',
+    title: 'Human-Guided Agentic Test Engineering Pipeline',
     subtitle:
-      'Autonomous agent execution embedded into enterprise development lifecycles',
+      'Jira-triggered planning, test design, and repository-aware automation',
     category: 'Multi-Agent Systems',
     summary:
-      'Architected an end-to-end multi-agent pipeline where Jira issue transitions trigger autonomous agent workflows for marketing operations, content consistency, accessibility audits, and regression verification.',
+      'Built an end-to-end agent workflow that turns sprint-ready Jira tickets into reviewed scenarios, TestRail cases, and maintainable Playwright automation—with human approval at every consequential transition.',
     problem:
-      'Manual verification across high-velocity marketing campaigns and enterprise content pipelines was creating multi-day bottlenecks and vulnerability to defect escapes.',
+      'Planning, test-case design, and automation were disconnected activities. Engineers repeatedly reconstructed ticket context, duplicated TestRail coverage, and implemented brittle automation without a consistent view of the feature, epic, repository, or existing test architecture.',
     architecture: [
-      'Event-driven webhook listeners hooked into Jira status transitions and Azure DevOps CI/CD triggers.',
-      'Specialized agent roles: SEO validator, a11y auditor (WCAG 2.2 AA), copy compliance agent, and Playwright test orchestrator.',
-      'Centralized orchestration bus managing agent state, tool execution, and PR validation comments.',
+      '/start-planning uses Jira MCP to assemble ticket, acceptance criteria, documentation, attachments, references, parent epic, and completed or in-review sibling-ticket context before proposing risk-tiered scenarios.',
+      '/test-cases uses TestRail MCP to inspect projects and folders, update matching coverage, or create the missing folders and cases.',
+      '/automate uses Playwright MCP and repository context to implement POM-based UI, API, visual, or component tests after deployment.',
     ],
     impact: [
-      'Automated verification for continuous marketing and content releases.',
-      'Reduced cycle time by 20% while enforcing strict quality baselines.',
-      'Created unified visibility for engineering and business stakeholders.',
+      'Established minimum scenario floors by ticket criticality: 5+ low, 6–8+ medium, and 10–15+ critical.',
+      'Kept a human in control before test-case creation, automation implementation, and pull-request delivery.',
+      'Connected planning evidence, test management, repository-aware automation, and PR review in one traceable workflow.',
     ],
     technologies: [
+      'Jira MCP',
+      'TestRail MCP',
+      'Playwright MCP',
       'TypeScript',
-      'Playwright',
-      'Azure DevOps',
-      'Jira API',
-      'Docker',
-      'Node.js',
+      'AWS',
+      'Git',
+      'POM',
     ],
     featured: true,
+    workflow: {
+      nodes: [
+        { label: 'Jira ticket', command: '/start-planning' },
+        { label: 'Context + scenarios' },
+        {
+          label: 'Human review',
+          command: '/test-cases',
+          humanGate: true,
+        },
+        { label: 'TestRail coverage' },
+        {
+          label: 'Deploy + approve',
+          command: '/automate',
+          humanGate: true,
+        },
+        { label: 'Playwright implementation' },
+        { label: 'Review + PR', humanGate: true },
+      ],
+      phases: [
+        {
+          label: '01 // Plan',
+          title: 'Context + scenario design',
+          command: '/start-planning',
+          summary:
+            'Read acceptance criteria, technical notes, attachments, references, the parent epic, and completed or in-review sibling tickets.',
+          scenarioFloors: [
+            { label: 'Low', value: '5+' },
+            { label: 'Medium', value: '6–8+' },
+            { label: 'Critical', value: '10–15+' },
+          ],
+        },
+        {
+          label: '02 // Cover',
+          title: 'TestRail coverage',
+          command: '/test-cases',
+          summary:
+            'Inspect project folders, update matching cases, or create missing structure and coverage; then return every case link for review.',
+        },
+        {
+          label: '03 // Automate',
+          title: 'Playwright implementation',
+          command: '/automate',
+          summary:
+            'Route UI, API, visual, or component work; reuse page objects and fixtures, prefer user-facing locators, and run focused tests.',
+        },
+      ],
+      handoffs: [
+        {
+          from: 'Human',
+          to: 'Planner',
+          label: 'Request ticket plan',
+        },
+        {
+          from: 'Planner',
+          to: 'Human',
+          label: 'Return risk-tiered scenarios',
+          artifact: 'scenarios.md',
+          humanReview: true,
+        },
+        {
+          from: 'Human',
+          to: 'TestRail',
+          label: 'Send approved scenarios',
+        },
+        {
+          from: 'TestRail',
+          to: 'Human',
+          label: 'Return mapped coverage',
+          artifact: 'testrail-cases.md',
+          humanReview: true,
+        },
+        {
+          from: 'Human',
+          to: 'Coder',
+          label: 'Send approved test cases',
+        },
+        {
+          from: 'Coder',
+          to: 'Human',
+          label: 'Return scoped implementation',
+          artifact: 'changes.md',
+          humanReview: true,
+        },
+        {
+          from: 'Human',
+          to: 'Tester',
+          label: 'Send approved changes',
+        },
+        {
+          from: 'Tester',
+          to: 'Human',
+          label: 'Return execution evidence',
+          artifact: 'test-results.md',
+          humanReview: true,
+        },
+        {
+          from: 'Human',
+          to: 'Reviewer',
+          label: 'Request final review',
+        },
+        {
+          from: 'Reviewer',
+          to: 'Human',
+          label: 'Return verdict',
+          artifact: 'review.md',
+          humanReview: true,
+        },
+      ],
+      roles: [
+        {
+          name: 'Human',
+          model: 'Decision owner',
+          reads: 'Every stage artifact and the execution evidence.',
+          writes:
+            'Approvals, refinements, commands, and the final PR decision.',
+          boundary:
+            'No consequential stage advances without explicit human approval.',
+        },
+        {
+          name: 'Planner',
+          model: 'Opus',
+          reads:
+            'Jira ticket, acceptance criteria, epic history, attachments, technical notes, and design references.',
+          writes: 'scenarios.md with cited, risk-tiered coverage.',
+          boundary: 'Cannot write test code, page objects, or TestRail cases.',
+        },
+        {
+          name: 'TestRail',
+          model: 'Sonnet',
+          reads: 'Approved scenarios.md and existing TestRail structure.',
+          writes:
+            'testrail-cases.md plus links to updated or newly created coverage.',
+          boundary: 'Cannot modify repository source or implement automation.',
+        },
+        {
+          name: 'Coder',
+          model: 'Sonnet',
+          reads:
+            'Approved testrail-cases.md, repository conventions, page objects, fixtures, and suite structure.',
+          writes: 'Scoped page objects, specs, and changes.md.',
+          boundary:
+            'Cannot alter package, config, or CI files, run the full suite, or perform git actions.',
+        },
+        {
+          name: 'Tester',
+          model: 'Sonnet',
+          reads: 'changes.md and the approved implementation scope.',
+          writes: 'Root-cause fixes within scope and test-results.md.',
+          boundary:
+            'Cannot touch files outside the approved change set or broaden the requested scope.',
+        },
+        {
+          name: 'Reviewer',
+          model: 'Opus',
+          reads: 'The full diff, test-results.md, and repository checklist.',
+          writes: 'review.md with a final verdict and actionable findings.',
+          boundary: 'Cannot edit code, merge, push, or open a pull request.',
+        },
+      ],
+      guardrails: [
+        'File-scope discipline: each stage changes only the files required for its assigned job; anything outside that boundary is flagged for a human.',
+        'No silent scope creep: implementation stays anchored to the Jira ticket and approved scenarios.',
+        'End-to-end traceability: Jira acceptance criteria, epic context, and design references remain connected through TestRail coverage and final test source.',
+        'No false-green results: test.skip() requires a Jira-tracked TODO; assertions are never weakened and valid cases are never deleted to force a pass.',
+        'Merge and pull-request actions remain human decisions.',
+      ],
+      reviewLabel: 'Human Review',
+      futureDirection: 'Future: evidence-gated autonomy',
+    },
   },
   {
     id: 'litellm-gateway',

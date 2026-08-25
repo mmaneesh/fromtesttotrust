@@ -20,7 +20,7 @@ const { event } = Astro.props;
 ---
 
 <BaseLayout
-  title={`${event.title} — Keynote & Workshop | Maneesh Maddala`}
+  title={`${event.title} - Keynote & Workshop | Maneesh Maddala`}
   description={event.abstract}
 >
   <Header />
@@ -30,9 +30,9 @@ const { event } = Astro.props;
     <div class="mb-8">
       <a
         href="/#speaking"
-        class="inline-flex items-center gap-2 text-xs font-mono text-cyan-accent hover:text-cyan-300 transition-colors"
+        class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-accent transition-colors"
       >
-        <span>← Back to Speaking Index</span>
+        <span>← Back to Speaking</span>
       </a>
     </div>
 
@@ -40,9 +40,8 @@ const { event } = Astro.props;
     <header class="mb-10 pb-8 border-b border-white/[0.08]">
       <div class="flex items-center gap-2 mb-3">
         <span
-          class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono bg-cyan-accent/10 text-cyan-300 border border-cyan-accent/20"
+          class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono bg-accent/10 text-accent border border-accent/20"
         >
-          <span>🎙️</span>
           <span>{event.organization}</span>
         </span>
         <span class="text-slate-600">·</span>
@@ -57,7 +56,7 @@ const { event } = Astro.props;
         {event.title}
       </h1>
 
-      <p class="text-base font-mono text-cyan-accent/90 mb-6">
+      <p class="text-base font-mono text-accent/90 mb-6">
         {event.subtitle}
       </p>
 
@@ -68,11 +67,11 @@ const { event } = Astro.props;
 
     <!-- Presentation Action Callout -->
     <section
-      class="mb-10 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-surface to-slate-900 border border-cyan-accent/30 shadow-[0_0_30px_-5px_rgba(56,189,248,0.2)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+      class="mb-10 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-accent/40 via-surface to-slate-900 border border-accent/30 shadow-glow-accent flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
     >
       <div>
         <div
-          class="text-xs font-mono text-cyan-accent uppercase tracking-wider mb-1 font-semibold"
+          class="text-xs font-mono text-accent uppercase tracking-wider mb-1 font-semibold"
         >
           Interactive Presentation Deck
         </div>
@@ -89,7 +88,7 @@ const { event } = Astro.props;
         href={event.deckUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-mono font-bold text-slate-950 bg-cyan-accent hover:bg-cyan-300 transition-all shadow-glow-cyan shrink-0"
+        class="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-mono font-bold text-slate-950 bg-accent hover:bg-accent transition-all shadow-glow-accent shrink-0"
       >
         <span>Open Slide Deck</span>
         <span>↗</span>
@@ -153,7 +152,7 @@ const { event } = Astro.props;
         href="https://www.linkedin.com/in/maneesh-maddala/"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-cyan-accent/20 hover:bg-cyan-accent/30 border border-cyan-accent/40 transition-colors shrink-0"
+        class="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-accent/20 hover:bg-accent/30 border border-accent/40 transition-colors shrink-0"
       >
         Connect on LinkedIn ↗
       </a>

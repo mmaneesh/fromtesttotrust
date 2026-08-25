@@ -16,15 +16,15 @@ export const speakingEvents: SpeakingEvent[] = [
   {
     id: 'guardrails-and-evals',
     title: 'Guardrails & Evals: How to Build Hard Constraints for AI',
-    subtitle: 'And crash-test them until you can trust they hold',
+    subtitle: 'How to test whether constraints hold under pressure',
     organization: 'Ministry of Testing',
     date: 'Recent Keynote',
     format: 'Conference Talk',
     abstract:
-      'In an era of non-deterministic LLMs, conventional unit tests fail to catch probabilistic regressions. This talk introduces an engineering blueprint for establishing hard boundary constraints on LLMs, generating automated red-teaming datasets, and running continuous evaluation suites in CI/CD pipelines.',
+      'Traditional unit tests cannot cover every variation in model output. This talk shows how to define output constraints, build red-team datasets, and run continuous evaluations in CI/CD.',
     keyTakeaways: [
       'Why assertions fail on generative output and how semantic evaluation replaces them.',
-      'Building multi-layered guardrails: input filtering, schema adherence, and output validation.',
+      'Using input filters, schema checks, and output validation together.',
       'Crash-testing LLM agents against prompt injection and model drift before reaching users.',
     ],
     deckUrl: 'https://guardrails-with-evals.vercel.app/',
@@ -39,17 +39,16 @@ export const speakingEvents: SpeakingEvent[] = [
   {
     id: 'everyday-ai-coding',
     title: 'Everyday AI Coding: Skills & Plugins for Testers',
-    subtitle:
-      'Supercharging quality engineering workflows with custom agent tooling',
+    subtitle: 'Practical skills and plugins for quality engineering work',
     organization: 'Ministry of Testing',
     date: 'Technical Workshop',
     format: 'Technical Workshop',
     abstract:
-      'A practical, practitioner-focused session demonstrating how QA engineers can transition from manual test maintenance to building bespoke AI agent skills, plugins, and automation accelerators that automate routine SDLC tasks.',
+      'A practical session on building reusable AI skills and plugins for routine testing and delivery tasks.',
     keyTakeaways: [
       'Authoring typed, reusable skills for LLM-powered test generators.',
-      'Integrating agentic tools directly into Playwright, Cypress, and CI/CD pipelines.',
-      'Bridging the gap between QA practitioners and autonomous software development.',
+      'Connecting AI tools to Playwright, Cypress, and CI/CD pipelines.',
+      'Choosing where automation helps and where human review is still required.',
     ],
     deckUrl: 'https://everyday-ai-coding.vercel.app/',
     tags: [

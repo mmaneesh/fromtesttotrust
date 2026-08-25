@@ -9,7 +9,7 @@ const { name, size = 'w-7 h-7' } = Astro.props;
 
 <div
   title={name}
-  class={`${size} rounded-full bg-[#141B28] border border-white/10 flex items-center justify-center p-1.5 text-slate-300 hover:text-cyan-accent hover:border-cyan-accent/40 hover:bg-[#1A2334] transition-all shadow-sm shrink-0`}
+  class={`${size} rounded-full bg-surface-raised border border-line flex items-center justify-center p-1.5 text-body hover:text-accent hover:border-accent/40 transition-all shadow-sm shrink-0`}
 >
   {
     name === 'openai' && (
@@ -39,7 +39,7 @@ const { name, size = 'w-7 h-7' } = Astro.props;
   {
     name === 'typescript' && (
       <svg class="w-full h-full" viewBox="0 0 24 24" aria-hidden="true">
-        <rect width="24" height="24" rx="2" fill="#3178C6" />
+        <rect width="24" height="24" rx="2" fill="currentColor" />
         <path
           d="M5 10h8M9 10v8M14.5 16.7c1.1 1.1 4.1 1.3 4.5-.5.5-2.3-4.6-1.6-4.2-4.6.2-2 3.3-2.4 4.5-.8"
           fill="none"
@@ -76,9 +76,9 @@ const { name, size = 'w-7 h-7' } = Astro.props;
   {
     name === 'jira' && (
       <svg class="w-full h-full" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m12 2 7 7-7 7-7-7 7-7Z" fill="#2684FF" />
-        <path d="m12 7 4 4-4 4-4-4 4-4Z" fill="#0052CC" />
-        <path d="m12 16 4 4-4 2-4-2 4-4Z" fill="#2684FF" />
+        <path d="m12 2 7 7-7 7-7-7 7-7Z" fill="currentColor" />
+        <path d="m12 7 4 4-4 4-4-4 4-4Z" fill="currentColor" />
+        <path d="m12 16 4 4-4 2-4-2 4-4Z" fill="currentColor" />
       </svg>
     )
   }
@@ -140,7 +140,7 @@ const { name, size = 'w-7 h-7' } = Astro.props;
   {
     name === 'azure' && (
       <svg
-        class="w-full h-full text-sky-400"
+        class="w-full h-full text-accent"
         viewBox="0 0 24 24"
         fill="currentColor"
       >
@@ -152,7 +152,7 @@ const { name, size = 'w-7 h-7' } = Astro.props;
   {
     name === 'litellm' && (
       <svg
-        class="w-full h-full text-cyan-400"
+        class="w-full h-full text-accent"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -167,7 +167,7 @@ const { name, size = 'w-7 h-7' } = Astro.props;
   {
     name === 'docker' && (
       <svg
-        class="w-full h-full text-blue-400"
+        class="w-full h-full text-accent"
         viewBox="0 0 24 24"
         fill="currentColor"
       >

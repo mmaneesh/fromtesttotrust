@@ -29,7 +29,7 @@ import { siteConfig } from '../data/site-config';
           >
             <span>{siteConfig.name}</span>
             <span
-              class="text-xs font-mono text-cyan-accent px-2 py-0.5 rounded-full bg-cyan-accent/10 border border-cyan-accent/20"
+              class="text-xs font-mono text-accent px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20"
             >
               AI / QE Leader
             </span>
@@ -65,11 +65,9 @@ import { siteConfig } from '../data/site-config';
           <div class="space-y-2.5">
             {
               siteConfig.currentFocus.map((focus) => (
-                <div class="px-3.5 py-2.5 rounded-xl bg-[#131A29]/70 border border-white/[0.07] text-xs text-slate-200 font-medium hover:border-cyan-accent/40 transition-colors flex items-center justify-between">
+                <div class="px-3.5 py-2.5 rounded-xl bg-[#131A29]/70 border border-white/[0.07] text-xs text-slate-200 font-medium hover:border-accent/40 transition-colors flex items-center justify-between">
                   <span>{focus.title}</span>
-                  <span class="text-[10px] font-mono text-cyan-accent/70">
-                    →
-                  </span>
+                  <span class="text-[10px] font-mono text-accent/70">→</span>
                 </div>
               ))
             }

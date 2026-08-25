@@ -7,18 +7,30 @@ interface Props {
 }
 
 const {
-  title = 'From Test to Trust — Maneesh Maddala',
-  description = 'AI-First Quality Engineering Leader. Principal QA Automation Engineer at Morningstar. Engineering quality, risk, and trust across modern AI, multi-agent SDLC, and enterprise test architecture.',
+  title = 'From Test to Trust - Maneesh Maddala',
+  description = 'Principal SDET Engineer at Morningstar, engineering quality, risk, and trust across modern AI, multi-agent SDLC, and enterprise test architecture.',
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en" class="scroll-smooth" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      (() => {
+        const savedTheme = localStorage.getItem('theme');
+        const theme =
+          savedTheme === 'light' || savedTheme === 'dark'
+            ? savedTheme
+            : matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light'
+              : 'dark';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
@@ -41,28 +53,17 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
   <body
-    class="min-h-screen bg-[#070A0F] text-slate-100 flex flex-col relative selection:bg-cyan-accent/20 selection:text-cyan-accent"
+    class="min-h-screen bg-canvas text-foreground flex flex-col relative selection:bg-accent/20 selection:text-accent"
   >
-    <!-- Ambient background glow elements -->
-    <div class="fixed inset-0 bg-ambient-grid pointer-events-none z-0"></div>
-    <div
-      class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/[0.03] rounded-full blur-3xl pointer-events-none z-0"
-    >
-    </div>
-    <div
-      class="fixed bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/[0.02] rounded-full blur-3xl pointer-events-none z-0"
-    >
-    </div>
-
     <!-- Skip to main content for keyboard a11y -->
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-accent focus:text-slate-900 focus:font-semibold focus:rounded-md"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-slate-900 focus:font-semibold focus:rounded-md"
     >
       Skip to main content
     </a>

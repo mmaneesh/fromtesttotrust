@@ -84,35 +84,21 @@ export const careerTimeline: CareerCompany[] = [
     totalTenure: 'Jul 2018 - Dec 2021 (3 yrs 6 mos)',
     roles: [
       {
-        title: 'Senior Test Automation Engineer',
-        period: 'Jul 2021 - Dec 2021',
+        title: 'Test Automation Engineer II → Senior Test Automation Engineer',
+        period: 'Jul 2018 - Dec 2021',
         highlights: [
-          'Led framework design for UI and API test automation (Cypress, RestAssured) within an Agile delivery model.',
-          'Defined non-functional testing requirements across load, performance, and accessibility standards.',
-        ],
-        skills: [
-          'Cypress',
-          'RestAssured',
-          'Performance Testing',
-          'API Automation',
-          'Agile Delivery',
-        ],
-      },
-      {
-        title: 'Test Automation Engineer II',
-        period: 'Jul 2018 - Jun 2021',
-        highlights: [
-          'Automated full regression suites for Angular and React applications (Cypress, Selenium WebDriver), eliminating manual execution for core user journeys.',
-          'Designed BDD/TDD frameworks (Cucumber/Gherkin) improving cross-team test transparency.',
-          'Built API automation with Postman and RestAssured, and extended automated test coverage to native mobile via Appium.',
+          'Progressed from Test Automation Engineer II to Senior Test Automation Engineer while leading UI and API framework design with Cypress, Selenium WebDriver, and RestAssured.',
+          'Automated regression coverage for Angular and React applications and designed Cucumber/Gherkin frameworks that made test intent clearer across teams.',
+          'Expanded quality coverage across API, mobile, load, performance, and accessibility testing using Postman, RestAssured, Appium, and non-functional test standards.',
         ],
         skills: [
           'Selenium WebDriver',
           'Cypress',
+          'RestAssured',
           'Appium',
           'Cucumber BDD',
           'Postman',
-          'React/Angular Testing',
+          'Performance Testing',
         ],
       },
     ],

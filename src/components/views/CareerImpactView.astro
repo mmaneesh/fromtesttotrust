@@ -6,34 +6,29 @@ import { careerTimeline, educationAndCredentials } from '../../data/career';
   id="view-career"
   role="tabpanel"
   aria-labelledby="tab-career"
-  class="portfolio-view hidden w-full py-4 sm:py-6"
+  class="portfolio-view hidden w-full py-8 sm:py-9"
 >
-  <header class="mb-8 max-w-[720px]">
-    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
-      15+ years
-    </p>
-    <h2 class="mt-2 font-editorial text-3xl font-medium text-foreground">
+  <header class="mb-7 max-w-[640px]">
+    <h2 class="font-editorial text-[28px] font-medium text-foreground">
       Experience
     </h2>
-    <p class="mt-2 text-sm leading-6 text-muted">
-      Quality engineering and technical leadership across fintech, insurance,
-      and enterprise platforms.
+    <p class="mt-2 text-[13px] leading-[1.65] text-muted">
+      More than 15 years in quality engineering and technical leadership across
+      fintech, insurance, and enterprise platforms.
     </p>
   </header>
 
-  <div class="space-y-6">
+  <div class="border-t border-line">
     {
       careerTimeline.map((company) => (
-        <article
-          class={`rounded-2xl bg-[#0B0F19] border ${company.isCurrent ? 'border-accent/40' : 'border-white/[0.08]'} p-5 sm:p-6 relative`}
-        >
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-5 mb-6 border-b border-white/[0.08] gap-2">
+        <article class="border-b border-line py-6">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
             <div class="flex items-center gap-3">
               <div
                 class={`h-2.5 w-2.5 rounded-full ${company.isCurrent ? 'bg-accent' : 'bg-slate-500'}`}
               />
               <div>
-                <h3 class="font-editorial text-2xl font-medium text-foreground">
+                <h3 class="font-editorial text-xl font-medium text-foreground">
                   {company.company}
                 </h3>
                 <p class="text-xs font-mono text-slate-400 mt-0.5">
@@ -47,31 +42,29 @@ import { careerTimeline, educationAndCredentials } from '../../data/career';
             </div>
           </div>
 
-          <div class="space-y-6">
+          <div class="mt-5 space-y-5 sm:pl-5">
             {company.roles.map((role, rIndex) => (
               <div
-                class={`relative ${rIndex > 0 ? 'pt-6 border-t border-white/[0.05]' : ''}`}
+                class={`relative ${rIndex > 0 ? 'border-t border-line pt-5' : ''}`}
               >
                 <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
-                  <h4 class="text-base sm:text-lg font-display font-bold text-slate-100 flex items-center gap-2">
-                    <span class="text-accent text-xs">▸</span>
-                    <span>{role.title}</span>
+                  <h4 class="text-sm font-semibold text-foreground sm:text-[15px]">
+                    {role.title}
                   </h4>
                   <span class="text-xs font-mono text-slate-400 font-medium">
                     {role.period}
                   </span>
                 </div>
 
-                <div class="space-y-2">
-                  {role.highlights.map((highlight) => (
-                    <div class="text-xs sm:text-sm text-slate-300 leading-relaxed flex items-start gap-2.5">
-                      <span class="text-slate-500 font-mono text-xs mt-1 shrink-0">
-                        •
-                      </span>
-                      <span>{highlight}</span>
-                    </div>
-                  ))}
-                </div>
+                <ul class="space-y-1.5 pl-4">
+                  {role.highlights
+                    .slice(0, company.isCurrent && rIndex === 0 ? 3 : 2)
+                    .map((highlight) => (
+                      <li class="list-disc text-xs leading-[1.65] text-body marker:text-accent">
+                        {highlight}
+                      </li>
+                    ))}
+                </ul>
               </div>
             ))}
           </div>
@@ -79,7 +72,7 @@ import { careerTimeline, educationAndCredentials } from '../../data/career';
       ))
     }
 
-    <article class="border-y border-line py-6">
+    <article class="border-b border-line py-6">
       <h3 class="font-editorial text-2xl font-medium text-foreground">
         Education and certifications
       </h3>

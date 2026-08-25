@@ -12,7 +12,7 @@ const tabs = [
 <div class="view-switcher sticky top-0 z-30">
   <nav
     aria-label="Portfolio sections"
-    class="flex h-[54px] min-w-0 items-center border-b border-line"
+    class="flex h-12 min-w-0 items-center border-b border-line"
   >
     <div
       role="tablist"
@@ -29,7 +29,7 @@ const tabs = [
             data-target={`view-${tab.id}`}
             tabindex={index === 0 ? '0' : '-1'}
             class:list={[
-              'nav-tab-btn relative h-[54px] shrink-0 border-b-2 border-transparent px-1 text-[11px] font-semibold text-muted transition-colors hover:text-foreground focus:outline-none sm:px-3 sm:text-xs',
+              'nav-tab-btn relative h-12 shrink-0 border-b-2 border-transparent px-1 text-[10px] font-semibold text-muted transition-colors hover:text-foreground focus:outline-none sm:px-2.5 sm:text-[11px]',
               { active: index === 0 },
             ]}
           >

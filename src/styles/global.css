@@ -5,15 +5,15 @@
 @layer base {
   :root {
     --canvas: 36 31 28;
-    --surface: 48 41 37;
-    --surface-raised: 58 49 44;
+    --surface: 45 38 34;
+    --surface-raised: 55 47 42;
     --surface-deep: 29 25 22;
     --foreground: 238 230 219;
     --body-text: 207 197 187;
     --muted-text: 175 166 157;
     --faint-text: 163 153 144;
-    --line: 105 89 78;
-    --control-line: 139 120 106;
+    --line: 85 73 65;
+    --control-line: 116 102 93;
     --accent: 228 135 104;
     --success: 94 187 141;
     color-scheme: dark;
@@ -21,14 +21,14 @@
 
   :root[data-theme='light'] {
     --canvas: 244 238 228;
-    --surface: 255 250 242;
+    --surface: 250 245 237;
     --surface-raised: 234 223 210;
     --surface-deep: 226 213 199;
     --foreground: 48 40 33;
     --body-text: 94 85 77;
     --muted-text: 111 100 90;
     --faint-text: 105 94 84;
-    --line: 181 165 150;
+    --line: 207 193 179;
     --control-line: 139 120 106;
     --accent: 159 73 56;
     --success: 4 120 87;

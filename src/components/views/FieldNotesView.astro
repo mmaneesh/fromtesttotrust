@@ -10,13 +10,15 @@ const chapterNumbers = ['I', 'II', 'III'];
   aria-labelledby="tab-about"
   class="portfolio-view w-full pb-8"
 >
-  <header class="max-w-[760px] py-[42px] sm:py-[46px]">
+  <header class="max-w-[680px] py-8 sm:py-9">
     <h2
-      class="max-w-[680px] font-editorial text-[28px] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[38px]"
+      class="max-w-[620px] font-editorial text-[27px] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[31px]"
     >
       Three chapters. One pursuit: software people can trust.
     </h2>
-    <p class="mt-5 max-w-[760px] text-[15px] leading-[1.75] text-body">
+    <p
+      class="mt-4 max-w-[680px] text-[13px] leading-[1.7] text-body sm:text-sm"
+    >
       {aboutData.introduction}
     </p>
   </header>
@@ -24,21 +26,21 @@ const chapterNumbers = ['I', 'II', 'III'];
   <div class="border-t border-line">
     {
       aboutData.evolutionStages.map((stage, index) => (
-        <article class="grid gap-4 border-b border-line py-9 sm:grid-cols-[84px_minmax(0,1fr)] sm:gap-4 md:grid-cols-[96px_minmax(0,1fr)] md:gap-7">
+        <article class="grid gap-3 border-b border-line py-6 sm:grid-cols-[84px_minmax(0,1fr)] sm:gap-4">
           <div
-            class="font-editorial text-lg italic text-accent"
+            class="text-[10px] font-bold uppercase tracking-[0.1em] text-accent"
             aria-hidden="true"
           >
             Chapter {chapterNumbers[index]}
           </div>
           <div class="min-w-0">
-            <h3 class="font-editorial text-2xl font-medium leading-tight text-foreground">
+            <h3 class="font-editorial text-xl font-medium leading-tight text-foreground">
               {stage.title}
             </h3>
-            <p class="mt-2 max-w-[720px] text-sm leading-[1.72] text-body">
+            <p class="mt-1.5 max-w-[620px] text-[13px] leading-[1.65] text-body">
               {stage.narrative}
             </p>
-            <div class="mt-6 grid gap-[22px] border-t border-line pt-5 md:grid-cols-3">
+            <div class="mt-4 grid gap-4 border-t border-line pt-4 md:grid-cols-3">
               {stage.keyPoints.map((point) => (
                 <div>
                   <h4 class="mb-[7px] text-[10px] font-bold uppercase leading-4 tracking-[0.1em] text-accent">

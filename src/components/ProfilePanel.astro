@@ -5,19 +5,19 @@ const linkedIn = siteConfig.socials.find((social) => social.id === 'linkedin');
 const github = siteConfig.socials.find((social) => social.id === 'github');
 ---
 
-<div class="relative border-b border-line pb-5 md:border-b-0 md:pb-0 md:pr-7">
-  <div class="flex items-start gap-4 md:flex-col md:gap-5">
+<div class="relative border-b border-line pb-5 md:border-b-0 md:pb-0">
+  <div class="flex items-start gap-4 md:flex-col md:gap-4">
     <img
       src="/images/maneesh-portrait.jpg"
       alt="Maneesh Maddala"
       width="92"
       height="92"
-      class="h-[76px] w-[76px] shrink-0 rounded-[18px] object-cover md:h-[92px] md:w-[92px]"
+      class="h-16 w-16 shrink-0 rounded-2xl object-cover md:h-[76px] md:w-[76px]"
     />
 
     <div class="min-w-0">
       <h1
-        class="font-display text-[22px] font-bold leading-tight tracking-tight text-foreground"
+        class="font-display text-lg font-bold leading-tight tracking-tight text-foreground"
       >
         {siteConfig.name}
       </h1>
@@ -30,9 +30,11 @@ const github = siteConfig.socials.find((social) => social.id === 'github');
     </div>
   </div>
 
-  <p class="mt-1 text-xs leading-relaxed text-muted">{siteConfig.location}</p>
+  <p class="mt-2 text-[11px] leading-relaxed text-muted">
+    {siteConfig.location}
+  </p>
 
-  <nav aria-label="Contact links" class="mt-2 flex items-center gap-1 md:mt-4">
+  <nav aria-label="Contact links" class="mt-2 flex items-center gap-1 md:mt-3">
     <a
       href={`mailto:${siteConfig.email}`}
       class="inline-flex h-11 w-11 items-center justify-center text-foreground transition-colors hover:text-accent"

@@ -30,7 +30,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
     >
       <div>
         <div
-          class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-cyan-accent mb-2"
+          class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
         >
           03 // Command lifecycle
         </div>
@@ -62,7 +62,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
             >
               <span>{node.label}</span>
               {node.command && (
-                <code class="block mt-1.5 text-[10px] normal-case text-cyan-accent">
+                <code class="block mt-1.5 text-[10px] normal-case text-accent">
                   {node.command}
                 </code>
               )}
@@ -77,10 +77,10 @@ const handoffs = workflow.handoffs.map((handoff) => {
     {
       workflow.phases.map((phase) => (
         <article class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-5">
-          <div class="text-[10px] font-mono font-semibold uppercase tracking-[0.16em] text-cyan-accent mb-3">
+          <div class="text-[10px] font-mono font-semibold uppercase tracking-[0.16em] text-accent mb-3">
             {phase.label}
           </div>
-          <code class="inline-block rounded-md bg-cyan-500/[0.08] border border-cyan-500/20 px-2 py-1 text-[11px] font-mono font-semibold text-cyan-200 mb-3">
+          <code class="inline-block rounded-md bg-accent/[0.08] border border-accent/20 px-2 py-1 text-[11px] font-mono font-semibold text-accent mb-3">
             {phase.command}
           </code>
           <h3 class="text-sm font-semibold text-white mb-2">{phase.title}</h3>
@@ -106,7 +106,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
 
   <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
     <div
-      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-cyan-accent mb-2"
+      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
     >
       04 // Architecture &amp; artifact flow
     </div>
@@ -209,7 +209,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
 
   <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
     <div
-      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-cyan-accent mb-2"
+      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
     >
       05 // Role contracts
     </div>
@@ -223,7 +223,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
           <article class="rounded-xl bg-[#121824]/70 border border-white/[0.07] p-4">
             <div class="flex items-center justify-between gap-3 mb-4">
               <h3 class="text-sm font-semibold text-white">{role.name}</h3>
-              <span class="rounded-full bg-cyan-500/[0.07] border border-cyan-500/15 px-2 py-1 text-[9px] font-mono uppercase tracking-wider text-cyan-200">
+              <span class="rounded-full bg-accent/[0.07] border border-accent/15 px-2 py-1 text-[9px] font-mono uppercase tracking-wider text-accent">
                 {role.model}
               </span>
             </div>
@@ -289,9 +289,9 @@ const handoffs = workflow.handoffs.map((handoff) => {
     width: 0.7rem;
     height: 0.7rem;
     transform: translateX(-50%);
-    border: 2px solid #38bdf8;
+    border: 2px solid rgb(var(--accent));
     border-radius: 9999px;
-    background: #0b0f19;
+    background: rgb(var(--surface));
   }
 
   .pipeline-node::after {
@@ -301,7 +301,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
     right: 0;
     left: 0;
     height: 1px;
-    background: rgba(148, 163, 184, 0.3);
+    background: rgb(var(--line));
   }
 
   .pipeline-node:first-child::after {
@@ -320,7 +320,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
   .lane-guides span {
     height: 100%;
     margin-left: 50%;
-    border-left: 1px solid rgba(148, 163, 184, 0.14);
+    border-left: 1px solid rgb(var(--line));
   }
 
   .sequence-exchange::before {
@@ -330,7 +330,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
     right: var(--endpoint-inset);
     left: var(--endpoint-inset);
     height: 1px;
-    background: rgba(56, 189, 248, 0.58);
+    background: rgb(var(--accent) / 0.58);
   }
 
   .sequence-exchange::after {
@@ -340,8 +340,8 @@ const handoffs = workflow.handoffs.map((handoff) => {
     right: calc(var(--endpoint-inset) - 1px);
     width: 7px;
     height: 7px;
-    border-top: 1px solid #38bdf8;
-    border-right: 1px solid #38bdf8;
+    border-top: 1px solid rgb(var(--accent));
+    border-right: 1px solid rgb(var(--accent));
     transform: rotate(45deg);
   }
 

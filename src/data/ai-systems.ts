@@ -55,7 +55,7 @@ export const aiSystems: AISystem[] = [
       'Jira-triggered planning, test design, and repository-aware automation',
     category: 'Multi-Agent Systems',
     summary:
-      'Built an end-to-end agent workflow that turns sprint-ready Jira tickets into reviewed scenarios, TestRail cases, and maintainable Playwright automation—with human approval at every consequential transition.',
+      'Built a workflow that turns Jira tickets into reviewed scenarios, TestRail cases, and maintainable Playwright tests. A person approves each consequential step.',
     problem:
       'Planning, test-case design, and automation were disconnected activities. Engineers repeatedly reconstructed ticket context, duplicated TestRail coverage, and implemented brittle automation without a consistent view of the feature, epic, repository, or existing test architecture.',
     architecture: [
@@ -64,7 +64,7 @@ export const aiSystems: AISystem[] = [
       '/automate uses Playwright MCP and repository context to implement POM-based UI, API, visual, or component tests after deployment.',
     ],
     impact: [
-      'Established minimum scenario floors by ticket criticality: 5+ low, 6–8+ medium, and 10–15+ critical.',
+      'Established minimum scenario floors by ticket criticality: 5+ low, 6-8+ medium, and 10-15+ critical.',
       'Kept a human in control before test-case creation, automation implementation, and pull-request delivery.',
       'Connected planning evidence, test management, repository-aware automation, and PR review in one traceable workflow.',
     ],
@@ -105,8 +105,8 @@ export const aiSystems: AISystem[] = [
             'Read acceptance criteria, technical notes, attachments, references, the parent epic, and completed or in-review sibling tickets.',
           scenarioFloors: [
             { label: 'Low', value: '5+' },
-            { label: 'Medium', value: '6–8+' },
-            { label: 'Critical', value: '10–15+' },
+            { label: 'Medium', value: '6-8+' },
+            { label: 'Critical', value: '10-15+' },
           ],
         },
         {
@@ -255,7 +255,7 @@ export const aiSystems: AISystem[] = [
       'Centralized fallback, latency routing, and token cost governance',
     category: 'Governance',
     summary:
-      'Designed and deployed a unified model routing layer utilizing LiteLLM to decouple application agents from individual model providers, manage failover cascades, and optimize token spend.',
+      'Built a LiteLLM routing layer that separates applications from model providers, handles failover, and tracks token cost.',
     problem:
       'Direct provider coupling created systemic single-points-of-failure during rate limits and API outages, with no unified observability over token costs.',
     architecture: [
@@ -283,13 +283,13 @@ export const aiSystems: AISystem[] = [
     subtitle: 'Automated boundary testing and hallucination defense in CI/CD',
     category: 'LLM Evals & Guardrails',
     summary:
-      'Engineered an automated evaluation framework to crash-test generative model outputs before deployment, validating prompt robustness, injection defenses, and brand fidelity under non-deterministic conditions.',
+      'Built automated evaluations for model outputs before deployment, covering prompt injection, hallucination, output structure, and brand requirements.',
     problem:
       'Generative AI systems cannot be verified with traditional assert statements due to output non-determinism, requiring programmatic statistical and semantic evaluation.',
     architecture: [
       'Synthetically generated edge-case suites and red-teaming adversarial prompts.',
-      'Multi-metric evaluation harnesses: semantic similarity, hallucination scoring, and PII leakage checks.',
-      'Integration into CI/CD pipelines as non-negotiable pull-request quality gates.',
+      'Evaluation metrics for semantic similarity, hallucinations, and PII leakage.',
+      'Required evaluation checks in CI/CD before pull requests can merge.',
     ],
     impact: [
       'Near-zero critical defect escape across generative AI features.',
@@ -315,11 +315,10 @@ export const aiSystems: AISystem[] = [
   {
     id: 'shared-skills-platform',
     title: 'Shared Create/Publish/Invoke Skills Platform',
-    subtitle:
-      'Democratizing reusable AI tooling and agent skills across squads',
+    subtitle: 'Reusable AI tools and agent skills for product teams',
     category: 'Test Architecture',
     summary:
-      'Built a shared internal platform for teams to define, test, publish, and invoke custom AI skills and tools, accelerating squad-level AI adoption with standardized guardrails.',
+      'Built an internal platform where teams define, test, publish, and use shared AI skills with common security and quality checks.',
     problem:
       'Siloed engineering teams were duplicating custom scripts and prompts without central quality oversight or security validation.',
     architecture: [

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import AsymmetricHero from '../components/AsymmetricHero.astro';
+import ProfilePanel from '../components/ProfilePanel.astro';
 import ViewSwitcherDock from '../components/ViewSwitcherDock.astro';
 import AISystemsView from '../components/views/AISystemsView.astro';
 import SpeakingView from '../components/views/SpeakingView.astro';
@@ -11,20 +10,30 @@ import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout
-  title="From Test to Trust — Maneesh Maddala | AI-First Quality Engineering Leader"
-  description="Personal portfolio of Maneesh Maddala, Principal QA Automation Engineer at Morningstar. Engineering quality, risk, and trust across modern AI systems, multi-agent SDLC, and enterprise test architecture."
+  title="From Test to Trust - Maneesh Maddala | Principal SDET Engineer"
+  description="Personal portfolio of Maneesh Maddala, Principal SDET Engineer at Morningstar. Engineering quality, risk, and trust across modern AI systems, multi-agent SDLC, and enterprise test architecture."
 >
-  <Header />
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-[1100px] flex-1 px-[18px] py-6 sm:px-7 sm:py-7"
+  >
+    <div
+      class="grid grid-cols-1 items-start md:grid-cols-[220px_minmax(0,1fr)]"
+    >
+      <aside class="md:sticky md:top-0 md:pt-[58px]">
+        <ProfilePanel />
+      </aside>
 
-  <main id="main-content" class="flex-1">
-    <AsymmetricHero />
-    <ViewSwitcherDock />
+      <div class="min-w-0 md:border-l md:border-line md:pl-9">
+        <ViewSwitcherDock />
 
-    <div class="min-h-[500px]">
-      <FieldNotesView />
-      <CareerImpactView />
-      <AISystemsView />
-      <SpeakingView />
+        <div class="min-h-[500px]">
+          <FieldNotesView />
+          <CareerImpactView />
+          <AISystemsView />
+          <SpeakingView />
+        </div>
+      </div>
     </div>
   </main>
 

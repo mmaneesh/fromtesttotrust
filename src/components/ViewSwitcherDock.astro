@@ -1,142 +1,57 @@
-<div class="relative w-full my-6">
-  <!-- Center separator line spanning across -->
-  <div class="absolute inset-0 flex items-center" aria-hidden="true">
-    <div class="w-full border-t border-white/[0.08]"></div>
-  </div>
+---
+import ThemeToggle from './ThemeToggle.astro';
 
-  <!-- Centered Floating Pill Switcher Dock -->
+const tabs = [
+  { id: 'about', label: 'About' },
+  { id: 'career', label: 'Experience' },
+  { id: 'ai-systems', label: 'AI Systems' },
+  { id: 'speaking', label: 'Speaking' },
+];
+---
+
+<div class="view-switcher sticky top-0 z-30">
   <nav
-    aria-label="Portfolio Sections"
-    class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center"
+    aria-label="Portfolio sections"
+    class="flex h-[54px] min-w-0 items-center border-b border-line"
   >
     <div
       role="tablist"
-      aria-label="View Navigation"
-      class="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-[#0B0F19] border border-white/10 shadow-2xl backdrop-blur-md overflow-x-auto max-w-full"
+      aria-label="View navigation"
+      class="flex min-w-0 flex-1 justify-between gap-0 overflow-hidden sm:justify-start sm:gap-3"
     >
-      <!-- Tab 1: About & Evolution -->
-      <button
-        id="tab-about"
-        role="tab"
-        aria-selected="true"
-        aria-controls="view-about"
-        data-target="view-about"
-        tabindex="0"
-        class="nav-tab-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-400 transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
-      >
-        <svg
-          class="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 3v4M12 17v4M3 12h4M17 12h4"></path>
-          <path
-            d="m5.6 5.6 2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"
-          ></path>
-          <circle cx="12" cy="12" r="2.6"></circle>
-        </svg>
-        <span>About & Evolution</span>
-      </button>
-
-      <!-- Tab 2: Experience Ledger -->
-      <button
-        id="tab-career"
-        role="tab"
-        aria-selected="false"
-        aria-controls="view-career"
-        data-target="view-career"
-        tabindex="-1"
-        class="nav-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
-      >
-        <svg
-          class="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M6 4v16M10 7h8M10 17h8"></path>
-          <circle cx="6" cy="7" r="2"></circle>
-          <circle cx="6" cy="17" r="2"></circle>
-        </svg>
-        <span>Experience Ledger</span>
-      </button>
-
-      <!-- Tab 3: AI Systems & Architecture -->
-      <button
-        id="tab-ai-systems"
-        role="tab"
-        aria-selected="false"
-        aria-controls="view-ai-systems"
-        data-target="view-ai-systems"
-        tabindex="-1"
-        class="nav-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
-      >
-        <svg
-          class="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="5" r="2.5"></circle>
-          <circle cx="5" cy="18" r="2.5"></circle>
-          <circle cx="19" cy="18" r="2.5"></circle>
-          <path d="m10.8 7.2-4.6 8.6M13.2 7.2l4.6 8.6M7.5 18h9"></path>
-        </svg>
-        <span>AI Systems</span>
-      </button>
-
-      <!-- Tab 4: Speaking & Live Decks -->
-      <button
-        id="tab-speaking"
-        role="tab"
-        aria-selected="false"
-        aria-controls="view-speaking"
-        data-target="view-speaking"
-        tabindex="-1"
-        class="nav-tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2 cursor-pointer focus:outline-none shrink-0"
-      >
-        <svg
-          class="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <rect x="8" y="3" width="8" height="12" rx="4"></rect>
-          <path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"></path>
-        </svg>
-        <span>Speaking</span>
-      </button>
+      {
+        tabs.map((tab, index) => (
+          <button
+            id={`tab-${tab.id}`}
+            role="tab"
+            aria-selected={index === 0 ? 'true' : 'false'}
+            aria-controls={`view-${tab.id}`}
+            data-target={`view-${tab.id}`}
+            tabindex={index === 0 ? '0' : '-1'}
+            class:list={[
+              'nav-tab-btn relative h-[54px] shrink-0 border-b-2 border-transparent px-1 text-[11px] font-semibold text-muted transition-colors hover:text-foreground focus:outline-none sm:px-3 sm:text-xs',
+              { active: index === 0 },
+            ]}
+          >
+            {tab.label}
+          </button>
+        ))
+      }
     </div>
+    <div class="ml-2 shrink-0 sm:ml-auto sm:pl-3"><ThemeToggle /></div>
   </nav>
 </div>
 
 <style>
-  .nav-tab-btn.active {
-    background-color: rgba(56, 189, 248, 0.15);
-    color: #ffffff;
-    border: 1px solid rgba(56, 189, 248, 0.5);
-    box-shadow: 0 0 20px -3px rgba(56, 189, 248, 0.3);
+  .view-switcher {
+    isolation: isolate;
+    background-color: rgb(var(--canvas));
+    box-shadow: 0 10px 14px -14px rgb(var(--foreground) / 0.35);
   }
 
-  .nav-tab-btn:not(.active) {
-    border: 1px solid transparent;
+  .nav-tab-btn.active {
+    border-bottom-color: rgb(var(--accent));
+    color: rgb(var(--foreground));
   }
 </style>
 
@@ -157,47 +72,36 @@
       views.forEach((view) => {
         const isMatch = view.id === targetId;
         view.classList.toggle('hidden', !isMatch);
-        if (isMatch) {
-          view.classList.add('animate-fade-in');
-        }
+        if (isMatch) view.classList.add('animate-fade-in');
       });
 
-      if (updateHash) {
-        const hash = targetId.replace('view-', '');
-        history.replaceState(null, '', `#${hash}`);
-      }
+      if (updateHash)
+        history.replaceState(null, '', `#${targetId.replace('view-', '')}`);
     }
 
     tabButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
-        const targetId = btn.dataset.target;
-        if (targetId) activateTab(targetId);
+        if (btn.dataset.target) activateTab(btn.dataset.target);
       });
 
-      btn.addEventListener('keydown', (e) => {
+      btn.addEventListener('keydown', (event) => {
         let index = Array.from(tabButtons).indexOf(btn);
-        if (e.key === 'ArrowRight') {
-          index = (index + 1) % tabButtons.length;
-          tabButtons[index].focus();
-          tabButtons[index].click();
-        } else if (e.key === 'ArrowLeft') {
+        if (event.key === 'ArrowRight') index = (index + 1) % tabButtons.length;
+        else if (event.key === 'ArrowLeft')
           index = (index - 1 + tabButtons.length) % tabButtons.length;
-          tabButtons[index].focus();
-          tabButtons[index].click();
-        }
+        else return;
+
+        event.preventDefault();
+        tabButtons[index].focus();
+        tabButtons[index].click();
       });
     });
 
     const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      const targetView = `view-${hash}`;
-      const matchingBtn = document.querySelector<HTMLButtonElement>(
-        `[data-target="${targetView}"]`,
-      );
-      if (matchingBtn) {
-        activateTab(targetView, false);
-      }
-    }
+    const matchingBtn = document.querySelector<HTMLButtonElement>(
+      `[data-target="view-${hash}"]`,
+    );
+    if (matchingBtn) activateTab(`view-${hash}`, false);
   }
 
   document.addEventListener('DOMContentLoaded', setupTabs);

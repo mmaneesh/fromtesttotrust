@@ -15,11 +15,11 @@ export const fieldNotes: FieldNote[] = [
     date: '2025 Perspective',
     readTime: '4 min read',
     summary:
-      'Why the mandate for senior quality leadership has fundamentally shifted from writing test scripts to governing organizational risk and probabilistic systems.',
+      'Why senior quality work now includes product risk, model behavior, and system governance.',
     content: [
       'For twenty years, quality engineering lived in a deterministic universe: given input X, expect output Y. If the assertion failed, the code was broken.',
-      'The arrival of production LLMs and autonomous multi-agent pipelines dismantled that assumption. In an AI-first world, outputs are non-deterministic, systems drift across model updates, and failures occur at the semantic and contextual layer rather than simple syntactic crashes.',
-      'This is why the role of the modern quality leader is no longer just finding bugs—it is risk engineering. It means establishing hard boundary constraints, statistical evaluation frameworks, and governance architectures that make trust inevitable, even when the underlying models are probabilistic.',
+      'Production LLMs changed that assumption. Outputs vary, behavior can shift after model updates, and failures may depend on meaning and context rather than a simple crash.',
+      'Quality leaders now need to examine product risk as well as defects. That includes output constraints, measurable evaluations, and governance for probabilistic systems.',
     ],
     tags: ['Philosophy', 'Trust Engineering', 'AI Leadership'],
   },
@@ -32,10 +32,10 @@ export const fieldNotes: FieldNote[] = [
       'Breaking down the transition from binary assert statements to continuous semantic distance, hallucination indexing, and boundary red-teaming.',
     content: [
       'When evaluating generative AI responses, asserting strict string equality is impossible. Even minor temperature adjustments or tokenizer updates alter the wording without altering semantic intent.',
-      'To build production-grade trust, quality architecture must move toward multi-tier evaluation:',
+      'Production systems need several kinds of evaluation:',
       '1. Deterministic schema enforcement (JSON structure, type checks, forbidden tokens).',
       '2. Semantic distance and embedding similarity against verified ground truth sets.',
-      '3. Automated LLM-as-a-Judge and red-teaming harnesses testing for hallucination, prompt injection, and compliance boundaries.',
+      '3. Automated model grading and red-team tests for hallucination, prompt injection, and compliance.',
     ],
     tags: ['LLM Evals', 'Architecture', 'Red Teaming'],
   },

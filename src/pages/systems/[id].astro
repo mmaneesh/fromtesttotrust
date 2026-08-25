@@ -49,7 +49,7 @@ const systemDetails: Record<
     ],
     technicalDecisions: [
       'Command-Gated Execution: /start-planning, /test-cases, and /automate create explicit, independently reviewable transitions.',
-      'Risk-Tiered Scenario Floors: Generate at least 5 low-criticality, 6–8 medium-criticality, or 10–15 critical scenarios before human refinement.',
+      'Risk-Tiered Scenario Floors: Generate at least 5 low-criticality, 6-8 medium-criticality, or 10-15 critical scenarios before human refinement.',
       'Tool-Specific MCP Boundaries: Jira, TestRail, and Playwright integrations each own one phase while shared repository context preserves continuity.',
     ],
   },
@@ -114,7 +114,7 @@ const systemDetails: Record<
       {
         risk: 'Prompt injection & boundary bypass',
         mitigation:
-          'Continuous adversarial red-teaming datasets crash-testing models in CI/CD pull request gates.',
+          'Red-team datasets that test model behavior in CI/CD pull request checks.',
       },
       {
         risk: 'Silent regression when underlying foundational models update',
@@ -123,7 +123,7 @@ const systemDetails: Record<
       },
     ],
     technicalDecisions: [
-      'Replacing Assertions with Evals: Built Python/TypeScript statistical harnesses that score outputs probabilistically.',
+      'Replacing Assertions with Evals: Built Python and TypeScript evaluations that score variable model outputs.',
       'Multi-Layer Guardrail Architecture: Enforced schema constraints (JSON Schema), PII scrubbers, and LLM-as-a-judge scoring.',
       'Non-Negotiable CI/CD Gates: Pull requests fail if hallucination indices exceed strict threshold tolerances.',
     ],
@@ -196,7 +196,7 @@ const systemDetails: Record<
       {
         step: '04. Universal Invocation',
         detail:
-          'Other squads invoke the skill across Playwright tests, CLI tools, or autonomous workflows.',
+          'Other squads use the skill in Playwright tests, CLI tools, and agent workflows.',
       },
     ],
     metricsSummary: [
@@ -211,7 +211,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
 ---
 
 <BaseLayout
-  title={`${system.title} — From Test to Trust | Maneesh Maddala`}
+  title={`${system.title} - From Test to Trust | Maneesh Maddala`}
   description={system.summary}
 >
   <Header />
@@ -226,9 +226,9 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
     <div class="mb-8">
       <a
         href="/#ai-systems"
-        class="inline-flex items-center gap-2 text-xs font-mono text-cyan-accent hover:text-cyan-300 transition-colors"
+        class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-accent transition-colors"
       >
-        <span>← Back to Architecture Index</span>
+        <span>← Back to AI Systems</span>
       </a>
     </div>
 
@@ -236,7 +236,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
     <header class="mb-10 pb-8 border-b border-white/[0.08]">
       <div class="flex items-center gap-2 mb-3">
         <span
-          class="text-xs font-mono text-cyan-accent font-semibold uppercase tracking-wider"
+          class="text-xs font-mono text-accent font-semibold uppercase tracking-wider"
         >
           {system.category}
         </span>
@@ -289,9 +289,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
             <div class="space-y-2.5">
               {system.architecture.map((arch) => (
                 <div class="text-xs sm:text-sm text-slate-300 flex items-start gap-2.5 leading-relaxed">
-                  <span class="text-cyan-accent font-mono text-xs mt-0.5">
-                    ▸
-                  </span>
+                  <span class="text-accent font-mono text-xs mt-0.5">▸</span>
                   <span>{arch}</span>
                 </div>
               ))}
@@ -313,7 +311,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
           <div class="space-y-4">
             {details.workflowSteps?.map((step) => (
               <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-baseline gap-2">
-                <span class="text-xs font-mono font-bold text-cyan-accent shrink-0">
+                <span class="text-xs font-mono font-bold text-accent shrink-0">
                   {step.step}
                 </span>
                 <span class="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -328,10 +326,10 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
 
     <!-- Risk Calculation & Failure Modes (The Practitioner Core) -->
     <section
-      class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-cyan-accent/20 shadow-[0_0_30px_-10px_rgba(56,189,248,0.15)]"
+      class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-accent/20 shadow-glow-accent"
     >
       <h2
-        class="text-sm font-mono font-bold uppercase tracking-wider text-cyan-300 mb-2 flex items-center gap-2"
+        class="text-sm font-mono font-bold uppercase tracking-wider text-accent mb-2 flex items-center gap-2"
       >
         <span>
           {
@@ -394,7 +392,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
           Explore Next System Brief
         </div>
         <p class="text-xs text-slate-400 font-mono">
-          Principal QA Automation Engineer · Morningstar
+          Principal SDET Engineer · Morningstar
         </p>
       </div>
 
@@ -409,7 +407,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
           href="https://www.linkedin.com/in/maneesh-maddala/"
           target="_blank"
           rel="noopener noreferrer"
-          class="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-cyan-accent/20 hover:bg-cyan-accent/30 border border-cyan-accent/40 transition-colors"
+          class="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-accent/20 hover:bg-accent/30 border border-accent/40 transition-colors"
         >
           Connect on LinkedIn ↗
         </a>

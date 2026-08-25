@@ -6,6 +6,7 @@ export interface SiteConfig {
   role: string;
   employer: string;
   location: string;
+  email: string;
   bio: string;
   currentFocus: {
     title: string;
@@ -13,6 +14,7 @@ export interface SiteConfig {
     tag: string;
   }[];
   socials: {
+    id: 'linkedin' | 'github' | 'speaking';
     name: string;
     url: string;
     label: string;
@@ -28,16 +30,18 @@ export const siteConfig: SiteConfig = {
   name: 'Maneesh Maddala',
   brandName: 'From Test to Trust',
   domain: 'fromtesttotrust.com',
-  tagline: 'Engineering quality, risk, and trust for an AI-first world.',
-  role: 'AI-First Quality Engineering Leader',
-  employer: 'Principal QA Automation Engineer at Morningstar',
+  tagline:
+    'Engineering quality, managing risk, and building trustworthy systems.',
+  role: 'Principal SDET Engineer',
+  employer: 'Morningstar',
   location: 'Chicago, IL',
-  bio: 'Over 15+ years orchestrating test architecture, risk engineering, and AI-enabled pipelines across fintech, insurance, and enterprise platforms. I design the governance, evaluation harnesses, and multi-agent infrastructure that make software reliability inevitable.',
+  email: 'maneesh.maddala@gmail.com',
+  bio: 'Over 15+ years, I have worked across test architecture, risk engineering, and AI systems in fintech, insurance, and enterprise software. I build evaluation, governance, and automation that teams can understand and maintain.',
   currentFocus: [
     {
       title: 'Multi-Agent SDLC Orchestration',
       description:
-        'Jira-triggered autonomous agent pipelines validating accessibility, SEO, and regression paths.',
+        'Jira-based agent workflows for accessibility, SEO, and regression testing.',
       tag: 'Active Architecture',
     },
     {
@@ -49,22 +53,25 @@ export const siteConfig: SiteConfig = {
     {
       title: 'Crash-Testing LLM Guardrails & Evals',
       description:
-        'Quantitative red-teaming harnesses enforcing deterministic boundaries on generative outputs.',
+        'Evaluation and red-team tests for accuracy, safety, and output constraints.',
       tag: 'Risk Engineering',
     },
   ],
   socials: [
     {
+      id: 'linkedin',
       name: 'LinkedIn',
       url: 'https://www.linkedin.com/in/maneesh-maddala/',
       label: 'linkedin.com/in/maneesh-maddala',
     },
     {
+      id: 'github',
       name: 'GitHub',
       url: 'https://github.com/mmaneesh',
       label: 'github.com/mmaneesh',
     },
     {
+      id: 'speaking',
       name: 'Ministry of Testing',
       url: 'https://guardrails-with-evals.vercel.app/',
       label: 'Presentations & Talks',
@@ -79,7 +86,7 @@ export const siteConfig: SiteConfig = {
     },
     {
       label: 'Data Integrity Restoration',
-      value: '50–60% Bot Traffic',
+      value: '50-60% Bot Traffic',
       context:
         'Discovered and isolated synthetic bot traffic inflating analytics, restoring executive data trust.',
     },

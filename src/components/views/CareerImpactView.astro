@@ -1,44 +1,39 @@
 ---
 import { careerTimeline, educationAndCredentials } from '../../data/career';
-import TechTag from '../TechTag.astro';
 ---
 
 <section
   id="view-career"
   role="tabpanel"
   aria-labelledby="tab-career"
-  class="portfolio-view hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6"
+  class="portfolio-view hidden w-full py-4 sm:py-6"
 >
-  <div class="mb-8">
-    <h2
-      class="text-xl sm:text-2xl font-display font-bold text-white tracking-tight flex items-center gap-2.5"
-    >
-      <span>Career Ledger & Track Record</span>
-      <span
-        class="text-xs font-mono font-normal text-cyan-accent px-2 py-0.5 rounded-full bg-cyan-accent/10 border border-cyan-accent/20"
-      >
-        15+ Years Evolution
-      </span>
-    </h2>
-    <p class="text-xs sm:text-sm text-slate-400 mt-1">
-      Complete verified chronology spanning Morningstar progression, fintech,
-      enterprise automation, and AI systems leadership.
+  <header class="mb-8 max-w-[720px]">
+    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+      15+ years
     </p>
-  </div>
+    <h2 class="mt-2 font-editorial text-3xl font-medium text-foreground">
+      Experience
+    </h2>
+    <p class="mt-2 text-sm leading-6 text-muted">
+      Quality engineering and technical leadership across fintech, insurance,
+      and enterprise platforms.
+    </p>
+  </header>
 
-  <div class="space-y-8">
+  <div class="space-y-6">
     {
       careerTimeline.map((company) => (
         <article
-          class={`rounded-2xl bg-[#0B0F19] border ${company.isCurrent ? 'border-cyan-accent/40 shadow-[0_0_30px_-10px_rgba(56,189,248,0.2)]' : 'border-white/[0.08]'} p-6 sm:p-8 relative`}
+          class={`rounded-2xl bg-[#0B0F19] border ${company.isCurrent ? 'border-accent/40' : 'border-white/[0.08]'} p-5 sm:p-6 relative`}
         >
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-5 mb-6 border-b border-white/[0.08] gap-2">
             <div class="flex items-center gap-3">
               <div
-                class={`w-3 h-3 rounded-full ${company.isCurrent ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`}
+                class={`h-2.5 w-2.5 rounded-full ${company.isCurrent ? 'bg-accent' : 'bg-slate-500'}`}
               />
               <div>
-                <h3 class="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
+                <h3 class="font-editorial text-2xl font-medium text-foreground">
                   {company.company}
                 </h3>
                 <p class="text-xs font-mono text-slate-400 mt-0.5">
@@ -47,19 +42,19 @@ import TechTag from '../TechTag.astro';
               </div>
             </div>
 
-            <div class="text-xs font-mono font-semibold text-cyan-accent bg-cyan-accent/10 px-3 py-1.5 rounded-lg border border-cyan-accent/20 self-start sm:self-auto">
+            <div class="text-xs font-medium text-muted sm:text-right">
               {company.totalTenure}
             </div>
           </div>
 
-          <div class="space-y-8">
+          <div class="space-y-6">
             {company.roles.map((role, rIndex) => (
               <div
                 class={`relative ${rIndex > 0 ? 'pt-6 border-t border-white/[0.05]' : ''}`}
               >
                 <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
                   <h4 class="text-base sm:text-lg font-display font-bold text-slate-100 flex items-center gap-2">
-                    <span class="text-cyan-400 text-xs">▸</span>
+                    <span class="text-accent text-xs">▸</span>
                     <span>{role.title}</span>
                   </h4>
                   <span class="text-xs font-mono text-slate-400 font-medium">
@@ -67,23 +62,7 @@ import TechTag from '../TechTag.astro';
                   </span>
                 </div>
 
-                {role.metrics && (
-                  <div class="mb-4 p-3.5 rounded-xl bg-cyan-500/[0.05] border border-cyan-500/20">
-                    <div class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-2">
-                      Verified Key Outcomes:
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                      {role.metrics.map((metric) => (
-                        <div class="flex items-center gap-2 text-xs font-mono text-cyan-200">
-                          <span class="text-cyan-400 font-bold">✓</span>
-                          <span>{metric}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div class="space-y-2 mb-4">
+                <div class="space-y-2">
                   {role.highlights.map((highlight) => (
                     <div class="text-xs sm:text-sm text-slate-300 leading-relaxed flex items-start gap-2.5">
                       <span class="text-slate-500 font-mono text-xs mt-1 shrink-0">
@@ -93,14 +72,6 @@ import TechTag from '../TechTag.astro';
                     </div>
                   ))}
                 </div>
-
-                {role.skills && (
-                  <div class="flex flex-wrap gap-1.5 pt-2">
-                    {role.skills.map((skill) => (
-                      <TechTag tag={skill} />
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
           </div>
@@ -108,19 +79,15 @@ import TechTag from '../TechTag.astro';
       ))
     }
 
-    <article
-      class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-6 sm:p-8"
-    >
-      <h3
-        class="text-lg font-display font-bold text-white mb-4 flex items-center gap-2"
-      >
-        <span>🎓 Education & Industry Certifications</span>
+    <article class="border-y border-line py-6">
+      <h3 class="font-editorial text-2xl font-medium text-foreground">
+        Education and certifications
       </h3>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+      <div class="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div>
           <div
-            class="text-xs font-mono text-cyan-accent uppercase tracking-wider mb-1 font-semibold"
+            class="text-xs font-mono text-accent uppercase tracking-wider mb-1 font-semibold"
           >
             Degree
           </div>
@@ -134,9 +101,9 @@ import TechTag from '../TechTag.astro';
           </div>
         </div>
 
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+        <div>
           <div
-            class="text-xs font-mono text-cyan-accent uppercase tracking-wider mb-2 font-semibold"
+            class="text-xs font-mono text-accent uppercase tracking-wider mb-2 font-semibold"
           >
             Certifications
           </div>

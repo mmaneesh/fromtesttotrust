@@ -1,25 +1,24 @@
 ---
 import { siteConfig } from '../data/site-config';
 import BrandMark from './BrandMark.astro';
+import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header
-  class="w-full border-b border-white/[0.06] bg-[#070A0F]/80 backdrop-blur-md sticky top-0 z-40"
->
+<header class="w-full border-b border-line bg-canvas/95 sticky top-0 z-40">
   <div
     class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4"
   >
     <!-- Brand / Name Identity -->
     <a
       href="/"
-      class="flex items-center gap-2 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-accent rounded-lg p-1 shrink-0"
+      class="flex items-center gap-2 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg p-1 shrink-0"
     >
       <BrandMark class="w-[76px] h-11 sm:w-[86px] sm:h-12 shrink-0" />
       <div class="hidden sm:flex flex-col">
         <span
           class="text-xs sm:text-base font-display font-bold text-white tracking-tight"
         >
-          From Test to <span class="text-cyan-accent">Trust</span>
+          From Test to <span class="text-accent">Trust</span>
         </span>
         <span
           class="hidden sm:block mt-1 text-[9px] font-mono font-medium uppercase tracking-[0.24em] text-slate-400"
@@ -31,15 +30,17 @@ import BrandMark from './BrandMark.astro';
 
     <!-- Top Links & Actions -->
     <div class="flex items-center gap-2 sm:gap-3">
+      <ThemeToggle />
+
       <a
         href="https://www.linkedin.com/in/maneesh-maddala/"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 transition-all duration-150"
+        class="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 transition-all duration-150"
         aria-label="Maneesh Maddala on LinkedIn"
       >
         <svg
-          class="w-3.5 h-3.5 text-cyan-accent"
+          class="w-3.5 h-3.5 text-accent"
           fill="currentColor"
           viewBox="0 0 24 24"
         >
@@ -54,7 +55,7 @@ import BrandMark from './BrandMark.astro';
         href="https://github.com/mmaneesh"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 transition-all duration-150"
+        class="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 transition-all duration-150"
         aria-label="Maneesh Maddala on GitHub"
       >
         <svg
@@ -72,12 +73,12 @@ import BrandMark from './BrandMark.astro';
       </a>
 
       <a
-        href="mailto:maneesh.maddala@gmail.com"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 transition-all duration-150"
-        aria-label="Email Maneesh Maddala at maneesh.maddala@gmail.com"
+        href={`mailto:${siteConfig.email}`}
+        class="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 transition-all duration-150"
+        aria-label={`Email ${siteConfig.name} at ${siteConfig.email}`}
       >
         <svg
-          class="w-3.5 h-3.5 text-cyan-accent"
+          class="w-3.5 h-3.5 text-accent"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

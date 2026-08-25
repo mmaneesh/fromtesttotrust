@@ -5,34 +5,40 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#070A0F',
+        canvas: 'rgb(var(--canvas) / <alpha-value>)',
+        foreground: 'rgb(var(--foreground) / <alpha-value>)',
+        body: 'rgb(var(--body-text) / <alpha-value>)',
+        muted: 'rgb(var(--muted-text) / <alpha-value>)',
+        faint: 'rgb(var(--faint-text) / <alpha-value>)',
+        line: 'rgb(var(--line) / <alpha-value>)',
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        background: 'rgb(var(--canvas) / <alpha-value>)',
         surface: {
-          DEFAULT: '#0D121D',
-          hover: '#131B2A',
-          border: 'rgba(255, 255, 255, 0.08)',
-          'border-focus': 'rgba(56, 189, 248, 0.4)',
-        },
-        cyan: {
-          accent: '#38BDF8',
-          glow: 'rgba(56, 189, 248, 0.15)',
+          DEFAULT: 'rgb(var(--surface) / <alpha-value>)',
+          raised: 'rgb(var(--surface-raised) / <alpha-value>)',
+          deep: 'rgb(var(--surface-deep) / <alpha-value>)',
+          hover: 'rgb(var(--surface-raised) / <alpha-value>)',
+          border: 'rgb(var(--line) / <alpha-value>)',
+          'border-focus': 'rgb(var(--accent) / 0.4)',
         },
         emerald: {
-          accent: '#10B981',
-          glow: 'rgba(16, 185, 129, 0.15)',
-        },
-        steel: {
-          accent: '#60A5FA',
-          muted: '#94A3B8',
+          200: 'rgb(var(--success) / <alpha-value>)',
+          300: 'rgb(var(--success) / <alpha-value>)',
+          400: 'rgb(var(--success) / <alpha-value>)',
+          500: 'rgb(var(--success) / <alpha-value>)',
+          accent: 'rgb(var(--success) / <alpha-value>)',
+          glow: 'rgb(var(--success) / 0.15)',
         },
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
         display: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+        editorial: ['"Newsreader"', 'Georgia', 'serif'],
         mono: ['"Geist Mono"', '"JetBrains Mono"', 'monospace'],
       },
       boxShadow: {
-        'glow-cyan': '0 0 25px -5px rgba(56, 189, 248, 0.25)',
-        'glow-emerald': '0 0 20px -5px rgba(16, 185, 129, 0.25)',
+        'glow-accent': '0 0 25px -5px rgb(var(--accent) / 0.25)',
+        'glow-emerald': '0 0 20px -5px rgb(var(--success) / 0.25)',
         'subtle-card': '0 4px 20px -2px rgba(0, 0, 0, 0.5)',
       },
       animation: {

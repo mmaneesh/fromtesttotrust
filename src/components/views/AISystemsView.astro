@@ -1,114 +1,59 @@
 ---
 import { aiSystems } from '../../data/ai-systems';
-import TechIcon from '../TechIcon.astro';
-import TechTag from '../TechTag.astro';
-
-const iconMap: Record<string, string> = {
-  'Jira MCP': 'jira',
-  'TestRail MCP': 'testrail',
-  'Playwright MCP': 'playwright',
-  Playwright: 'playwright',
-  TypeScript: 'typescript',
-  Python: 'python',
-  AWS: 'aws',
-  Git: 'git',
-  'Azure DevOps': 'azure',
-  LiteLLM: 'litellm',
-  Docker: 'docker',
-  'LLM Evals': 'openai',
-};
-
-const iconKeys = (technologies: string[]) =>
-  [...new Set(technologies.map((technology) => iconMap[technology]))].filter(
-    Boolean,
-  );
 ---
 
 <section
   id="view-ai-systems"
   role="tabpanel"
   aria-labelledby="tab-ai-systems"
-  class="portfolio-view hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6"
+  class="portfolio-view hidden w-full py-4 sm:py-6"
 >
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <header class="mb-8 max-w-[720px]">
+    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+      Selected work
+    </p>
+    <h2 class="mt-2 font-editorial text-3xl font-medium text-foreground">
+      AI systems
+    </h2>
+    <p class="mt-2 text-sm leading-6 text-muted">
+      Production systems for evaluation, governance, routing, and test
+      automation.
+    </p>
+  </header>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
     {
       aiSystems.map((system) => (
-        <article class="interactive-spotlight-card group relative rounded-2xl bg-[#0B0F19] border border-white/[0.08] hover:border-cyan-400/60 p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_-5px_rgba(56,189,248,0.25)]">
+        <article class="interactive-spotlight-card group relative rounded-2xl bg-[#0B0F19] border border-white/[0.08] hover:border-accent/60 p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:shadow-glow-accent">
           <div>
-            <div
-              class="flex items-center gap-2 mb-4"
-              aria-label={`${system.title} technology stack`}
-            >
-              {iconKeys(system.technologies).map((icon) => (
-                <TechIcon name={icon} size="w-8 h-8" />
-              ))}
-            </div>
+            <p class="text-[11px] font-mono font-semibold uppercase tracking-wider text-accent mb-3">
+              {system.category}
+            </p>
 
             <a href={`/systems/${system.id}`} class="group/title block">
-              <h3 class="text-lg sm:text-xl font-display font-bold text-white group-hover/title:text-cyan-accent transition-colors leading-snug mb-1">
+              <h3 class="font-editorial text-2xl font-medium leading-snug text-foreground transition-colors group-hover/title:text-accent">
                 {system.title}
               </h3>
             </a>
 
-            <p class="text-xs font-mono text-slate-400 mb-3.5">
+            <p class="text-xs font-mono text-slate-400 mb-3">
               {system.subtitle}
             </p>
 
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-5">
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
               {system.summary}
             </p>
-
-            <div class="mb-4 space-y-2.5 rounded-xl bg-[#121824]/60 border border-white/[0.05] p-3.5">
-              <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
-                Architecture Blueprint
-              </div>
-              {system.architecture.map((item) => (
-                <div class="text-xs text-slate-300 flex items-start gap-2 leading-relaxed">
-                  <span class="text-cyan-accent font-mono text-[11px] mt-0.5">
-                    ↳
-                  </span>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-
-            {system.workflow && (
-              <div class="inline-flex items-center gap-2 text-[11px] font-mono font-semibold text-emerald-300 mb-5">
-                <span
-                  class="w-2 h-2 rounded-full bg-emerald-400"
-                  aria-hidden="true"
-                />
-                <span>{system.workflow.reviewLabel}</span>
-              </div>
-            )}
           </div>
 
           <div>
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              {system.technologies.map((tech) => (
-                <TechTag tag={tech} />
-              ))}
-            </div>
-
             <div class="pt-3 border-t border-white/[0.06] flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
               <a
                 href={`/systems/${system.id}`}
-                class="inline-flex items-center gap-1.5 font-semibold text-cyan-accent hover:text-cyan-300 hover:underline"
+                class="inline-flex items-center gap-1.5 font-semibold text-accent hover:text-accent hover:underline"
               >
-                <span>Read System Brief</span>
+                <span>View brief</span>
                 <span aria-hidden="true">→</span>
               </a>
-
-              {system.links && system.links.length > 0 && (
-                <a
-                  href={system.links[0].url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-slate-400 hover:text-white transition-colors text-[11px]"
-                >
-                  <span>{system.links[0].label}</span>
-                </a>
-              )}
             </div>
           </div>
         </article>

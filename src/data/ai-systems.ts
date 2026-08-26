@@ -2,7 +2,9 @@ export type AISystemId =
   | 'multi-agent-sdlc'
   | 'litellm-gateway'
   | 'llm-guardrails-evals'
-  | 'shared-skills-platform';
+  | 'shared-skills-platform'
+  | 'support-intake-agent'
+  | 'brand-unification-skill';
 
 export interface AISystem {
   id: AISystemId;
@@ -351,5 +353,48 @@ export const aiSystems: AISystem[] = [
       },
     ],
     featured: false,
+  },
+  {
+    id: 'support-intake-agent',
+    title: 'Support Intake Agent',
+    subtitle:
+      'Structured triage and context-aware routing for incoming requests',
+    category: 'Multi-Agent Systems',
+    summary:
+      'Built an intake agent that turns scattered incoming requests into structured cases, clarifies the relevant context, and routes each case to the right next step.',
+    problem:
+      'Support requests arrived with uneven detail and often required manual follow-up before the right team could act, slowing response and making handoffs difficult to trace.',
+    architecture: [
+      'Collects incoming requests and extracts the context needed to understand the case.',
+      'Applies a consistent triage structure before recommending the appropriate owner or workflow.',
+      'Keeps the final routing decision visible and reviewable by the people responsible for the outcome.',
+    ],
+    impact: [
+      'Reduced the effort required to turn incomplete requests into actionable cases.',
+      'Established a consistent handoff pattern without exposing internal support operations.',
+    ],
+    technologies: ['AI Agents', 'Workflow Design', 'Human Review'],
+    featured: true,
+  },
+  {
+    id: 'brand-unification-skill',
+    title: 'Brand Unification Skill',
+    subtitle: 'Shared standards for consistent AI-assisted work',
+    category: 'Governance',
+    summary:
+      'Built a reusable skill that helps teams apply shared brand standards consistently across AI-assisted work without exposing the underlying internal guidance.',
+    problem:
+      'Different teams were applying brand guidance inconsistently across AI-assisted work, creating avoidable review cycles and uneven output quality.',
+    architecture: [
+      'Centralizes shared brand considerations in a reusable, governed skill.',
+      'Guides teams toward consistent decisions while preserving the context of each request.',
+      'Keeps the internal standards private while making their intended outcomes repeatable.',
+    ],
+    impact: [
+      'Improved consistency across AI-assisted work without requiring each team to recreate the same guidance.',
+      'Created a safer path for broad adoption of shared brand standards.',
+    ],
+    technologies: ['AI Skills', 'Governance', 'Prompt Engineering'],
+    featured: true,
   },
 ];

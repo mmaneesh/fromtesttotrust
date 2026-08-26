@@ -1,0 +1,220 @@
+---
+import type { AISystemId } from '../data/ai-systems';
+
+interface Props {
+  systemId: AISystemId;
+}
+
+const { systemId } = Astro.props;
+const gridPath =
+  'M0 19H360M0 38H360M0 57H360M0 76H360M0 95H360M0 114H360M0 133H360M28 0V156M56 0V156M84 0V156M112 0V156M140 0V156M168 0V156M196 0V156M224 0V156M252 0V156M280 0V156M308 0V156M336 0V156';
+---
+
+<div class="system-illustration" aria-hidden="true">
+  {
+    systemId === 'multi-agent-sdlc' && (
+      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+        <path class="grid" d={gridPath} />
+        <path
+          class="line"
+          d="M27 78H89L124 40L159 78L195 40L230 78L265 40L300 78H334"
+        />
+        <path class="accent" d="M87 78H124M159 78H195M230 78H265" />
+        <>
+          <circle class="dot" cx="27" cy="78" r="5" />
+          <circle class="dot" cx="124" cy="40" r="5" />
+          <circle class="dot" cx="195" cy="40" r="5" />
+          <circle class="dot" cx="265" cy="40" r="5" />
+          <circle class="dot" cx="334" cy="78" r="5" />
+        </>
+        <path class="check" d="M122 26L127 31L137 18M263 26L268 31L278 18" />
+        <>
+          <text class="label" x="15" y="126">
+            IN
+          </text>
+          <text class="label" x="107" y="18">
+            GATE
+          </text>
+          <text class="label" x="247" y="18">
+            GATE
+          </text>
+          <text class="label" x="305" y="126">
+            OUT
+          </text>
+        </>
+      </svg>
+    )
+  }
+  {
+    systemId === 'litellm-gateway' && (
+      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+        <path class="grid" d={gridPath} />
+        <path
+          class="line"
+          d="M26 78H94M126 78H182M214 38H300M214 78H300M214 118H300"
+        />
+        <path
+          class="accent"
+          d="M94 78L126 38L158 78M126 78H158M94 78L126 118L158 78M182 78L214 38M182 78H214M182 78L214 118"
+        />
+        <>
+          <circle class="dot" cx="26" cy="78" r="5" />
+          <circle class="dot" cx="126" cy="38" r="5" />
+          <circle class="dot" cx="126" cy="78" r="5" />
+          <circle class="dot" cx="126" cy="118" r="5" />
+          <circle class="dot" cx="214" cy="38" r="5" />
+          <circle class="dot" cx="214" cy="78" r="5" />
+          <circle class="dot" cx="214" cy="118" r="5" />
+        </>
+        <>
+          <text class="label" x="14" y="67">
+            REQUEST
+          </text>
+          <text class="label" x="112" y="26">
+            ROUTE
+          </text>
+          <text class="label" x="280" y="27">
+            FAST
+          </text>
+          <text class="label" x="272" y="142">
+            FALLBACK
+          </text>
+        </>
+      </svg>
+    )
+  }
+  {
+    systemId === 'llm-guardrails-evals' && (
+      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+        <path class="grid" d={gridPath} />
+        <>
+          <rect class="outline" x="122" y="34" width="116" height="88" rx="2" />
+          <path class="line" d="M149 58H212M149 78H212M149 98H186" />
+        </>
+        <path
+          class="muted"
+          d="M26 48H94M26 78H94M26 108H94M266 48H334M266 78H334M266 108H334"
+        />
+        <path
+          class="accent"
+          d="M84 43L96 55M96 43L84 55M84 73L96 85M96 73L84 85M84 103L96 115M96 103L84 115M264 43L276 55M276 43L264 55M264 73L276 85M276 73L264 85M264 103L276 115M276 103L264 115"
+        />
+        <>
+          <text class="label" x="22" y="27">
+            PROBE
+          </text>
+          <text class="label" x="148" y="26">
+            EVAL
+          </text>
+          <text class="label" x="284" y="27">
+            BLOCK
+          </text>
+        </>
+      </svg>
+    )
+  }
+  {
+    systemId === 'shared-skills-platform' && (
+      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+        <path class="grid" d={gridPath} />
+        <>
+          <rect class="outline" x="42" y="49" width="72" height="52" rx="2" />
+          <rect class="outline" x="144" y="49" width="72" height="52" rx="2" />
+          <rect class="outline" x="246" y="49" width="72" height="52" rx="2" />
+        </>
+        <>
+          <path class="accent" d="M114 75H144M216 75H246" />
+          <path
+            class="line"
+            d="M60 66H96M60 84H83M162 66H198M162 84H186M264 66H300M264 84H287"
+          />
+        </>
+        <>
+          <circle class="dot" cx="78" cy="75" r="5" />
+          <circle class="dot" cx="180" cy="75" r="5" />
+          <circle class="dot" cx="282" cy="75" r="5" />
+        </>
+        <>
+          <text class="label" x="54" y="36">
+            CREATE
+          </text>
+          <text class="label" x="157" y="36">
+            PUBLISH
+          </text>
+          <text class="label" x="263" y="36">
+            INVOKE
+          </text>
+        </>
+      </svg>
+    )
+  }
+</div>
+
+<style>
+  .system-illustration {
+    --image-background: #eadfce;
+    --image-grid: #a99a89;
+    --image-ink: #40362e;
+    --image-accent: #9f4938;
+    --image-check: #047857;
+    height: 156px;
+    overflow: hidden;
+    background: var(--image-background);
+  }
+
+  :global(:root[data-theme='light']) .system-illustration {
+    --image-background: #3a302a;
+    --image-grid: #827267;
+    --image-ink: #eadfd2;
+    --image-accent: #e48768;
+    --image-check: #5ebb8d;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .grid {
+    stroke: var(--image-grid);
+    stroke-width: 0.6;
+    opacity: 0.5;
+  }
+  .line,
+  .outline {
+    fill: none;
+    stroke: var(--image-ink);
+    stroke-width: 1.55;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .muted {
+    fill: none;
+    stroke: var(--image-ink);
+    stroke-width: 1.15;
+    opacity: 0.7;
+  }
+  .accent {
+    fill: none;
+    stroke: var(--image-accent);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .dot {
+    fill: var(--image-accent);
+  }
+  .check {
+    fill: none;
+    stroke: var(--image-check);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .label {
+    fill: var(--image-ink);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 9px;
+    letter-spacing: 0.13em;
+  }
+</style>

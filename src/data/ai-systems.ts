@@ -1,5 +1,11 @@
+export type AISystemId =
+  | 'multi-agent-sdlc'
+  | 'litellm-gateway'
+  | 'llm-guardrails-evals'
+  | 'shared-skills-platform';
+
 export interface AISystem {
-  id: string;
+  id: AISystemId;
   title: string;
   subtitle: string;
   category:

@@ -8,23 +8,21 @@ export interface CareerRole {
 export interface CareerCompany {
   company: string;
   location: string;
-  totalTenure: string;
   isCurrent?: boolean;
   roles: CareerRole[];
 }
 
 export const careerTimeline: CareerCompany[] = [
   {
-    company: 'Morningstar',
+    company: 'Morningstar, Inc.',
     location: 'Chicago, IL',
-    totalTenure: 'Dec 2021 - Present (4 yrs 9 mos)',
     isCurrent: true,
     roles: [
       {
         title: 'Principal SDET Engineer',
         period: 'Jan 2025 - Present',
         highlights: [
-          "Lead enterprise-wide test automation strategy across UI, API, and performance testing for Morningstar's digital products, embedding quality as a shared cross-functional responsibility.",
+          "Lead enterprise-wide test automation strategy across UI, API, and performance testing for Morningstar, Inc.'s digital products, embedding quality as a shared cross-functional responsibility.",
           'Build production AI systems for Jira-based test planning, model routing, evaluation, and guardrails, plus tools used by Marketing Ops, SEO, Accessibility, and Content teams.',
           'Caught a critical integration failure during testing of a major marketing campaign where form submissions silently failed to reach downstream systems; escalated and drove a fix within 24 hours, protecting roughly 20% of expected campaign leads.',
           'Identified synthetic bot traffic inflating Google Analytics metrics by 50-60%; partnered with Ops to implement WAF rules that blocked bad traffic while preserving genuine user data, restoring analytics integrity.',
@@ -81,7 +79,6 @@ export const careerTimeline: CareerCompany[] = [
   {
     company: 'CSG',
     location: 'United States',
-    totalTenure: 'Jul 2018 - Dec 2021 (3 yrs 6 mos)',
     roles: [
       {
         title: 'Test Automation Engineer II → Senior Test Automation Engineer',
@@ -106,7 +103,6 @@ export const careerTimeline: CareerCompany[] = [
   {
     company: 'Creospan Inc.',
     location: 'Northbrook, IL',
-    totalTenure: 'May 2016 - Apr 2018 (2 yrs)',
     roles: [
       {
         title: 'Automation Test Engineer',
@@ -129,7 +125,6 @@ export const careerTimeline: CareerCompany[] = [
   {
     company: 'Tata Consultancy Services (TCS)',
     location: 'Lake Forest, IL & Chennai, India',
-    totalTenure: 'Mar 2009 - May 2016 (7 yrs 3 mos)',
     roles: [
       {
         title: 'Test Automation Engineer / IT Analyst',
@@ -150,18 +145,8 @@ export const careerTimeline: CareerCompany[] = [
   },
 ];
 
-export const educationAndCredentials = {
-  education: {
-    degree:
-      "Bachelor's Degree in Electrical, Electronics and Communications Engineering",
-    institution: 'Jawaharlal Nehru Technological University',
-    period: '2004 - 2008',
-  },
-  certifications: [
-    'SAFe Agile 4.0',
-    'ISTQB Certified Tester',
-    'HP-QTP 10.0',
-    'ITIL Foundation',
-    'HP Quality Center',
-  ],
+export const education = {
+  degree: 'Electronics And Communication Engineering',
+  institution: 'Jawaharlal Nehru Technological University',
+  period: '2004 - 2008',
 };

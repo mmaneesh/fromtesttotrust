@@ -33,7 +33,7 @@ export const siteConfig: SiteConfig = {
   tagline:
     'Engineering quality, managing risk, and building trustworthy systems.',
   role: 'Principal SDET Engineer',
-  employer: 'Morningstar',
+  employer: 'Morningstar, Inc.',
   location: 'Chicago, IL',
   email: 'maneesh.maddala@gmail.com',
   bio: 'Over 15+ years, I have worked across test architecture, risk engineering, and AI systems in fintech, insurance, and enterprise software. I build evaluation, governance, and automation that teams can understand and maintain.',

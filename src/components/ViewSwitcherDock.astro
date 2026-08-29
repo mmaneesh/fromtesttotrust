@@ -1,6 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
-
+import { siteConfig } from '../data/site-config';
 const tabs = [
   { id: 'about', label: 'About' },
   { id: 'experience', label: 'Experience' },
@@ -10,15 +10,9 @@ const tabs = [
 ---
 
 <div class="view-switcher sticky top-0 z-30">
-  <nav
-    aria-label="Portfolio sections"
-    class="flex h-12 min-w-0 items-center border-b border-line"
-  >
-    <div
-      role="tablist"
-      aria-label="View navigation"
-      class="flex min-w-0 flex-1 justify-between gap-0 overflow-hidden sm:justify-start sm:gap-3"
-    >
+  <header class="topbar">
+    <a class="brand" href="#about">From Test to Trust</a>
+    <nav id="primary-nav" aria-label="Portfolio sections" role="tablist">
       {
         tabs.map((tab, index) => (
           <button
@@ -28,81 +22,239 @@ const tabs = [
             aria-controls={`view-${tab.id}`}
             data-target={`view-${tab.id}`}
             tabindex={index === 0 ? '0' : '-1'}
-            class:list={[
-              'nav-tab-btn relative h-12 shrink-0 border-b-2 border-transparent px-1 text-[10px] font-semibold text-muted transition-colors hover:text-foreground focus:outline-none sm:px-2.5 sm:text-[11px]',
-              { active: index === 0 },
-            ]}
+            class:list={['nav-tab-btn', { active: index === 0 }]}
           >
             {tab.label}
           </button>
         ))
       }
+    </nav>
+    <div class="tools">
+      <ThemeToggle /><a href={`mailto:${siteConfig.email}`} class="connect"
+        >Connect <span aria-hidden="true">→</span></a
+      >
     </div>
-    <div class="ml-2 shrink-0 sm:ml-auto sm:pl-3"><ThemeToggle /></div>
-  </nav>
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open navigation menu"
+      aria-controls="primary-nav"
+      aria-expanded="false"
+      ><svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg
+      ></button
+    >
+  </header>
 </div>
-
 <style>
   .view-switcher {
-    isolation: isolate;
-    background-color: rgb(var(--canvas));
-    box-shadow: 0 10px 14px -14px rgb(var(--foreground) / 0.35);
+    background: rgb(var(--canvas));
   }
-
-  .nav-tab-btn.active {
-    border-bottom-color: rgb(var(--accent));
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    min-height: 42px;
+    border-bottom: 1px solid rgb(var(--line));
+  }
+  .brand {
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  #primary-nav {
+    display: flex;
+    gap: 24px;
+  }
+  .nav-tab-btn {
+    position: relative;
+    border: 0;
+    background: transparent;
+    color: rgb(var(--foreground));
+    cursor: pointer;
+    font:
+      600 11px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+    padding: 12px 0;
+    text-transform: uppercase;
+  }
+  .nav-tab-btn.active,
+  .nav-tab-btn:hover {
     color: rgb(var(--foreground));
   }
-</style>
-
-<script>
-  function setupTabs() {
-    const tabButtons =
-      document.querySelectorAll<HTMLButtonElement>('.nav-tab-btn');
-    const views = document.querySelectorAll<HTMLElement>('.portfolio-view');
-
-    function activateTab(targetId: string, updateHash = true) {
-      tabButtons.forEach((btn) => {
-        const isMatch = btn.dataset.target === targetId;
-        btn.classList.toggle('active', isMatch);
-        btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
-        btn.setAttribute('tabindex', isMatch ? '0' : '-1');
-      });
-
-      views.forEach((view) => {
-        const isMatch = view.id === targetId;
-        view.classList.toggle('hidden', !isMatch);
-        if (isMatch) view.classList.add('animate-fade-in');
-      });
-
-      if (updateHash)
-        history.replaceState(null, '', `#${targetId.replace('view-', '')}`);
-    }
-
-    tabButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        if (btn.dataset.target) activateTab(btn.dataset.target);
-      });
-
-      btn.addEventListener('keydown', (event) => {
-        let index = Array.from(tabButtons).indexOf(btn);
-        if (event.key === 'ArrowRight') index = (index + 1) % tabButtons.length;
-        else if (event.key === 'ArrowLeft')
-          index = (index - 1 + tabButtons.length) % tabButtons.length;
-        else return;
-
-        event.preventDefault();
-        tabButtons[index].focus();
-        tabButtons[index].click();
-      });
-    });
-
-    const hash = window.location.hash.replace('#', '');
-    const matchingBtn = document.querySelector<HTMLButtonElement>(
-      `[data-target="view-${hash}"]`,
-    );
-    if (matchingBtn) activateTab(`view-${hash}`, false);
+  .nav-tab-btn.active::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: rgb(var(--accent));
+    content: '';
   }
-
-  document.addEventListener('DOMContentLoaded', setupTabs);
+  .tools {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .connect {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgb(var(--accent));
+    background: rgb(var(--accent));
+    color: #fff;
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+    padding: 9px 14px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .connect span {
+    font-size: 12px;
+  }
+  .menu-toggle {
+    display: none;
+    border: 0;
+    background: transparent;
+    color: rgb(var(--foreground));
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .menu-toggle svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 720px) {
+    .topbar {
+      grid-template-columns: 1fr auto auto;
+      column-gap: 8px;
+      min-height: 58px;
+    }
+    .menu-toggle {
+      display: block;
+      grid-column: 3;
+    }
+    #primary-nav {
+      display: flex;
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      padding: 0;
+      pointer-events: none;
+      transform: translateY(-6px);
+      background: rgb(var(--canvas));
+      border-bottom: 1px solid transparent;
+      transition:
+        max-height 220ms ease,
+        opacity 160ms ease,
+        padding 220ms ease,
+        transform 220ms ease,
+        border-color 160ms ease;
+    }
+    .topbar.menu-open #primary-nav {
+      max-height: 240px;
+      opacity: 1;
+      padding: 8px 0 12px;
+      pointer-events: auto;
+      transform: translateY(0);
+      border-bottom-color: rgb(var(--line));
+    }
+    .tools {
+      grid-column: 2;
+      gap: 6px;
+    }
+    .nav-tab-btn {
+      min-height: 44px;
+      padding: 0 2px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .connect {
+      min-height: 32px;
+      gap: 4px;
+      padding: 6px 9px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .connect span {
+      font-size: 10px;
+    }
+    .menu-toggle {
+      min-width: 36px;
+      min-height: 36px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #primary-nav {
+      transition: none;
+    }
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const h = document.querySelector<HTMLElement>('.topbar');
+    const m = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const n = document.querySelector<HTMLElement>('#primary-nav');
+    const b = document.querySelectorAll<HTMLButtonElement>('.nav-tab-btn');
+    const v = document.querySelectorAll<HTMLElement>('.portfolio-view');
+    const isCompact = () => window.matchMedia('(max-width: 720px)').matches;
+    const setMenuOpen = (open: boolean) => {
+      h?.classList.toggle('menu-open', open);
+      m?.setAttribute('aria-expanded', String(open));
+      if (isCompact()) n?.toggleAttribute('inert', !open);
+      else n?.removeAttribute('inert');
+    };
+    const closeMenu = () => {
+      setMenuOpen(false);
+    };
+    const a = (id: string, hash = true) => {
+      b.forEach((x) => {
+        const on = x.dataset.target === id;
+        x.classList.toggle('active', on);
+        x.setAttribute('aria-selected', String(on));
+      });
+      v.forEach((x) => x.classList.toggle('hidden', x.id !== id));
+      if (hash) history.replaceState(null, '', `#${id.replace('view-', '')}`);
+      closeMenu();
+    };
+    b.forEach((x) =>
+      x.addEventListener(
+        'click',
+        () => x.dataset.target && a(x.dataset.target),
+      ),
+    );
+    m?.addEventListener('click', () => {
+      const o = !h?.classList.contains('menu-open');
+      setMenuOpen(o);
+    });
+    document.addEventListener('click', (event) => {
+      if (
+        !h?.classList.contains('menu-open') ||
+        !(event.target instanceof Node) ||
+        m?.contains(event.target)
+      ) {
+        return;
+      }
+      closeMenu();
+    });
+    window.addEventListener('resize', closeMenu);
+    closeMenu();
+    const hash = location.hash.slice(1);
+    if (hash) a(`view-${hash}`, false);
+  });
 </script>

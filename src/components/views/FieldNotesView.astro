@@ -1,58 +1,244 @@
 ---
 import { aboutData } from '../../data/about';
-
-const chapterNumbers = ['I', 'II', 'III'];
+import { siteConfig } from '../../data/site-config';
+const chapters = ['I', 'II', 'III'];
 ---
 
 <section
   id="view-about"
   role="tabpanel"
   aria-labelledby="tab-about"
-  class="portfolio-view w-full pb-8"
+  class="portfolio-view about-view w-full"
 >
-  <header class="max-w-[680px] py-8 sm:py-9">
-    <h2
-      class="max-w-[620px] font-editorial text-[27px] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[31px]"
-    >
-      Three chapters. One pursuit: software people can trust.
-    </h2>
-    <p
-      class="mt-4 max-w-[680px] text-[13px] leading-[1.7] text-body sm:text-sm"
-    >
-      {aboutData.introduction}
-    </p>
-  </header>
-
-  <div class="border-t border-line">
+  <div class="hero">
+    <div>
+      <h1>
+        Three chapters. One pursuit:<br /><em>software people can trust.</em>
+      </h1><p class="lede">{aboutData.introduction}</p>
+    </div><figure class="portrait">
+      <img
+        src="/images/maneesh-portrait-2026.png"
+        alt="Maneesh Maddala"
+      /><figcaption>
+        <strong>{siteConfig.name}</strong><span
+          >{siteConfig.role} · {siteConfig.employer}</span
+        >
+      </figcaption>
+    </figure>
+  </div>
+  <div class="chapters">
     {
       aboutData.evolutionStages.map((stage, index) => (
-        <article class="grid gap-3 border-b border-line py-6 sm:grid-cols-[84px_minmax(0,1fr)] sm:gap-4">
-          <div
-            class="text-[10px] font-bold uppercase tracking-[0.1em] text-accent"
-            aria-hidden="true"
-          >
-            Chapter {chapterNumbers[index]}
-          </div>
-          <div class="min-w-0">
-            <h3 class="font-editorial text-xl font-medium leading-tight text-foreground">
-              {stage.title}
-            </h3>
-            <p class="mt-1.5 max-w-[620px] text-[13px] leading-[1.65] text-body">
-              {stage.narrative}
-            </p>
-            <div class="mt-4 grid gap-4 border-t border-line pt-4 md:grid-cols-3">
-              {stage.keyPoints.map((point) => (
-                <div>
-                  <h4 class="mb-[7px] text-[10px] font-bold uppercase leading-4 tracking-[0.1em] text-accent">
-                    {point.label}
-                  </h4>
-                  <p class="text-xs leading-[1.55] text-body">{point.text}</p>
+        <article class="chapter">
+          <>
+            <strong>Chapter {chapters[index]}</strong>
+            <div>
+              <>
+                <h2>{stage.title}</h2>
+                <p>{stage.narrative}</p>
+                <div class="principles">
+                  {stage.keyPoints.map((point) => (
+                    <div>
+                      <strong>{point.label}</strong>
+                      <p>{point.text}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </>
             </div>
-          </div>
+          </>
         </article>
       ))
     }
   </div>
 </section>
+<style>
+  .about-view {
+    padding: 24px 0 34px;
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 38px;
+    align-items: center;
+    padding-bottom: 28px;
+    border-bottom: 2px solid rgb(var(--foreground));
+  }
+  h1,
+  h2 {
+    font-family: Newsreader, serif;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+  h1 {
+    font-size: 34px;
+    margin: 0 0 15px;
+  }
+  h1 em,
+  .chapter > strong,
+  .principles strong {
+    color: rgb(var(--accent));
+  }
+  .lede,
+  .chapter > div > p,
+  .principles p {
+    color: rgb(var(--body-text));
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 0;
+  }
+  .lede {
+    max-width: 485px;
+    font-size: 13px;
+  }
+  .portrait {
+    position: relative;
+    justify-self: end;
+    width: min(100%, 300px);
+    aspect-ratio: 1;
+    margin: 0;
+    overflow: hidden;
+    background: rgb(var(--surface-deep));
+    box-shadow: 0 10px 20px rgb(0 0 0/0.12);
+  }
+  .portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .portrait figcaption {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 10px 14px;
+    background: linear-gradient(
+      90deg,
+      rgb(var(--canvas) / 0.94),
+      rgb(var(--canvas) / 0.12)
+    );
+    border-top: 1px solid rgb(var(--line));
+  }
+  .portrait strong,
+  .portrait span {
+    display: block;
+  }
+  .portrait strong {
+    font-size: 12px;
+  }
+  .portrait span {
+    margin-top: 2px;
+    font:
+      8px/1.35 'Geist Mono',
+      monospace;
+  }
+  .chapters {
+    margin-top: 44px;
+  }
+  .chapters:before {
+    content: 'My Approach';
+    display: block;
+    text-align: center;
+    font:
+      25px Newsreader,
+      serif;
+    margin: 8px 0 22px;
+  }
+  .chapter {
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    column-gap: 24px;
+    padding: 18px 0 24px;
+  }
+  .chapter + .chapter {
+    border-top: 2px solid rgb(var(--foreground));
+    padding-top: 24px;
+  }
+  .chapter > strong {
+    font:
+      700 12px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+    padding-top: 3px;
+    text-transform: uppercase;
+  }
+  .chapter h2 {
+    font-size: 20px;
+    line-height: 1.25;
+    margin: 0 0 9px;
+  }
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    border-top: 1px solid rgb(var(--line));
+    margin-top: 17px;
+    padding-top: 16px;
+  }
+  .chapter > div > p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .principles strong {
+    display: block;
+    font:
+      700 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+  }
+  .principles p {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  @media (max-width: 720px) {
+    .about-view {
+      padding: 28px 0;
+    }
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding-bottom: 32px;
+    }
+    .portrait {
+      justify-self: start;
+      width: 100%;
+      max-width: none;
+    }
+    .portrait strong {
+      font-size: 14px;
+    }
+    .portrait span {
+      font-size: 10px;
+    }
+    .chapters {
+      margin-top: 48px;
+    }
+    .chapter {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .principles {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .lede,
+    .chapter > div > p {
+      font-size: 14px;
+      font-weight: 450;
+    }
+    .principles p {
+      font-size: 13px;
+      font-weight: 450;
+    }
+    .principles strong {
+      font-size: 11px;
+    }
+  }
+  @media (min-width: 640px) {
+    .lede {
+      font-size: 14px;
+    }
+  }
+</style>

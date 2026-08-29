@@ -1,7 +1,7 @@
 <button
   id="theme-toggle"
   type="button"
-  class="theme-toggle inline-flex h-11 w-11 items-center justify-center rounded-full border-2 bg-canvas text-foreground transition-colors hover:border-accent hover:text-accent"
+  class="theme-toggle inline-flex min-h-9 min-w-9 items-center justify-center bg-transparent p-2 text-foreground transition-colors hover:text-accent"
   aria-label="Switch to light theme"
   title="Switch theme"
 >
@@ -10,24 +10,34 @@
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.8"
+    stroke-width="1.7"
     stroke-linecap="round"
     stroke-linejoin="round"
     aria-hidden="true"
   >
-    <circle cx="12" cy="12" r="8"></circle>
-    <path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none"></path>
+    <g class="sun"
+      ><circle cx="12" cy="12" r="4"></circle><path
+        d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4m0-14.8-1.4 1.4M6.3 17.7l-1.4 1.4"
+      ></path></g
+    >
+    <path class="moon" d="M20 15.2A8.4 8.4 0 0 1 8.8 4 8.4 8.4 0 1 0 20 15.2Z"
+    ></path>
   </svg>
 </button>
 
 <style>
-  .theme-toggle {
-    border-color: rgb(var(--control-line));
-  }
-
   .theme-toggle:focus-visible {
-    border-color: rgb(var(--accent));
     outline: none;
+    box-shadow: 0 0 0 2px rgb(var(--accent));
+  }
+  .theme-toggle .moon {
+    display: none;
+  }
+  :global(:root[data-theme='dark']) .theme-toggle .sun {
+    display: none;
+  }
+  :global(:root[data-theme='dark']) .theme-toggle .moon {
+    display: block;
   }
 </style>
 

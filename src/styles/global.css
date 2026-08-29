@@ -9,9 +9,9 @@
     --surface-raised: 55 47 42;
     --surface-deep: 29 25 22;
     --foreground: 238 230 219;
-    --body-text: 207 197 187;
-    --muted-text: 175 166 157;
-    --faint-text: 163 153 144;
+    --body-text: 220 212 202;
+    --muted-text: 203 194 184;
+    --faint-text: 187 177 167;
     --line: 85 73 65;
     --control-line: 116 102 93;
     --accent: 228 135 104;
@@ -25,9 +25,9 @@
     --surface-raised: 234 223 210;
     --surface-deep: 226 213 199;
     --foreground: 48 40 33;
-    --body-text: 94 85 77;
-    --muted-text: 111 100 90;
-    --faint-text: 105 94 84;
+    --body-text: 70 61 53;
+    --muted-text: 81 71 62;
+    --faint-text: 91 80 70;
     --line: 207 193 179;
     --control-line: 139 120 106;
     --accent: 159 73 56;
@@ -145,6 +145,16 @@ article[class~='bg-[#0B0F19]'] {
   .animate-fade-in,
   .animate-pulse {
     animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  html {
+    font-size: 17px;
+  }
+
+  body {
+    font-weight: 450;
   }
 }
 

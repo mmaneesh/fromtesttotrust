@@ -3,9 +3,10 @@ import type { AISystem } from '../data/ai-systems';
 
 interface Props {
   workflow: NonNullable<AISystem['workflow']>;
+  diagramsOnly?: boolean;
 }
 
-const { workflow } = Astro.props;
+const { workflow, diagramsOnly = false } = Astro.props;
 const lanes = workflow.roles.map((role) => role.name);
 const handoffs = workflow.handoffs.map((handoff) => {
   const from = lanes.indexOf(handoff.from) + 1;
@@ -23,8 +24,8 @@ const handoffs = workflow.handoffs.map((handoff) => {
 });
 ---
 
-<section class="mb-10 space-y-6" aria-labelledby="pipeline-workflow-heading">
-  <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+<section class="my-12 space-y-10" aria-labelledby="pipeline-workflow-heading">
+  <figure class:list={[{ 'border-y border-line py-7': diagramsOnly, 'p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]': !diagramsOnly }]}>
     <div
       class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6"
     >
@@ -32,7 +33,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
         <div
           class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
         >
-          03 // Command lifecycle
+          Workflow chart
         </div>
         <h2
           id="pipeline-workflow-heading"
@@ -71,9 +72,9 @@ const handoffs = workflow.handoffs.map((handoff) => {
         }
       </ol>
     </div>
-  </div>
+  </figure>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+  {!diagramsOnly && <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     {
       workflow.phases.map((phase) => (
         <article class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-5">
@@ -102,18 +103,18 @@ const handoffs = workflow.handoffs.map((handoff) => {
         </article>
       ))
     }
-  </div>
+  </div>}
 
-  <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+  <figure class:list={[{ 'pt-2': diagramsOnly, 'p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]': !diagramsOnly }]}>
     <div
       class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
     >
-      04 // Architecture &amp; artifact flow
+      Architecture diagram
     </div>
-    <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-2">
+    <h2 class="text-lg sm:text-xl font-display font-bold text-foreground mb-2">
       Bounded agents, explicit evidence, human-controlled transitions
     </h2>
-    <p class="max-w-3xl text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+    <p class="max-w-3xl text-xs sm:text-sm text-muted leading-relaxed mb-6">
       Every lane owns one job. Solid exchanges delegate approved work; returning
       exchanges produce a reviewable artifact before the next stage can begin.
     </p>
@@ -205,9 +206,9 @@ const handoffs = workflow.handoffs.map((handoff) => {
         </div>
       </div>
     </div>
-  </div>
+  </figure>
 
-  <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+  {!diagramsOnly && <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
     <div
       class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
     >
@@ -251,9 +252,9 @@ const handoffs = workflow.handoffs.map((handoff) => {
         ))
       }
     </div>
-  </div>
+  </div>}
 
-  <div
+  {!diagramsOnly && <div
     class="p-5 sm:p-6 rounded-2xl bg-emerald-500/[0.035] border border-emerald-500/20"
   >
     <div
@@ -276,7 +277,7 @@ const handoffs = workflow.handoffs.map((handoff) => {
         ))
       }
     </ul>
-  </div>
+  </div>}
 </section>
 
 <style>

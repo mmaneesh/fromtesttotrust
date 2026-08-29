@@ -1,4 +1,5 @@
 ---
+import BrandMark from './BrandMark.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { siteConfig } from '../data/site-config';
 const tabs = [
@@ -11,7 +12,9 @@ const tabs = [
 
 <div class="view-switcher sticky top-0 z-30">
   <header class="topbar">
-    <a class="brand" href="#about">From Test to Trust</a>
+    <a class="brand" href="#about" aria-label="From Test to Trust">
+      <span class="brand-mark"><BrandMark /></span>
+    </a>
     <nav id="primary-nav" aria-label="Portfolio sections" role="tablist">
       {
         tabs.map((tab, index) => (
@@ -53,18 +56,33 @@ const tabs = [
 <style>
   .view-switcher {
     background: rgb(var(--canvas));
+    border-bottom: 1px solid rgb(var(--line));
   }
   .topbar {
     display: grid;
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 0 28px;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    min-height: 42px;
-    border-bottom: 1px solid rgb(var(--line));
+    min-height: 64px;
   }
   .brand {
+    display: inline-flex;
+    align-items: center;
     font-size: 14px;
     font-weight: 700;
     text-decoration: none;
+  }
+  .brand-mark {
+    display: block;
+    width: 88px;
+    flex: 0 0 88px;
+  }
+  .brand-mark :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   #primary-nav {
     display: flex;
@@ -85,13 +103,13 @@ const tabs = [
   }
   .nav-tab-btn.active,
   .nav-tab-btn:hover {
-    color: rgb(var(--foreground));
+    color: rgb(var(--accent));
   }
-  .nav-tab-btn.active::after {
+  .nav-tab-btn.active::before {
     position: absolute;
     right: 0;
-    bottom: 0;
     left: 0;
+    top: 6px;
     height: 2px;
     background: rgb(var(--accent));
     content: '';
@@ -107,6 +125,7 @@ const tabs = [
     align-items: center;
     gap: 7px;
     border: 1px solid rgb(var(--accent));
+    border-radius: 4px;
     background: rgb(var(--accent));
     color: #fff;
     font:
@@ -116,6 +135,10 @@ const tabs = [
     padding: 9px 14px;
     text-decoration: none;
     text-transform: uppercase;
+    transition:
+      background-color 180ms ease-out,
+      border-color 180ms ease-out,
+      color 180ms ease-out;
   }
   .connect span {
     font-size: 12px;
@@ -136,7 +159,8 @@ const tabs = [
     .topbar {
       grid-template-columns: 1fr auto auto;
       column-gap: 8px;
-      min-height: 58px;
+      min-height: 64px;
+      padding: 0 16px;
     }
     .menu-toggle {
       display: block;
@@ -200,7 +224,8 @@ const tabs = [
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    #primary-nav {
+    #primary-nav,
+    .connect {
       transition: none;
     }
   }

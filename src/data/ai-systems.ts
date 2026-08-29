@@ -60,21 +60,21 @@ export const aiSystems: AISystem[] = [
     id: 'multi-agent-sdlc',
     title: 'Human-Guided Agentic Test Engineering Pipeline',
     subtitle:
-      'Jira-triggered planning, test design, and repository-aware automation',
+      'From Jira ticket to reviewed test scenarios, TestRail coverage, and Playwright tests.',
     category: 'Multi-Agent Systems',
     summary:
-      'Built a workflow that turns Jira tickets into reviewed scenarios, TestRail cases, and maintainable Playwright tests. A person approves each consequential step.',
+      'To address it, I built a workflow that turns a Jira ticket into reviewed scenarios, TestRail cases, and maintainable Playwright tests. It stops for approval before it changes coverage, writes code, or opens a pull request.',
     problem:
-      'Planning, test-case design, and automation were disconnected activities. Engineers repeatedly reconstructed ticket context, duplicated TestRail coverage, and implemented brittle automation without a consistent view of the feature, epic, repository, or existing test architecture.',
+      'Test planning, test-case design, and automation were separate activities. Engineers rebuilt ticket context, duplicated TestRail coverage, and wrote brittle tests without a clear view of the feature, epic, repository, or existing test architecture.',
     architecture: [
-      '/start-planning uses Jira MCP to assemble ticket, acceptance criteria, documentation, attachments, references, parent epic, and completed or in-review sibling-ticket context before proposing risk-tiered scenarios.',
-      '/test-cases uses TestRail MCP to inspect projects and folders, update matching coverage, or create the missing folders and cases.',
-      '/automate uses Playwright MCP and repository context to implement POM-based UI, API, visual, or component tests after deployment.',
+      'Planning starts with /start-planning. It gathers the ticket, acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets before it proposes risk-tiered scenarios.',
+      'Next, /test-cases reads the existing TestRail project and folder structure. It updates matching coverage or creates the missing folders and cases.',
+      'After deployment, /automate uses Playwright MCP and repository context to add POM-based UI, API, visual, or component tests.',
     ],
     impact: [
-      'Established minimum scenario floors by ticket criticality: 5+ low, 6-8+ medium, and 10-15+ critical.',
-      'Kept a human in control before test-case creation, automation implementation, and pull-request delivery.',
-      'Connected planning evidence, test management, repository-aware automation, and PR review in one traceable workflow.',
+      'Scenario floors match ticket criticality: 5+ for low, 6-8+ for medium, and 10-15+ for critical work.',
+      'A person approves test-case creation, automation work, and pull-request delivery.',
+      'The result is a traceable path from planning evidence through test management, automation, and PR review.',
     ],
     technologies: [
       'Jira MCP',
@@ -260,20 +260,20 @@ export const aiSystems: AISystem[] = [
     id: 'litellm-gateway',
     title: 'Enterprise Model Gateway & Routing via LiteLLM',
     subtitle:
-      'Centralized fallback, latency routing, and token cost governance',
+      'An A2A foundation for agents built across different teams and stacks.',
     category: 'Governance',
     summary:
-      'Built a LiteLLM routing layer that separates applications from model providers, handles failover, and tracks token cost.',
+      'My team built our agent around A2A so agents can communicate with one another regardless of the stack each team chose.',
     problem:
-      'Direct provider coupling created systemic single-points-of-failure during rate limits and API outages, with no unified observability over token costs.',
+      'Teams across the company were building agents with different stacks, based on their own technical needs and capabilities. Those agents could work well on their own, but they had no common way to work together.',
     architecture: [
-      'Dynamic routing based on task complexity, latency SLAs, and cost thresholds.',
-      'Automatic fallback cascades (Claude 3.5 Sonnet → GPT-4o → Mistral Large) with zero client downtime.',
-      'Centralized prompt caching and telemetry logging for rate limits, token consumption, and response drift.',
+      'An AI-native company needs agents that can hand work to one another. A standalone agent is useful, but it becomes a dead end when it cannot ask another team’s agent for context, action, or a result.',
+      'A Jira ticket enters through WAF, API Gateway, and the Lambda API. SQS and a dispatcher start an OpenCode task on ECS Fargate, while DynamoDB keeps per-ticket state. Memory management is the next planned use for DynamoDB.',
+      'The OpenCode task can use MCPs for tools and context, communicate with agents built by other teams through A2A, and make model calls through LiteLLM, OpenRouter, and AWS Bedrock. If the selected provider is unavailable, the request falls back to the default provider.',
     ],
     impact: [
-      '99.9% uptime for AI-assisted QA agents through automated provider failovers.',
-      'Actionable cost governance and usage telemetry across engineering teams.',
+      'Agents built by different teams can participate in the same workflow without standardizing on one application stack.',
+      'The platform has one entry point for work and clear exits for Git, model access, and communication with other teams’ agents.',
     ],
     technologies: [
       'LiteLLM',

@@ -2,8 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import TechTag from '../../components/TechTag.astro';
 import AgentPipelineBrief from '../../components/AgentPipelineBrief.astro';
+import GatewayDiagrams from '../../components/GatewayDiagrams.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 
 export function getStaticPaths() {
@@ -32,19 +32,19 @@ const systemDetails: Record<
   'multi-agent-sdlc': {
     riskAnalysis: [
       {
-        risk: 'Incomplete or ambiguous Jira context producing weak scenarios',
+        risk: 'Jira tickets can be incomplete or ambiguous, which leads to weak scenarios.',
         mitigation:
-          'Jira MCP gathers acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets before planning begins.',
+          'Before planning begins, the workflow gathers acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets.',
       },
       {
-        risk: 'Duplicate or misplaced test coverage in TestRail',
+        risk: 'TestRail can already contain similar coverage, or the right folder may not exist.',
         mitigation:
-          'TestRail MCP inspects the existing project and folder hierarchy, compares similar functionality, and returns every updated or created case link for human review.',
+          'The TestRail step inspects the project and folder hierarchy, compares similar functionality, and returns every updated or created case link for review.',
       },
       {
-        risk: 'Brittle automation that ignores repository conventions',
+        risk: 'Automation becomes brittle when it ignores the repository’s existing conventions.',
         mitigation:
-          'Playwright MCP reads the repository structure, routes work to UI, API, visual, or component suites, reuses page objects and fixtures, and prefers user-facing locators.',
+          'The Playwright step reads the repository structure, routes work to UI, API, visual, or component suites, reuses page objects and fixtures, and prefers user-facing locators.',
       },
     ],
     technicalDecisions: [
@@ -56,19 +56,19 @@ const systemDetails: Record<
   'litellm-gateway': {
     riskAnalysis: [
       {
-        risk: 'Provider outages causing systemic QA pipeline downtime',
+        risk: 'A provider outage can interrupt every workflow that depends on it.',
         mitigation:
-          'Multi-tier fallback cascades: Claude 3.5 Sonnet → GPT-4o → Mistral Large with automated health checks.',
+          'Requests route through LiteLLM and OpenRouter, then fall back to the default provider when the selected provider is unavailable.',
       },
       {
-        risk: 'Unmonitored token spend & runaway queries',
+        risk: 'Direct provider calls make it hard to see where model traffic is going.',
         mitigation:
-          'Centralized budget caps per team, prompt caching via Redis, and real-time cost telemetry dashboards.',
+          'The shared gateway gives the workflows one route to use instead of scattering provider calls across clients.',
       },
       {
-        risk: 'Latency spikes during high-concurrency test runs',
+        risk: 'Different clients can drift into different integration patterns over time.',
         mitigation:
-          'Latency-based routing with circuit breakers that bypass degraded endpoints in under 500ms.',
+          'OpenCode, A2A, and MCP workflows use the same LiteLLM and OpenRouter path.',
       },
     ],
     technicalDecisions: [
@@ -216,203 +216,47 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
 >
   <Header />
 
-  <main
-    class:list={[
-      'flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16',
-      system.workflow ? 'max-w-6xl' : 'max-w-4xl',
-    ]}
-  >
-    <!-- Back to Hub -->
-    <div class="mb-8">
+  <main class="flex-1 w-full max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <div class="mb-10">
       <a
         href="/#ai-systems"
-        class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-accent transition-colors"
+        class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-foreground transition-colors"
       >
         <span>← Back to AI Systems</span>
       </a>
     </div>
 
-    <!-- Header Block -->
-    <header class="mb-10 pb-8 border-b border-white/[0.08]">
-      <div class="flex items-center gap-2 mb-3">
-        <span
-          class="text-xs font-mono text-accent font-semibold uppercase tracking-wider"
-        >
-          {system.category}
-        </span>
-        <span class="text-slate-600">·</span>
-        <span class="text-xs font-mono text-emerald-400">Production System</span
-        >
-      </div>
-
-      <h1
-        class="text-2xl sm:text-4xl font-display font-extrabold text-white leading-tight tracking-tight mb-3"
-      >
-        {system.title}
-      </h1>
-
-      <p class="text-sm sm:text-base font-mono text-slate-300 mb-6">
-        {system.subtitle}
-      </p>
-
-      <!-- Tech stack pills -->
-      <div class="flex flex-wrap gap-2">
-        {system.technologies.map((tech) => <TechTag tag={tech} />)}
-      </div>
-    </header>
-
-    <!-- Executive Summary & Problem Space -->
-    <section class="mb-10 space-y-6">
-      <div class="p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
-        <h2
-          class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2"
-        >
-          <span>01 // The Problem Space</span>
-        </h2>
-        <p class="text-sm text-slate-300 leading-relaxed font-light">
-          {system.problem}
+    <article class="pb-16">
+      <header class="mb-12">
+        <h1 class="text-[34px] sm:text-[42px] font-display font-bold text-foreground leading-[1.05] tracking-tight mb-5">
+          {system.title}
+        </h1>
+        <p class="text-base sm:text-lg text-body leading-relaxed mb-7">
+          {system.subtitle}
         </p>
-      </div>
-
-      <div class="p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
-        <h2
-          class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2"
-        >
-          <span>02 // The Solution Overview</span>
-        </h2>
-        <p class="text-sm text-slate-300 leading-relaxed font-light mb-4">
-          {system.summary}
+        <p class="font-mono text-[11px] leading-6 text-muted">
+          {system.technologies.join(' · ')}
         </p>
+      </header>
 
-        {
-          !system.workflow && (
-            <div class="space-y-2.5">
-              {system.architecture.map((arch) => (
-                <div class="text-xs sm:text-sm text-slate-300 flex items-start gap-2.5 leading-relaxed">
-                  <span class="text-accent font-mono text-xs mt-0.5">▸</span>
-                  <span>{arch}</span>
-                </div>
-              ))}
-            </div>
-          )
-        }
+      <div class="text-base text-body leading-8 space-y-7">
+        <p>{system.problem}</p>
+        <p>{system.summary}</p>
+        {system.architecture.map((arch) => <p>{arch}</p>)}
+        {system.workflow && <p>Each step produces an artifact that someone can review before the next step begins.</p>}
       </div>
-    </section>
-
-    {
-      system.workflow ? (
-        <AgentPipelineBrief workflow={system.workflow} />
-      ) : (
-        <section class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
-          <h2 class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-6 flex items-center gap-2">
-            <span>03 // Execution Sequence &amp; Workflow</span>
-          </h2>
-
-          <div class="space-y-4">
-            {details.workflowSteps?.map((step) => (
-              <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-baseline gap-2">
-                <span class="text-xs font-mono font-bold text-accent shrink-0">
-                  {step.step}
-                </span>
-                <span class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {step.detail}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )
-    }
-
-    <!-- Risk Calculation & Failure Modes (The Practitioner Core) -->
-    <section
-      class="mb-10 p-6 rounded-2xl bg-[#0B0F19] border border-accent/20 shadow-glow-accent"
-    >
-      <h2
-        class="text-sm font-mono font-bold uppercase tracking-wider text-accent mb-2 flex items-center gap-2"
-      >
-        <span>
-          {
-            system.workflow
-              ? '07 // Risk Analysis & Calculated Mitigations'
-              : '04 // Risk Analysis & Calculated Mitigations'
-          }
-        </span>
-      </h2>
-      <p class="text-xs text-slate-400 mb-6">
-        How we engineer deterministic trust and governance around
-        non-deterministic probabilistic operations.
-      </p>
-
-      <div class="space-y-4">
-        {
-          details.riskAnalysis.map((item) => (
-            <div class="p-4 rounded-xl bg-[#121824]/70 border border-white/[0.06] space-y-1.5">
-              <div class="text-xs font-mono font-semibold text-rose-300 flex items-center gap-2">
-                <span>⚠️ Calculated Risk:</span>
-                <span class="text-slate-200">{item.risk}</span>
-              </div>
-              <div class="text-xs text-emerald-300 flex items-start gap-2 leading-relaxed">
-                <span class="text-emerald-400 font-bold shrink-0">
-                  ✓ Engineered Mitigation:
-                </span>
-                <span class="text-slate-300">{item.mitigation}</span>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    {
-      !system.workflow && (
-        <section class="mb-12 p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
-          <h2 class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
-            <span>05 // Verified Impact Proof</span>
-          </h2>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {details.metricsSummary?.map((metric) => (
-              <div class="p-3.5 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 text-xs font-mono text-emerald-200 flex items-center gap-2">
-                <span class="text-emerald-400 font-bold">✓</span>
-                <span>{metric}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )
-    }
-
-    <!-- Outbound Actions & Links -->
-    <div
-      class="p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4"
-    >
-      <div>
-        <div class="text-sm font-bold text-white mb-0.5">
-          Explore Next System Brief
-        </div>
-        <p class="text-xs text-slate-400 font-mono">
-          Principal SDET Engineer · Morningstar, Inc.
-        </p>
+      {system.workflow && <AgentPipelineBrief workflow={system.workflow} diagramsOnly />}
+      {system.id === 'litellm-gateway' && <GatewayDiagrams />}
+      <div class="text-base text-body leading-8 space-y-7">
+        {details.riskAnalysis.map((item) => (
+          <p>
+            {item.risk} {item.mitigation}
+          </p>
+        ))}
+        {system.impact.map((item) => <p>{item}</p>)}
       </div>
 
-      <div class="flex items-center gap-3">
-        <a
-          href="/#ai-systems"
-          class="px-4 py-2 rounded-xl text-xs font-mono text-slate-300 hover:text-white bg-white/[0.04] border border-white/10 transition-colors"
-        >
-          View All Systems
-        </a>
-        <a
-          href="https://www.linkedin.com/in/maneesh-maddala/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-accent/20 hover:bg-accent/30 border border-accent/40 transition-colors"
-        >
-          Connect on LinkedIn ↗
-        </a>
-      </div>
-    </div>
+    </article>
   </main>
 
   <Footer />

@@ -1,0 +1,336 @@
+<figure class="ba-fig">
+  <figcaption>
+    <span>Architecture diagram</span>
+  </figcaption>
+
+  <div class="ba-scroll">
+    <svg viewBox="0 0 1080 372" role="img" aria-labelledby="ba-title ba-desc">
+      <title id="ba-title">Brand unification skill audit flow</title>
+      <desc id="ba-desc">
+        A user in Claude Desktop pastes a URL, document, PDF, or deck and asks
+        Claude to audit it. That loads the brand skill, which uses progressive
+        disclosure to read only the rule files each step needs. The content
+        passes through four ordered rule sets — brand remediation, tone and
+        voice, content rewrite, and escalation — each scoring it against a
+        rubric. The skill returns an audit report with a score per rubric and a
+        rewritten draft, then routes the finding to the content team for
+        in-scope fixes or to legal when it needs review. The draft returns to
+        the writer, who makes the change; the skill never publishes.
+      </desc>
+
+      <defs>
+        <marker
+          id="ba-arrow"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="ba-arrow" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+        <marker
+          id="ba-arrow-return"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="ba-arrow return" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+      </defs>
+
+      <!-- Boundary: the skill and its rules -->
+      <rect class="ba-boundary" x="194" y="24" width="372" height="248" rx="6"
+      ></rect>
+      <text class="ba-boundary-label" x="210" y="42"
+        >SKILL · RULES + RUBRICS</text
+      >
+
+      <!-- Edges (drawn before nodes) -->
+      <g class="ba-edge-group">
+        <path class="ba-edge" d="M166 170 H214" marker-end="url(#ba-arrow)"
+        ></path>
+        <path
+          class="ba-edge"
+          d="M354 170 H378 V36 H477 V48"
+          marker-end="url(#ba-arrow)"></path>
+
+        <path class="ba-edge" d="M477 88 V102" marker-end="url(#ba-arrow)"
+        ></path>
+        <path class="ba-edge" d="M477 142 V156" marker-end="url(#ba-arrow)"
+        ></path>
+        <path class="ba-edge" d="M477 196 V210" marker-end="url(#ba-arrow)"
+        ></path>
+
+        <!-- Rule-set outputs collected on a bus into the report -->
+        <path class="ba-edge" d="M552 68 H572"></path>
+        <path class="ba-edge" d="M552 122 H572"></path>
+        <path class="ba-edge" d="M552 176 H572"></path>
+        <path class="ba-edge" d="M552 230 H572"></path>
+        <path class="ba-edge" d="M572 68 V230"></path>
+        <path class="ba-edge" d="M572 170 H628" marker-end="url(#ba-arrow)"
+        ></path>
+
+        <path
+          class="ba-edge"
+          d="M792 156 H846 V120 H896"
+          marker-end="url(#ba-arrow)"></path>
+        <path
+          class="ba-edge"
+          d="M792 184 H846 V234 H896"
+          marker-end="url(#ba-arrow)"></path>
+
+        <path
+          class="ba-edge return"
+          d="M660 208 V322 H90 V196"
+          marker-end="url(#ba-arrow-return)"></path>
+      </g>
+
+      <!-- Edge labels -->
+      <g class="ba-elabel">
+        <g transform="translate(190,158)"
+          ><rect x="-19" y="-9" width="38" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">audit</text
+          ></g
+        >
+        <g transform="translate(428,40)"
+          ><rect x="-28" y="-9" width="56" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">run rules</text
+          ></g
+        >
+        <g transform="translate(846,104)"
+          ><rect x="-24" y="-9" width="48" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">in scope</text
+          ></g
+        >
+        <g transform="translate(860,226)"
+          ><rect x="-36" y="-9" width="72" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">needs review</text
+          ></g
+        >
+        <g transform="translate(345,322)"
+          ><rect x="-128" y="-9" width="256" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">draft to the writer · skill never publishes</text
+          ></g
+        >
+      </g>
+
+      <!-- Nodes -->
+      <g class="ba-node source">
+        <rect x="16" y="144" width="150" height="52" rx="6"></rect>
+        <text class="t" x="91" y="167" text-anchor="middle">Claude Desktop</text
+        >
+        <text class="s" x="91" y="184" text-anchor="middle"
+          >URL · doc · PDF · deck</text
+        >
+      </g>
+
+      <g class="ba-node skill">
+        <rect x="214" y="144" width="140" height="52" rx="6"></rect>
+        <text class="t" x="284" y="167" text-anchor="middle">Brand skill</text>
+        <text class="s" x="284" y="184" text-anchor="middle"
+          >progressive disclosure</text
+        >
+      </g>
+
+      <g class="ba-node rule">
+        <rect x="402" y="48" width="150" height="40" rx="6"></rect>
+        <text class="t" x="477" y="72" text-anchor="middle"
+          >Brand remediation</text
+        >
+      </g>
+      <g class="ba-node rule">
+        <rect x="402" y="102" width="150" height="40" rx="6"></rect>
+        <text class="t" x="477" y="126" text-anchor="middle"
+          >Tone &amp; voice</text
+        >
+      </g>
+      <g class="ba-node rule">
+        <rect x="402" y="156" width="150" height="40" rx="6"></rect>
+        <text class="t" x="477" y="180" text-anchor="middle"
+          >Content rewrite</text
+        >
+      </g>
+      <g class="ba-node rule">
+        <rect x="402" y="210" width="150" height="40" rx="6"></rect>
+        <text class="t" x="477" y="234" text-anchor="middle">Escalation</text>
+      </g>
+
+      <g class="ba-node report">
+        <rect x="628" y="132" width="164" height="76" rx="6"></rect>
+        <text class="t" x="710" y="158" text-anchor="middle">Audit report</text>
+        <text class="s" x="710" y="176" text-anchor="middle"
+          >score per rubric</text
+        >
+        <text class="s" x="710" y="192" text-anchor="middle"
+          >+ rewritten draft</text
+        >
+      </g>
+
+      <g class="ba-node route">
+        <rect x="896" y="96" width="150" height="48" rx="6"></rect>
+        <text class="t" x="971" y="117" text-anchor="middle">Content team</text>
+        <text class="s" x="971" y="133" text-anchor="middle"
+          >creative services</text
+        >
+      </g>
+      <g class="ba-node route">
+        <rect x="896" y="210" width="150" height="48" rx="6"></rect>
+        <text class="t" x="971" y="231" text-anchor="middle">Legal</text>
+        <text class="s" x="971" y="247" text-anchor="middle"
+          >brand &amp; IP</text
+        >
+      </g>
+
+      <!-- Legend -->
+      <g class="ba-legend" transform="translate(16,348)">
+        <line x1="0" y1="0" x2="30" y2="0" class="ba-edge"></line>
+        <text x="40" y="4">audit flow</text>
+        <line x1="150" y1="0" x2="180" y2="0" class="ba-edge return"></line>
+        <text x="190" y="4">draft back to the writer</text>
+        <rect x="378" y="-8" width="22" height="16" rx="3" class="ba-boundary"
+        ></rect>
+        <text x="410" y="4">skill · rules + rubrics</text>
+      </g>
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .ba-fig {
+    margin: 3rem 0;
+    border-top: 1px solid rgb(var(--line));
+    border-bottom: 1px solid rgb(var(--line));
+    padding: 1.35rem 0 1.5rem;
+  }
+  .ba-fig figcaption {
+    margin-bottom: 1.2rem;
+  }
+  .ba-fig figcaption span {
+    color: rgb(var(--accent));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ba-scroll {
+    overflow-x: auto;
+  }
+  .ba-scroll svg {
+    display: block;
+    width: 100%;
+    min-width: 720px;
+    height: auto;
+  }
+
+  .ba-boundary {
+    fill: rgb(var(--surface) / 0.28);
+    stroke: rgb(var(--line));
+  }
+  .ba-boundary-label {
+    fill: rgb(var(--muted-text));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .ba-node rect {
+    fill: rgb(var(--surface));
+    stroke: rgb(var(--line));
+    stroke-width: 1.2;
+  }
+  .ba-node .t {
+    fill: rgb(var(--foreground));
+    font:
+      600 12px 'Geist Mono',
+      monospace;
+  }
+  .ba-node .s {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .ba-node.rule .t {
+    font-size: 11px;
+  }
+  .ba-node.skill rect,
+  .ba-node.report rect {
+    fill: rgb(var(--surface-raised));
+    stroke: rgb(var(--accent));
+    stroke-width: 1.6;
+  }
+  .ba-node.route rect {
+    stroke: rgb(var(--success));
+  }
+
+  .ba-edge {
+    fill: none;
+    stroke: rgb(var(--control-line));
+    stroke-width: 1.5;
+  }
+  .ba-edge.return {
+    stroke: rgb(var(--accent));
+    stroke-dasharray: 4 4;
+  }
+  .ba-arrow {
+    fill: rgb(var(--control-line));
+  }
+  .ba-arrow.return {
+    fill: rgb(var(--accent));
+  }
+
+  .ba-elabel rect {
+    fill: rgb(var(--surface));
+  }
+  .ba-elabel text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 9.5px 'Geist Mono',
+      monospace;
+  }
+
+  .ba-legend text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .ba-legend line {
+    stroke-width: 1.6;
+  }
+
+  @media (forced-colors: active) {
+    .ba-node rect,
+    .ba-boundary {
+      stroke: CanvasText;
+      fill: Canvas;
+    }
+    .ba-node .t,
+    .ba-node .s,
+    .ba-boundary-label,
+    .ba-elabel text,
+    .ba-legend text {
+      fill: CanvasText;
+    }
+    .ba-edge {
+      stroke: CanvasText;
+    }
+    .ba-elabel rect {
+      fill: Canvas;
+    }
+    .ba-arrow {
+      fill: CanvasText;
+    }
+  }
+</style>

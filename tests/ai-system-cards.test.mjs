@@ -104,6 +104,27 @@ test('the support intake brief funnels every channel into one Teams queue and a 
   assert.match(systems, /assigns the task to that team’s project/);
 });
 
+test('the brand unification brief scores a URL through rule sets and routes escalation', async () => {
+  const [systemBrief, diagram, systems] = await Promise.all([
+    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/BrandAuditDiagram.astro'),
+    readSource('src/data/ai-systems.ts'),
+  ]);
+
+  assert.match(systemBrief, /<BrandAuditDiagram \/>/);
+  assert.match(systemBrief, /'brand-unification-skill': \{\s*riskAnalysis:/);
+  assert.match(diagram, /<svg/);
+  assert.match(diagram, /marker-end="url\(#ba-arrow\)"/);
+  assert.match(diagram, /Brand remediation/);
+  assert.match(diagram, /Escalation/);
+  assert.match(diagram, /progressive disclosure/);
+  assert.match(
+    systems,
+    /brand remediation, tone and voice, content rewrite, and escalation/,
+  );
+  assert.match(systems, /the skill never publishes/);
+});
+
 test('brief pages use a continuous article layout instead of card surfaces', async () => {
   const [systemBrief, speakingBrief] = await Promise.all([
     readSource('src/pages/systems/[id].astro'),

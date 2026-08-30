@@ -1,13 +1,6 @@
 <figure class="si-fig">
   <figcaption>
     <span>Architecture diagram</span>
-    <strong>Four channels in, one Teams queue, one manual action out</strong>
-    <p>
-      Email, Slack, and Jira each post through a webhook into a single Microsoft
-      Teams channel. A support engineer triages that queue and runs the Support
-      Intake Agent action on a real issue; Power Automate copies the requestor,
-      description, and attachments into an Asana task routed to the owning team.
-    </p>
   </figcaption>
 
   <div class="si-scroll">
@@ -204,8 +197,6 @@
     padding: 1.35rem 0 1.5rem;
   }
   .si-fig figcaption {
-    display: grid;
-    gap: 0.4rem;
     margin-bottom: 1.2rem;
   }
   .si-fig figcaption span {
@@ -215,19 +206,6 @@
       monospace;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-  }
-  .si-fig figcaption strong {
-    color: rgb(var(--foreground));
-    font:
-      700 1.05rem 'DM Sans',
-      sans-serif;
-  }
-  .si-fig figcaption p {
-    max-width: 62ch;
-    color: rgb(var(--muted-text));
-    font:
-      400 0.82rem/1.5 'DM Sans',
-      sans-serif;
   }
 
   .si-scroll {

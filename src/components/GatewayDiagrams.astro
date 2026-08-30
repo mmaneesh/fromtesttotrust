@@ -1,14 +1,6 @@
 <figure class="gw-fig">
   <figcaption>
     <span>Architecture diagram</span>
-    <strong
-      >One entry, one sandbox per ticket, one governed path to models</strong
-    >
-    <p>
-      A Jira comment is the only way in; a reviewed pull request is the only way
-      out. LiteLLM authorizes every model call against an Okta identity the
-      platform team provisions.
-    </p>
   </figcaption>
 
   <div class="gw-scroll">
@@ -347,8 +339,6 @@
     padding: 1.35rem 0 1.5rem;
   }
   .gw-fig figcaption {
-    display: grid;
-    gap: 0.4rem;
     margin-bottom: 1.2rem;
   }
   .gw-fig figcaption span {
@@ -358,19 +348,6 @@
       monospace;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-  }
-  .gw-fig figcaption strong {
-    color: rgb(var(--foreground));
-    font:
-      700 1.05rem 'DM Sans',
-      sans-serif;
-  }
-  .gw-fig figcaption p {
-    max-width: 62ch;
-    color: rgb(var(--muted-text));
-    font:
-      400 0.82rem/1.5 'DM Sans',
-      sans-serif;
   }
 
   .gw-scroll {

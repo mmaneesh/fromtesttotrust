@@ -6,7 +6,7 @@ const tabs = [
   { id: 'about', label: 'About' },
   { id: 'experience', label: 'Experience' },
   { id: 'ai-systems', label: 'AI Systems' },
-  { id: 'speaking', label: 'Speaking' },
+  { id: 'speaking', label: 'Insights' },
 ];
 ---
 
@@ -140,6 +140,10 @@ const tabs = [
       border-color 180ms ease-out,
       color 180ms ease-out;
   }
+  .connect:hover {
+    background-color: transparent;
+    color: rgb(var(--accent));
+  }
   .connect span {
     font-size: 12px;
   }
@@ -177,7 +181,7 @@ const tabs = [
       max-height: 0;
       overflow: hidden;
       opacity: 0;
-      padding: 0;
+      padding: 0 16px;
       pointer-events: none;
       transform: translateY(-6px);
       background: rgb(var(--canvas));
@@ -192,7 +196,7 @@ const tabs = [
     .topbar.menu-open #primary-nav {
       max-height: 240px;
       opacity: 1;
-      padding: 8px 0 12px;
+      padding: 8px 16px 12px;
       pointer-events: auto;
       transform: translateY(0);
       border-bottom-color: rgb(var(--line));

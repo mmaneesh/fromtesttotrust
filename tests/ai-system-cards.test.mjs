@@ -125,6 +125,27 @@ test('the brand unification brief scores a URL through rule sets and routes esca
   assert.match(systems, /the skill never publishes/);
 });
 
+test('the shared skills brief routes both author types to one GitHub repository', async () => {
+  const [systemBrief, diagram, systems] = await Promise.all([
+    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SkillsRepoDiagram.astro'),
+    readSource('src/data/ai-systems.ts'),
+  ]);
+
+  assert.match(systemBrief, /<SkillsRepoDiagram \/>/);
+  assert.match(systemBrief, /'shared-skills-platform': \{\s*riskAnalysis:/);
+  assert.match(diagram, /<svg/);
+  assert.match(diagram, /marker-end="url\(#sr-arrow\)"/);
+  assert.match(diagram, /Claude Desktop/);
+  assert.match(diagram, /\/skill-creator/);
+  assert.match(diagram, /stamps username/);
+  assert.match(
+    systems,
+    /generic skills any team can use and team-specific skills/,
+  );
+  assert.match(systems, /stamped with the author’s username/);
+});
+
 test('brief pages use a continuous article layout instead of card surfaces', async () => {
   const [systemBrief, speakingBrief] = await Promise.all([
     readSource('src/pages/systems/[id].astro'),

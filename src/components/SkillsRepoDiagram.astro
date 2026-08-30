@@ -1,0 +1,305 @@
+<figure class="sr-fig">
+  <figcaption>
+    <span>Architecture diagram</span>
+  </figcaption>
+
+  <div class="sr-scroll">
+    <svg viewBox="0 0 1080 374" role="img" aria-labelledby="sr-title sr-desc">
+      <title id="sr-title">Shared skills repository flow</title>
+      <desc id="sr-desc">
+        Developers browse and commit to a GitHub repository directly.
+        Non-technical staff reach the same repository through a Claude Desktop
+        connector, searching existing skills from chat. The repository holds
+        generic skills any team can use and team-specific skills. To add a
+        skill, an author runs the /skill-creator skill to scaffold it, then
+        publishes it; the publish step stamps the author's username. A returning
+        path shows that finding an existing skill lets an author skip building a
+        new one.
+      </desc>
+
+      <defs>
+        <marker
+          id="sr-arrow"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="sr-arrow" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+        <marker
+          id="sr-arrow-return"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="sr-arrow return" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+      </defs>
+
+      <!-- Boundary: the GitHub repository -->
+      <rect class="sr-boundary" x="744" y="44" width="316" height="228" rx="6"
+      ></rect>
+      <text class="sr-boundary-label" x="762" y="64"
+        >GITHUB · SHARED SKILLS REPO</text
+      >
+
+      <!-- Edges (drawn before nodes) -->
+      <g class="sr-edge-group">
+        <path class="sr-edge" d="M196 101 H768" marker-end="url(#sr-arrow)"
+        ></path>
+        <path class="sr-edge" d="M196 171 H252" marker-end="url(#sr-arrow)"
+        ></path>
+        <path class="sr-edge" d="M412 171 H768" marker-end="url(#sr-arrow)"
+        ></path>
+        <path class="sr-edge" d="M332 195 V232" marker-end="url(#sr-arrow)"
+        ></path>
+        <path class="sr-edge" d="M412 254 H492" marker-end="url(#sr-arrow)"
+        ></path>
+        <path class="sr-edge" d="M668 254 H744" marker-end="url(#sr-arrow)"
+        ></path>
+
+        <path
+          class="sr-edge return"
+          d="M792 272 V308 H16 V101 H44"
+          marker-end="url(#sr-arrow-return)"></path>
+        <path
+          class="sr-edge return"
+          d="M16 171 H44"
+          marker-end="url(#sr-arrow-return)"></path>
+      </g>
+
+      <!-- Edge labels -->
+      <g class="sr-elabel">
+        <g transform="translate(470,101)"
+          ><rect x="-52" y="-9" width="104" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">browse + commit</text
+          ></g
+        >
+        <g transform="translate(566,171)"
+          ><rect x="-22" y="-9" width="44" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">search</text
+          ></g
+        >
+        <g transform="translate(332,213)"
+          ><rect x="-30" y="-9" width="60" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">new skill</text
+          ></g
+        >
+        <g transform="translate(452,254)"
+          ><rect x="-27" y="-9" width="54" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">scaffold</text
+          ></g
+        >
+        <g transform="translate(706,254)"
+          ><rect x="-31" y="-9" width="62" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">+ username</text
+          ></g
+        >
+        <g transform="translate(388,308)"
+          ><rect x="-130" y="-9" width="260" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">found an existing skill · skip the rebuild</text
+          ></g
+        >
+      </g>
+
+      <!-- Nodes -->
+      <g class="sr-node author">
+        <rect x="44" y="79" width="152" height="44" rx="6"></rect>
+        <text class="t" x="120" y="106" text-anchor="middle">Developer</text>
+      </g>
+      <g class="sr-node author">
+        <rect x="44" y="149" width="152" height="44" rx="6"></rect>
+        <text class="t" x="120" y="176" text-anchor="middle"
+          >Non-tech staff</text
+        >
+      </g>
+
+      <g class="sr-node bridge">
+        <rect x="252" y="147" width="160" height="48" rx="6"></rect>
+        <text class="t" x="332" y="169" text-anchor="middle"
+          >Claude Desktop</text
+        >
+        <text class="s" x="332" y="186" text-anchor="middle">connector</text>
+      </g>
+
+      <g class="sr-node make">
+        <rect x="252" y="232" width="160" height="44" rx="6"></rect>
+        <text class="t" x="332" y="259" text-anchor="middle"
+          >/skill-creator</text
+        >
+      </g>
+      <g class="sr-node make">
+        <rect x="492" y="232" width="176" height="44" rx="6"></rect>
+        <text class="t" x="580" y="251" text-anchor="middle">Publish</text>
+        <text class="s" x="580" y="267" text-anchor="middle"
+          >stamps username</text
+        >
+      </g>
+
+      <g class="sr-node grp">
+        <rect x="768" y="78" width="268" height="46" rx="6"></rect>
+        <text class="t" x="902" y="105" text-anchor="middle"
+          >Generic skills</text
+        >
+      </g>
+      <g class="sr-node grp">
+        <rect x="768" y="148" width="268" height="46" rx="6"></rect>
+        <text class="t" x="902" y="175" text-anchor="middle"
+          >Team-specific skills</text
+        >
+      </g>
+
+      <!-- Legend -->
+      <g class="sr-legend" transform="translate(20,350)">
+        <line x1="0" y1="0" x2="30" y2="0" class="sr-edge"></line>
+        <text x="40" y="4">search / publish flow</text>
+        <line x1="212" y1="0" x2="242" y2="0" class="sr-edge return"></line>
+        <text x="252" y="4">reuse an existing skill</text>
+        <rect x="448" y="-8" width="22" height="16" rx="3" class="sr-boundary"
+        ></rect>
+        <text x="480" y="4">GitHub · shared repo</text>
+      </g>
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .sr-fig {
+    margin: 3rem 0;
+    border-top: 1px solid rgb(var(--line));
+    border-bottom: 1px solid rgb(var(--line));
+    padding: 1.35rem 0 1.5rem;
+  }
+  .sr-fig figcaption {
+    margin-bottom: 1.2rem;
+  }
+  .sr-fig figcaption span {
+    color: rgb(var(--accent));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .sr-scroll {
+    overflow-x: auto;
+  }
+  .sr-scroll svg {
+    display: block;
+    width: 100%;
+    min-width: 720px;
+    height: auto;
+  }
+
+  .sr-boundary {
+    fill: rgb(var(--surface) / 0.28);
+    stroke: rgb(var(--line));
+  }
+  .sr-boundary-label {
+    fill: rgb(var(--muted-text));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .sr-node rect {
+    fill: rgb(var(--surface));
+    stroke: rgb(var(--line));
+    stroke-width: 1.2;
+  }
+  .sr-node .t {
+    fill: rgb(var(--foreground));
+    font:
+      600 12px 'Geist Mono',
+      monospace;
+  }
+  .sr-node .s {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .sr-node.grp .t {
+    font-size: 11px;
+  }
+  .sr-node.bridge rect {
+    fill: rgb(var(--surface-raised));
+    stroke: rgb(var(--accent));
+    stroke-width: 1.6;
+  }
+  .sr-node.make rect {
+    stroke: rgb(var(--accent));
+  }
+
+  .sr-edge {
+    fill: none;
+    stroke: rgb(var(--control-line));
+    stroke-width: 1.5;
+  }
+  .sr-edge.return {
+    stroke: rgb(var(--accent));
+    stroke-dasharray: 4 4;
+  }
+  .sr-arrow {
+    fill: rgb(var(--control-line));
+  }
+  .sr-arrow.return {
+    fill: rgb(var(--accent));
+  }
+
+  .sr-elabel rect {
+    fill: rgb(var(--surface));
+  }
+  .sr-elabel text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 9.5px 'Geist Mono',
+      monospace;
+  }
+
+  .sr-legend text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .sr-legend line {
+    stroke-width: 1.6;
+  }
+
+  @media (forced-colors: active) {
+    .sr-node rect,
+    .sr-boundary {
+      stroke: CanvasText;
+      fill: Canvas;
+    }
+    .sr-node .t,
+    .sr-node .s,
+    .sr-boundary-label,
+    .sr-elabel text,
+    .sr-legend text {
+      fill: CanvasText;
+    }
+    .sr-edge {
+      stroke: CanvasText;
+    }
+    .sr-elabel rect {
+      fill: Canvas;
+    }
+    .sr-arrow {
+      fill: CanvasText;
+    }
+  }
+</style>

@@ -402,24 +402,34 @@ export const aiSystems: AISystem[] = [
   {
     id: 'brand-unification-skill',
     title: 'Brand Unification Skill',
-    subtitle: 'Shared standards for consistent AI-assisted work',
+    subtitle:
+      'From a public URL to a scored brand-migration audit with a routed escalation.',
     blurb:
-      'A reusable skill that applies shared brand standards to AI-assisted work without exposing the underlying internal guidance.',
+      'Audits a URL, doc, PDF, or deck against the unified brand’s rules, scores it on a fixed rubric, rewrites off-brand copy, and routes anything sensitive to the content or legal team.',
     category: 'Governance',
     summary:
-      'Built a reusable skill that helps teams apply shared brand standards consistently across AI-assisted work without exposing the underlying internal guidance.',
+      'To address it, I proposed a Claude skill and built it: content and creative teams import it, hand it a URL, and it audits the page against the unified brand’s rules. Every finding traces to a written rule, and the skill rewrites and recommends but never publishes.',
     problem:
-      'Different teams were applying brand guidance inconsistently across AI-assisted work, creating avoidable review cycles and uneven output quality.',
+      'My company was consolidating several legacy brands into one. Thousands of public pages still named the retired brands: blog posts, articles, research papers, campaign assets. Content writers and creative services had no consistent way to find every reference, judge how far off-brand a page was, or decide what needed legal review.',
     architecture: [
-      'Centralizes shared brand considerations in a reusable, governed skill.',
-      'Guides teams toward consistent decisions while preserving the context of each request.',
-      'Keeps the internal standards private while making their intended outcomes repeatable.',
+      'A user in Claude Desktop pastes a URL and asks Claude to audit it. That request loads the skill, which pulls the page and, following progressive disclosure, reads only the rule files it needs for the current step, so the context stays small and uncorrupted across a long audit.',
+      'The skill runs the content through four ordered rule sets: brand remediation, tone and voice, content rewrite, and escalation. Each set scores the content against its rubric and records the specific rule behind every finding.',
+      'It returns a score per rubric, a rewritten draft of the off-brand passages, and an escalation call: keep it with the content team, or send it to legal. The writer applies the changes; the skill never publishes.',
     ],
     impact: [
-      'Improved consistency across AI-assisted work without requiring each team to recreate the same guidance.',
-      'Created a safer path for broad adoption of shared brand standards.',
+      'The brand migration finished in about a month against a three-month estimate: one week to build and test the skill, three weeks to work through the content.',
+      'Content writers and creative services run the audit themselves in Claude, with no dependency on a central brand reviewer.',
+      'What started as a web-page tool now audits Word documents, PDFs, and presentations, and is the organization’s default path for content migration.',
     ],
-    technologies: ['AI Skills', 'Governance', 'Prompt Engineering'],
+    technologies: [
+      'Claude Skills',
+      'Progressive Disclosure',
+      'Claude Enterprise',
+      'Rubric Scoring',
+      'Prompt Engineering',
+      'Guardrails',
+      'Governance',
+    ],
     featured: true,
   },
 ];

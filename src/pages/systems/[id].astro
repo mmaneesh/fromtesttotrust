@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 import AgentPipelineBrief from '../../components/AgentPipelineBrief.astro';
 import GatewayDiagrams from '../../components/GatewayDiagrams.astro';
 import SupportIntakeDiagram from '../../components/SupportIntakeDiagram.astro';
+import BrandAuditDiagram from '../../components/BrandAuditDiagram.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 
 export function getStaticPaths() {
@@ -127,6 +128,25 @@ const systemDetails: Record<
       },
     ],
   },
+  'brand-unification-skill': {
+    riskAnalysis: [
+      {
+        risk: 'A skill with broad rewrite instructions can drift into editorializing or changing meaning.',
+        mitigation:
+          'Every pass is bound to a written rule set, and the skill records the specific rule behind each finding, so a reviewer can check any change against its source.',
+      },
+      {
+        risk: 'A long audit can fill the context with rule text and stale page content until the model loses the thread.',
+        mitigation:
+          'The skill uses progressive disclosure: it loads only the rule files each step needs and drops page content once a step is scored, so the working context stays small.',
+      },
+      {
+        risk: 'Some off-brand content is a legal question, not a copy edit.',
+        mitigation:
+          'The escalation rule set routes each finding to the content team or legal, and the skill returns a score and a draft but never publishes, so a person still makes the edit and the release call.',
+      },
+    ],
+  },
 };
 
 const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
@@ -185,7 +205,8 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
       }
       {system.id === 'litellm-gateway' && <GatewayDiagrams />}
       {system.id === 'support-intake-agent' && <SupportIntakeDiagram />}
-      <div class="text-base text-body leading-8 space-y-7">
+      {system.id === 'brand-unification-skill' && <BrandAuditDiagram />}
+      <div class="mt-7 text-base text-body leading-8 space-y-7">
         {
           details.riskAnalysis.map((item) => (
             <p>

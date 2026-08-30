@@ -332,30 +332,34 @@ export const aiSystems: AISystem[] = [
   },
   {
     id: 'shared-skills-platform',
-    title: 'Shared Create/Publish/Invoke Skills Platform',
-    subtitle: 'Reusable AI tools and agent skills for product teams',
+    title: 'Shared Skills Repository',
+    subtitle:
+      'From every team building skills in isolation to one GitHub repository the whole company publishes to and reuses.',
     blurb:
-      'An internal registry where teams define, test, publish, and reuse AI skills that share common security and quality checks.',
-    category: 'Test Architecture',
+      'A GitHub repository of shared Claude skills, generic and team-specific: developers browse it directly, non-technical staff search it through a Claude Desktop connector.',
+    category: 'Governance',
     summary:
-      'Built an internal platform where teams define, test, publish, and use shared AI skills with common security and quality checks.',
+      'My team built a shared skills repository on GitHub where anyone publishes their team’s skills and checks for an existing one before building a new copy. Every skill carries its author’s username, so a broken or unclear one traces straight back.',
     problem:
-      'Siloed engineering teams were duplicating custom scripts and prompts without central quality oversight or security validation.',
+      'Individual teams were building their own Claude skills and keeping them inside the team. When two teams did similar work, they often built the same skill twice, with no way to see that the other version already existed. Nothing recorded who wrote a skill, so a broken or unclear one had no clear owner.',
     architecture: [
-      'Standardized skill schema with typed parameter definitions and execution sandboxes.',
-      'Version-controlled registry for team-authored skills (Playwright automation, API mocking, data synthesis).',
-      'Automated linting and security scanning for all published skills.',
+      'The repository is a GitHub repo. Published skills are split into generic skills any team can use and team-specific skills, so an author scans the right set first. Everyone already has GitHub access, so developers search and read it directly.',
+      'For staff who do not work in GitHub, a connector links Claude Desktop to the repo. They ask Claude from chat to search existing skills and get the same catalog without leaving the tool they already use.',
+      'To build a skill, an author runs the /skill-creator skill, which scaffolds it from a short description. The GitHub connector publishes it back to the repo, stamped with the author’s username.',
     ],
     impact: [
-      'Accelerated cross-functional AI adoption across testing, dev, and content teams.',
-      'Standardized security and quality baselines across dozens of custom plugins.',
+      'Duplicate skill work dropped sharply: teams reuse a published skill instead of rebuilding it locally.',
+      'Technical and non-technical staff work from one catalog: developers through GitHub, everyone else through the Claude Desktop connector.',
+      'Every skill is attributable, so a malfunctioning or unclear skill routes back to the person who wrote it.',
     ],
     technologies: [
-      'TypeScript',
-      'JSON Schema',
-      'Git Workflows',
-      'API Gateway',
-      'Playwright',
+      'Claude Skills',
+      'GitHub',
+      'Claude Desktop',
+      'MCP Connectors',
+      'skill-creator',
+      'Claude Enterprise',
+      'Knowledge Sharing',
     ],
     links: [
       {

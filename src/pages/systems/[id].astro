@@ -6,6 +6,7 @@ import AgentPipelineBrief from '../../components/AgentPipelineBrief.astro';
 import GatewayDiagrams from '../../components/GatewayDiagrams.astro';
 import SupportIntakeDiagram from '../../components/SupportIntakeDiagram.astro';
 import BrandAuditDiagram from '../../components/BrandAuditDiagram.astro';
+import SkillsRepoDiagram from '../../components/SkillsRepoDiagram.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 
 export function getStaticPaths() {
@@ -112,19 +113,19 @@ const systemDetails: Record<
   'shared-skills-platform': {
     riskAnalysis: [
       {
-        risk: 'Insecure custom scripts authored by non-technical teams',
+        risk: 'Two people can still start the same skill at the same time.',
         mitigation:
-          'Strict schema validation and isolated container execution sandboxes.',
+          'Anyone can search the repository before building, in GitHub or through the Claude Desktop connector, so an existing skill surfaces before a duplicate is written.',
       },
       {
-        risk: 'Duplication of custom AI tools across squads',
+        risk: 'A skill published by another team can misbehave, and it is not obvious who to ask.',
         mitigation:
-          'Centralized version-controlled skill registry with discoverability and usage metrics.',
+          'Every skill is published with its author’s username attached, so a question or a malfunction routes straight to the person who wrote it.',
       },
       {
-        risk: 'Breaking API changes across skill updates',
+        risk: 'A GitHub-based catalog could shut out non-technical staff.',
         mitigation:
-          'Semantic versioning (semver) with automated integration tests for published skills.',
+          'The Claude Desktop connector gives them the same search and the same publish path from chat, so the repository is not developer-only.',
       },
     ],
   },
@@ -206,6 +207,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
       {system.id === 'litellm-gateway' && <GatewayDiagrams />}
       {system.id === 'support-intake-agent' && <SupportIntakeDiagram />}
       {system.id === 'brand-unification-skill' && <BrandAuditDiagram />}
+      {system.id === 'shared-skills-platform' && <SkillsRepoDiagram />}
       <div class="mt-7 text-base text-body leading-8 space-y-7">
         {
           details.riskAnalysis.map((item) => (

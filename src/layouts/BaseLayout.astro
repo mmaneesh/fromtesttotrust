@@ -21,13 +21,9 @@ const {
     <meta name="generator" content={Astro.generator} />
     <script is:inline>
       (() => {
+        // Dark is the default; only an explicit saved choice can switch to light.
         const savedTheme = localStorage.getItem('theme');
-        const theme =
-          savedTheme === 'light' || savedTheme === 'dark'
-            ? savedTheme
-            : matchMedia('(prefers-color-scheme: light)').matches
-              ? 'light'
-              : 'dark';
+        const theme = savedTheme === 'light' ? 'light' : 'dark';
         document.documentElement.dataset.theme = theme;
       })();
     </script>

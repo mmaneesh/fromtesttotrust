@@ -1,66 +1,503 @@
-<figure class="architecture-map">
+<figure class="gw-fig">
   <figcaption>
     <span>Architecture diagram</span>
-    <strong>One entry point, shared runtime, connected agents</strong>
+    <strong
+      >One entry, one sandbox per ticket, one governed path to models</strong
+    >
+    <p>
+      A Jira comment is the only way in; a reviewed pull request is the only way
+      out. Every model call is authorized at LiteLLM against an Okta identity
+      the platform team provisions.
+    </p>
   </figcaption>
-  <svg viewBox="0 0 1440 680" role="img" aria-label="Dev Loop architecture with dotted center-to-center connections between Jira, WAF, API Gateway, AWS runtime services, Fargate sandboxes, Git, LiteLLM, and A2A agents.">
-    <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" /></marker></defs>
-    <rect class="boundary" x="26" y="112" width="1080" height="528" rx="6" />
-    <text class="boundary-label" x="566" y="128" text-anchor="middle">AWS · DEV LOOP VPC · PRIVATE SUBNETS</text>
 
-    <!-- Dotted center-to-center connections are rendered before nodes. -->
-    <g class="connection">
-      <path d="M115 61 H275" marker-end="url(#arrow)" /><path d="M275 61 H435" marker-end="url(#arrow)" /><path d="M435 61 V210 H560" marker-end="url(#arrow)" />
-      <path d="M150 240 H560" marker-end="url(#arrow)" /><path d="M560 235 H915" marker-end="url(#arrow)" /><path d="M560 235 V345 H465" marker-end="url(#arrow)" />
-      <path d="M465 345 H730" marker-end="url(#arrow)" /><path d="M730 345 V500 H475" marker-end="url(#arrow)" /><path d="M730 345 V500 H785" marker-end="url(#arrow)" />
-      <path d="M150 445 C150 515 475 435 475 500" marker-end="url(#arrow)" /><path d="M150 445 C150 555 785 435 785 500" marker-end="url(#arrow)" />
-      <path d="M925 345 C925 435 475 435 475 500" marker-end="url(#arrow)" /><path d="M925 345 C925 465 785 435 785 500" marker-end="url(#arrow)" />
-      <path d="M915 235 V420" marker-end="url(#arrow)" />
-      <path d="M785 546 C1020 546 1040 238 1215 238" marker-end="url(#arrow)" /><path d="M785 546 C1040 546 1040 350 1215 350" marker-end="url(#arrow)" /><path d="M785 546 C1050 546 1050 462 1215 462" marker-end="url(#arrow)" />
-    </g>
+  <div class="gw-scroll">
+    <svg viewBox="0 0 1200 720" role="img" aria-labelledby="gw-title gw-desc">
+      <title id="gw-title">Dev Loop platform architecture</title>
+      <desc id="gw-desc">
+        A Jira ticket comment passes a WAF Jira allowlist and API Gateway to the
+        dev-loop-api Lambda, which takes a per-ticket lock in DynamoDB and puts
+        an event on an SQS queue. A dispatcher Lambda launches one ephemeral ECS
+        Fargate sandbox per ticket, running an OpenCode agent that pulls its
+        image from ECR and short-lived credentials from Secrets Manager, while
+        an EventBridge reaper enforces a time limit. From the sandbox the agent
+        calls MCP tool servers, opens a pull request on the Git host, makes
+        model calls through LiteLLM which authorizes each call against an
+        Okta-provisioned identity before routing to OpenRouter or AWS Bedrock
+        with a default fallback, and delegates to other teams' agents over A2A.
+        The agent posts status and the pull request link back to the Jira
+        ticket.
+      </desc>
 
-    <g class="node entry"><rect x="55" y="35" width="120" height="52" rx="5"/><text x="115" y="57" text-anchor="middle">Jira ticket</text><text x="115" y="72" text-anchor="middle" class="sub">agent comment</text></g>
-    <g class="node entry"><rect x="215" y="35" width="120" height="52" rx="5"/><text x="275" y="57" text-anchor="middle">WAF</text><text x="275" y="72" text-anchor="middle" class="sub">Jira allowlist</text></g>
-    <g class="node entry"><rect x="375" y="35" width="120" height="52" rx="5"/><text x="435" y="57" text-anchor="middle">API Gateway</text><text x="435" y="72" text-anchor="middle" class="sub">public endpoint</text></g>
+      <defs>
+        <marker
+          id="gw-arrow"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="gw-arrow" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+        <marker
+          id="gw-arrow-return"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="gw-arrow return" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+        <marker
+          id="gw-arrow-auth"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="gw-arrow auth" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+      </defs>
 
-    <g class="node support"><rect x="90" y="217" width="120" height="46" rx="5"/><text x="150" y="245" text-anchor="middle">ECR</text></g>
-    <g class="node api"><rect x="500" y="210" width="120" height="50" rx="5"/><text x="560" y="232" text-anchor="middle">dev-loop-api</text><text x="560" y="247" text-anchor="middle" class="sub">Lambda</text></g>
-    <g class="node state"><rect x="850" y="210" width="130" height="50" rx="5"/><text x="915" y="232" text-anchor="middle">DynamoDB</text><text x="915" y="247" text-anchor="middle" class="sub">per-ticket lock</text></g>
-    <g class="node queue"><rect x="400" y="320" width="130" height="50" rx="5"/><text x="465" y="342" text-anchor="middle">SQS + DLQ</text><text x="465" y="357" text-anchor="middle" class="sub">event source</text></g>
-    <g class="node api"><rect x="665" y="320" width="130" height="50" rx="5"/><text x="730" y="342" text-anchor="middle">Dispatcher</text><text x="730" y="357" text-anchor="middle" class="sub">Lambda</text></g>
-    <g class="node support"><rect x="90" y="422" width="120" height="46" rx="5"/><text x="150" y="444" text-anchor="middle">EventBridge</text><text x="150" y="459" text-anchor="middle" class="sub">reaper Lambda</text></g>
-    <g class="node support"><rect x="860" y="320" width="130" height="50" rx="5"/><text x="925" y="342" text-anchor="middle">Secrets Manager</text><text x="925" y="357" text-anchor="middle" class="sub">Jira · Git · LiteLLM</text></g>
-    <g class="node planned"><rect x="850" y="403" width="130" height="34" rx="5"/><text x="915" y="425" text-anchor="middle">Planned memory</text></g>
+      <!-- Boundaries -->
+      <rect class="gw-boundary" x="250" y="40" width="672" height="600" rx="6"
+      ></rect>
+      <text class="gw-boundary-label" x="266" y="62"
+        >AWS · DEV LOOP VPC · PRIVATE SUBNETS</text
+      >
+      <rect class="gw-ephemeral" x="496" y="312" width="380" height="286" rx="8"
+      ></rect>
+      <text class="gw-boundary-label" x="686" y="586" text-anchor="middle"
+        >PER-TICKET EPHEMERAL · ECS FARGATE</text
+      >
 
-    <rect class="task-boundary" x="305" y="465" width="650" height="122" rx="6"/><text class="task-label" x="630" y="480" text-anchor="middle">PER-TICKET EPHEMERAL ECS FARGATE TASKS</text>
-    <g class="node task"><rect x="400" y="500" width="150" height="46" rx="5"/><text x="475" y="522" text-anchor="middle">Sandbox 01</text><text x="475" y="537" text-anchor="middle" class="sub">OpenCode agent</text></g>
-    <g class="node task"><rect x="710" y="500" width="150" height="46" rx="5"/><text x="785" y="522" text-anchor="middle">Sandbox 02</text><text x="785" y="537" text-anchor="middle" class="sub">OpenCode agent</text></g>
+      <!-- Edges (drawn before nodes) -->
+      <g class="gw-edge-group">
+        <path class="gw-edge" d="M109 196 V234" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M109 290 V328" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M194 356 H280" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M370 328 V202" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M370 384 V420" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M370 472 V512" marker-end="url(#gw-arrow)"
+        ></path>
+        <path
+          class="gw-edge"
+          d="M460 538 H500 V462 H536"
+          marker-end="url(#gw-arrow)"></path>
+        <path class="gw-edge" d="M550 284 V402" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M690 284 V402" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M818 284 V402" marker-end="url(#gw-arrow)"
+        ></path>
 
-    <g class="node exit"><rect x="1215" y="210" width="150" height="56" rx="5"/><text x="1290" y="233" text-anchor="middle">Git host</text><text x="1290" y="248" text-anchor="middle" class="sub">branch · commit · PR</text></g>
-    <g class="node exit"><rect x="1215" y="322" width="150" height="56" rx="5"/><text x="1290" y="342" text-anchor="middle">LiteLLM</text><text x="1290" y="357" text-anchor="middle" class="sub">OpenRouter · AWS Bedrock</text><text x="1290" y="370" text-anchor="middle" class="sub">Default fallback</text></g>
-    <g class="node a2a"><rect x="1215" y="434" width="150" height="56" rx="5"/><text x="1290" y="457" text-anchor="middle">A2A agents</text><text x="1290" y="472" text-anchor="middle" class="sub">other teams · any stack</text></g>
-  </svg>
+        <!-- Sandbox exit bus: trunk out of the sandbox, vertical bus, stub per exit -->
+        <path class="gw-edge" d="M840 454 H940"></path>
+        <path class="gw-edge" d="M940 95 V473"></path>
+        <path class="gw-edge" d="M940 95 H1010" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M940 179 H1010" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M940 366 H1010" marker-end="url(#gw-arrow)"
+        ></path>
+        <path class="gw-edge" d="M940 473 H1010" marker-end="url(#gw-arrow)"
+        ></path>
+
+        <path
+          class="gw-edge auth"
+          d="M1098 290 V322"
+          marker-end="url(#gw-arrow-auth)"></path>
+        <path
+          class="gw-edge return"
+          d="M688 506 V656 H12 V168 H24"
+          marker-end="url(#gw-arrow-return)"></path>
+      </g>
+
+      <!-- Edge labels -->
+      <g class="gw-elabel">
+        <g transform="translate(237,356)"
+          ><rect x="-28" y="-9" width="56" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">request</text
+          ></g
+        >
+        <g transform="translate(370,270)"
+          ><rect x="-44" y="-9" width="88" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">acquire lock</text
+          ></g
+        >
+        <g transform="translate(370,402)"
+          ><rect x="-32" y="-9" width="64" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">enqueue</text
+          ></g
+        >
+        <g transform="translate(370,492)"
+          ><rect x="-33" y="-9" width="66" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">consume</text
+          ></g
+        >
+        <g transform="translate(500,492)"
+          ><rect x="-29" y="-9" width="58" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">run task</text
+          ></g
+        >
+        <g transform="translate(550,332)"
+          ><rect x="-36" y="-9" width="72" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">pull image</text
+          ></g
+        >
+        <g transform="translate(690,346)"
+          ><rect x="-53" y="-9" width="106" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">short-lived creds</text
+          ></g
+        >
+        <g transform="translate(818,332)"
+          ><rect x="-32" y="-9" width="64" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">time limit</text
+          ></g
+        >
+        <g transform="translate(975,80)"
+          ><rect x="-24" y="-9" width="48" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">tools</text
+          ></g
+        >
+        <g transform="translate(975,164)"
+          ><rect x="-30" y="-9" width="60" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">open PR</text
+          ></g
+        >
+        <g transform="translate(975,351)"
+          ><rect x="-36" y="-9" width="72" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">model call</text
+          ></g
+        >
+        <g transform="translate(975,458)"
+          ><rect x="-32" y="-9" width="64" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">delegate</text
+          ></g
+        >
+        <g transform="translate(300,656)"
+          ><rect x="-128" y="-9" width="256" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">posts status + PR link back to the ticket</text
+          ></g
+        >
+      </g>
+
+      <!-- Nodes -->
+      <g class="gw-node entry">
+        <rect x="24" y="140" width="170" height="56" rx="6"></rect>
+        <text class="t" x="109" y="163" text-anchor="middle">Jira ticket</text>
+        <text class="s" x="109" y="180" text-anchor="middle">agent comment</text
+        >
+      </g>
+      <g class="gw-node entry">
+        <rect x="24" y="234" width="170" height="56" rx="6"></rect>
+        <text class="t" x="109" y="257" text-anchor="middle">WAF</text>
+        <text class="s" x="109" y="274" text-anchor="middle"
+          >Jira allowlist</text
+        >
+      </g>
+      <g class="gw-node entry">
+        <rect x="24" y="328" width="170" height="56" rx="6"></rect>
+        <text class="t" x="109" y="351" text-anchor="middle">API Gateway</text>
+        <text class="s" x="109" y="368" text-anchor="middle"
+          >HTTPS endpoint</text
+        >
+      </g>
+
+      <g class="gw-node core">
+        <rect x="280" y="132" width="180" height="70" rx="6"></rect>
+        <text class="t" x="370" y="155" text-anchor="middle">DynamoDB</text>
+        <text class="s" x="370" y="172" text-anchor="middle"
+          >per-ticket lock + state</text
+        >
+        <text class="s planned" x="370" y="189" text-anchor="middle"
+          >planned: run memory</text
+        >
+      </g>
+      <g class="gw-node core">
+        <rect x="280" y="328" width="180" height="56" rx="6"></rect>
+        <text class="t" x="370" y="351" text-anchor="middle">dev-loop-api</text>
+        <text class="s" x="370" y="368" text-anchor="middle">Lambda</text>
+      </g>
+      <g class="gw-node core">
+        <rect x="280" y="420" width="180" height="52" rx="6"></rect>
+        <text class="t" x="370" y="442" text-anchor="middle">SQS + DLQ</text>
+        <text class="s" x="370" y="459" text-anchor="middle">event queue</text>
+      </g>
+      <g class="gw-node core">
+        <rect x="280" y="512" width="180" height="52" rx="6"></rect>
+        <text class="t" x="370" y="534" text-anchor="middle">Dispatcher</text>
+        <text class="s" x="370" y="551" text-anchor="middle">Lambda</text>
+      </g>
+
+      <g class="gw-node support">
+        <rect x="500" y="232" width="100" height="52" rx="6"></rect>
+        <text class="t" x="550" y="254" text-anchor="middle">ECR</text>
+        <text class="s" x="550" y="271" text-anchor="middle">agent image</text>
+      </g>
+      <g class="gw-node support">
+        <rect x="616" y="232" width="148" height="52" rx="6"></rect>
+        <text class="t" x="690" y="254" text-anchor="middle"
+          >Secrets Manager</text
+        >
+        <text class="s" x="690" y="271" text-anchor="middle"
+          >Jira · Git · LiteLLM</text
+        >
+      </g>
+      <g class="gw-node support">
+        <rect x="770" y="232" width="110" height="52" rx="6"></rect>
+        <text class="t" x="825" y="254" text-anchor="middle">EventBridge</text>
+        <text class="s" x="825" y="271" text-anchor="middle">reaper</text>
+      </g>
+
+      <g class="gw-node sandbox">
+        <rect x="536" y="402" width="304" height="104" rx="6"></rect>
+        <text class="t" x="688" y="432" text-anchor="middle">Sandbox</text>
+        <text class="s" x="688" y="451" text-anchor="middle"
+          >OpenCode agent</text
+        >
+        <text class="s" x="688" y="469" text-anchor="middle"
+          >one Fargate task per ticket</text
+        >
+      </g>
+
+      <g class="gw-node exit">
+        <rect x="1010" y="70" width="176" height="50" rx="6"></rect>
+        <text class="t" x="1098" y="92" text-anchor="middle"
+          >MCP tool servers</text
+        >
+        <text class="s" x="1098" y="108" text-anchor="middle"
+          >tools + context</text
+        >
+      </g>
+      <g class="gw-node exit">
+        <rect x="1010" y="150" width="176" height="58" rx="6"></rect>
+        <text class="t" x="1098" y="173" text-anchor="middle">Git host</text>
+        <text class="s" x="1098" y="190" text-anchor="middle"
+          >branch · commit · PR</text
+        >
+      </g>
+      <g class="gw-node identity">
+        <rect x="1010" y="238" width="176" height="52" rx="6"></rect>
+        <text class="t" x="1098" y="260" text-anchor="middle">Okta</text>
+        <text class="s" x="1098" y="277" text-anchor="middle"
+          >authorizes each call</text
+        >
+      </g>
+      <g class="gw-node gateway">
+        <rect x="1010" y="322" width="176" height="88" rx="6"></rect>
+        <text class="t" x="1098" y="346" text-anchor="middle">LiteLLM</text>
+        <text class="s" x="1098" y="364" text-anchor="middle"
+          >routing + fallback</text
+        >
+        <text class="s" x="1098" y="381" text-anchor="middle"
+          >OpenRouter · AWS Bedrock</text
+        >
+      </g>
+      <g class="gw-node a2a">
+        <rect x="1010" y="444" width="176" height="58" rx="6"></rect>
+        <text class="t" x="1098" y="467" text-anchor="middle">A2A agents</text>
+        <text class="s" x="1098" y="484" text-anchor="middle"
+          >other teams · any stack</text
+        >
+      </g>
+
+      <!-- Legend -->
+      <g class="gw-legend" transform="translate(24,690)">
+        <line x1="0" y1="0" x2="30" y2="0" class="gw-edge"></line>
+        <text x="40" y="4">request / data flow</text>
+        <line x1="196" y1="0" x2="226" y2="0" class="gw-edge return"></line>
+        <text x="236" y="4">result posted back to Jira</text>
+        <line x1="452" y1="0" x2="482" y2="0" class="gw-edge auth"></line>
+        <text x="492" y="4">Okta authorization</text>
+        <rect x="664" y="-8" width="22" height="16" rx="3" class="gw-ephemeral"
+        ></rect>
+        <text x="696" y="4">ephemeral · one per ticket</text>
+      </g>
+    </svg>
+  </div>
 </figure>
 
 <style>
-  .architecture-map { margin: 3rem 0; border-top: 1px solid rgb(var(--line)); border-bottom: 1px solid rgb(var(--line)); padding: 1.35rem 0 1.5rem; }
-  figcaption { display: grid; gap: .35rem; margin-bottom: 1.3rem; }
-  figcaption span { color: rgb(var(--accent)); font: 600 10px 'Geist Mono', monospace; letter-spacing: .18em; text-transform: uppercase; }
-  figcaption strong { color: rgb(var(--foreground)); font: 700 1.05rem 'DM Sans', sans-serif; }
-  svg { display: block; width: 100%; height: auto; }
-  .boundary { fill: rgb(var(--surface) / .28); stroke: rgb(var(--line)); }
-  .boundary-label, .task-label { fill: rgb(var(--muted-text)); font: 600 10px 'Geist Mono', monospace; letter-spacing: .09em; }
-  .task-boundary { fill: transparent; stroke: rgb(var(--control-line)); stroke-dasharray: 4 4; }
-  .node rect { fill: rgb(var(--surface)); stroke: rgb(var(--line)); }
-  .node text { fill: rgb(var(--foreground)); font: 600 11px 'Geist Mono', monospace; }
-  .node .sub { fill: rgb(var(--muted-text)); font-size: 9px; font-weight: 500; }
-  .node.entry rect, .node.api rect { stroke: rgb(var(--accent)); }
-  .node.queue rect { stroke: rgb(var(--control-line)); }
-  .node.state rect, .node.a2a rect { stroke: rgb(var(--success)); }
-  .node.planned rect { fill: transparent; stroke: rgb(var(--accent)); stroke-dasharray: 4 3; }
-  .node.planned text { fill: rgb(var(--accent)); font-size: 9px; }
-  .node.task rect { stroke: rgb(var(--accent)); fill: rgb(var(--surface-raised)); }
-  .connection path { fill: none; stroke: rgb(var(--control-line)); stroke-width: 1.1; stroke-dasharray: 3 4; }
-  .connection path:last-child { stroke: rgb(var(--success)); }
-  marker path { fill: rgb(var(--control-line)); }
+  .gw-fig {
+    margin: 3rem 0;
+    border-top: 1px solid rgb(var(--line));
+    border-bottom: 1px solid rgb(var(--line));
+    padding: 1.35rem 0 1.5rem;
+  }
+  .gw-fig figcaption {
+    display: grid;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+  .gw-fig figcaption span {
+    color: rgb(var(--accent));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .gw-fig figcaption strong {
+    color: rgb(var(--foreground));
+    font:
+      700 1.05rem 'DM Sans',
+      sans-serif;
+  }
+  .gw-fig figcaption p {
+    max-width: 62ch;
+    color: rgb(var(--muted-text));
+    font:
+      400 0.82rem/1.5 'DM Sans',
+      sans-serif;
+  }
+
+  .gw-scroll {
+    overflow-x: auto;
+  }
+  .gw-scroll svg {
+    display: block;
+    width: 100%;
+    min-width: 720px;
+    height: auto;
+  }
+
+  .gw-boundary {
+    fill: rgb(var(--surface) / 0.28);
+    stroke: rgb(var(--line));
+  }
+  .gw-boundary-label {
+    fill: rgb(var(--muted-text));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+  }
+  .gw-ephemeral {
+    fill: none;
+    stroke: rgb(var(--control-line));
+    stroke-dasharray: 5 4;
+  }
+
+  .gw-node rect {
+    fill: rgb(var(--surface));
+    stroke: rgb(var(--line));
+    stroke-width: 1.2;
+  }
+  .gw-node .t {
+    fill: rgb(var(--foreground));
+    font:
+      600 12px 'Geist Mono',
+      monospace;
+  }
+  .gw-node .s {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .gw-node .s.planned {
+    font-style: italic;
+  }
+  .gw-node.sandbox rect {
+    fill: rgb(var(--surface-raised));
+    stroke: rgb(var(--accent));
+    stroke-width: 1.6;
+  }
+  .gw-node.exit rect,
+  .gw-node.gateway rect {
+    stroke: rgb(var(--accent));
+  }
+  .gw-node.identity rect,
+  .gw-node.a2a rect {
+    stroke: rgb(var(--success));
+  }
+
+  .gw-edge {
+    fill: none;
+    stroke: rgb(var(--control-line));
+    stroke-width: 1.5;
+  }
+  .gw-edge.return {
+    stroke: rgb(var(--accent));
+    stroke-dasharray: 4 4;
+  }
+  .gw-edge.auth {
+    stroke: rgb(var(--success));
+  }
+  .gw-arrow {
+    fill: rgb(var(--control-line));
+  }
+  .gw-arrow.return {
+    fill: rgb(var(--accent));
+  }
+  .gw-arrow.auth {
+    fill: rgb(var(--success));
+  }
+
+  .gw-elabel rect {
+    fill: rgb(var(--surface));
+  }
+  .gw-elabel text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 9.5px 'Geist Mono',
+      monospace;
+  }
+
+  .gw-legend text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .gw-legend line {
+    stroke-width: 1.6;
+  }
+
+  @media (forced-colors: active) {
+    .gw-node rect,
+    .gw-boundary,
+    .gw-ephemeral {
+      stroke: CanvasText;
+      fill: Canvas;
+    }
+    .gw-node .t,
+    .gw-node .s,
+    .gw-boundary-label,
+    .gw-elabel text,
+    .gw-legend text {
+      fill: CanvasText;
+    }
+    .gw-edge {
+      stroke: CanvasText;
+    }
+    .gw-elabel rect {
+      fill: Canvas;
+    }
+    .gw-arrow {
+      fill: CanvasText;
+    }
+  }
 </style>

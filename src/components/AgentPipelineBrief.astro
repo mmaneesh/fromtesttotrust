@@ -25,7 +25,15 @@ const handoffs = workflow.handoffs.map((handoff) => {
 ---
 
 <section class="my-12 space-y-10" aria-labelledby="pipeline-workflow-heading">
-  <figure class:list={[{ 'border-y border-line py-7': diagramsOnly, 'p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]': !diagramsOnly }]}>
+  <figure
+    class:list={[
+      {
+        'border-y border-line py-7': diagramsOnly,
+        'p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]':
+          !diagramsOnly,
+      },
+    ]}
+  >
     <div
       class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6"
     >
@@ -74,50 +82,69 @@ const handoffs = workflow.handoffs.map((handoff) => {
     </div>
   </figure>
 
-  {!diagramsOnly && <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-    {
-      workflow.phases.map((phase) => (
-        <article class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-5">
-          <div class="text-[10px] font-mono font-semibold uppercase tracking-[0.16em] text-accent mb-3">
-            {phase.label}
-          </div>
-          <code class="inline-block rounded-md bg-accent/[0.08] border border-accent/20 px-2 py-1 text-[11px] font-mono font-semibold text-accent mb-3">
-            {phase.command}
-          </code>
-          <h3 class="text-sm font-semibold text-white mb-2">{phase.title}</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">{phase.summary}</p>
-          {phase.scenarioFloors && (
-            <div class="grid grid-cols-3 gap-2 mt-4">
-              {phase.scenarioFloors.map((floor) => (
-                <div class="rounded-lg bg-white/[0.025] border border-white/[0.06] p-2 text-center">
-                  <span class="block text-[9px] text-slate-500">
-                    {floor.label}
-                  </span>
-                  <strong class="block text-xs font-mono text-white">
-                    {floor.value}
-                  </strong>
-                </div>
-              ))}
+  {
+    !diagramsOnly && (
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {workflow.phases.map((phase) => (
+          <article class="rounded-2xl bg-[#0B0F19] border border-white/[0.08] p-5">
+            <div class="text-[10px] font-mono font-semibold uppercase tracking-[0.16em] text-accent mb-3">
+              {phase.label}
             </div>
-          )}
-        </article>
-      ))
-    }
-  </div>}
+            <code class="inline-block rounded-md bg-accent/[0.08] border border-accent/20 px-2 py-1 text-[11px] font-mono font-semibold text-accent mb-3">
+              {phase.command}
+            </code>
+            <h3 class="text-sm font-semibold text-white mb-2">{phase.title}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              {phase.summary}
+            </p>
+            {phase.scenarioFloors && (
+              <div class="grid grid-cols-3 gap-2 mt-4">
+                {phase.scenarioFloors.map((floor) => (
+                  <div class="rounded-lg bg-white/[0.025] border border-white/[0.06] p-2 text-center">
+                    <span class="block text-[9px] text-slate-500">
+                      {floor.label}
+                    </span>
+                    <strong class="block text-xs font-mono text-white">
+                      {floor.value}
+                    </strong>
+                  </div>
+                ))}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    )
+  }
 
-  <figure class:list={[{ 'pt-2': diagramsOnly, 'p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]': !diagramsOnly }]}>
-    <div
-      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
-    >
-      Architecture diagram
-    </div>
-    <h2 class="text-lg sm:text-xl font-display font-bold text-foreground mb-2">
-      Bounded agents, explicit evidence, human-controlled transitions
-    </h2>
-    <p class="max-w-3xl text-xs sm:text-sm text-muted leading-relaxed mb-6">
-      Every lane owns one job. Solid exchanges delegate approved work; returning
-      exchanges produce a reviewable artifact before the next stage can begin.
-    </p>
+  <figure
+    class:list={[
+      {
+        'pt-2': diagramsOnly,
+        'p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]':
+          !diagramsOnly,
+      },
+    ]}
+  >
+    <figcaption class="mb-6">
+      <span
+        class="block text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
+      >
+        Review sequence
+      </span>
+      <strong
+        class="block text-lg sm:text-xl font-display font-bold text-foreground"
+      >
+        Bounded agents, explicit evidence, human-controlled transitions
+      </strong>
+      <p
+        class="mt-2 max-w-[62ch] text-xs sm:text-sm text-muted leading-relaxed"
+      >
+        Each lane owns one job. A solid arrow passes approved work to the next
+        lane; a dashed green arrow returns an artifact for a person to review
+        before the pipeline moves on.
+      </p>
+    </figcaption>
 
     <div class="overflow-x-auto pb-3">
       <div
@@ -208,76 +235,74 @@ const handoffs = workflow.handoffs.map((handoff) => {
     </div>
   </figure>
 
-  {!diagramsOnly && <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
-    <div
-      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
-    >
-      05 // Role contracts
-    </div>
-    <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-6">
-      Deliberately narrow responsibilities
-    </h2>
+  {
+    !diagramsOnly && (
+      <div class="p-5 sm:p-6 rounded-2xl bg-[#0B0F19] border border-white/[0.08]">
+        <div class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2">
+          05 // Role contracts
+        </div>
+        <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-6">
+          Deliberately narrow responsibilities
+        </h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-      {
-        workflow.roles.map((role) => (
-          <article class="rounded-xl bg-[#121824]/70 border border-white/[0.07] p-4">
-            <div class="flex items-center justify-between gap-3 mb-4">
-              <h3 class="text-sm font-semibold text-white">{role.name}</h3>
-              <span class="rounded-full bg-accent/[0.07] border border-accent/15 px-2 py-1 text-[9px] font-mono uppercase tracking-wider text-accent">
-                {role.model}
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {workflow.roles.map((role) => (
+            <article class="rounded-xl bg-[#121824]/70 border border-white/[0.07] p-4">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <h3 class="text-sm font-semibold text-white">{role.name}</h3>
+                <span class="rounded-full bg-accent/[0.07] border border-accent/15 px-2 py-1 text-[9px] font-mono uppercase tracking-wider text-accent">
+                  {role.model}
+                </span>
+              </div>
+              <dl class="space-y-3 text-xs leading-relaxed">
+                <div>
+                  <dt class="font-mono text-[9px] uppercase tracking-wider text-slate-500 mb-0.5">
+                    Reads
+                  </dt>
+                  <dd class="text-slate-300">{role.reads}</dd>
+                </div>
+                <div>
+                  <dt class="font-mono text-[9px] uppercase tracking-wider text-slate-500 mb-0.5">
+                    Writes
+                  </dt>
+                  <dd class="text-slate-300">{role.writes}</dd>
+                </div>
+                <div class="pt-3 border-t border-white/[0.06]">
+                  <dt class="font-mono text-[9px] uppercase tracking-wider text-rose-300 mb-0.5">
+                    Boundary
+                  </dt>
+                  <dd class="text-slate-400">{role.boundary}</dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  {
+    !diagramsOnly && (
+      <div class="p-5 sm:p-6 rounded-2xl bg-emerald-500/[0.035] border border-emerald-500/20">
+        <div class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-emerald-300 mb-2">
+          06 // Guardrails across every stage
+        </div>
+        <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-5">
+          Human authority is structural, not ceremonial
+        </h2>
+        <ul class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {workflow.guardrails.map((guardrail) => (
+            <li class="rounded-xl bg-[#0B0F19]/70 border border-emerald-500/10 p-4 text-xs sm:text-sm text-slate-300 leading-relaxed flex items-start gap-3">
+              <span class="text-emerald-400 font-bold" aria-hidden="true">
+                ✓
               </span>
-            </div>
-            <dl class="space-y-3 text-xs leading-relaxed">
-              <div>
-                <dt class="font-mono text-[9px] uppercase tracking-wider text-slate-500 mb-0.5">
-                  Reads
-                </dt>
-                <dd class="text-slate-300">{role.reads}</dd>
-              </div>
-              <div>
-                <dt class="font-mono text-[9px] uppercase tracking-wider text-slate-500 mb-0.5">
-                  Writes
-                </dt>
-                <dd class="text-slate-300">{role.writes}</dd>
-              </div>
-              <div class="pt-3 border-t border-white/[0.06]">
-                <dt class="font-mono text-[9px] uppercase tracking-wider text-rose-300 mb-0.5">
-                  Boundary
-                </dt>
-                <dd class="text-slate-400">{role.boundary}</dd>
-              </div>
-            </dl>
-          </article>
-        ))
-      }
-    </div>
-  </div>}
-
-  {!diagramsOnly && <div
-    class="p-5 sm:p-6 rounded-2xl bg-emerald-500/[0.035] border border-emerald-500/20"
-  >
-    <div
-      class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-emerald-300 mb-2"
-    >
-      06 // Guardrails across every stage
-    </div>
-    <h2 class="text-lg sm:text-xl font-display font-bold text-white mb-5">
-      Human authority is structural, not ceremonial
-    </h2>
-    <ul class="grid grid-cols-1 lg:grid-cols-2 gap-3">
-      {
-        workflow.guardrails.map((guardrail) => (
-          <li class="rounded-xl bg-[#0B0F19]/70 border border-emerald-500/10 p-4 text-xs sm:text-sm text-slate-300 leading-relaxed flex items-start gap-3">
-            <span class="text-emerald-400 font-bold" aria-hidden="true">
-              ✓
-            </span>
-            <span>{guardrail}</span>
-          </li>
-        ))
-      }
-    </ul>
-  </div>}
+              <span>{guardrail}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
 </section>
 
 <style>
@@ -330,35 +355,35 @@ const handoffs = workflow.handoffs.map((handoff) => {
     top: 50%;
     right: var(--endpoint-inset);
     left: var(--endpoint-inset);
-    height: 1px;
-    background: rgb(var(--accent) / 0.58);
+    height: 2px;
+    background: rgb(var(--accent));
   }
 
   .sequence-exchange::after {
     content: '';
     position: absolute;
-    top: calc(50% - 3px);
-    right: calc(var(--endpoint-inset) - 1px);
-    width: 7px;
-    height: 7px;
-    border-top: 1px solid rgb(var(--accent));
-    border-right: 1px solid rgb(var(--accent));
+    top: calc(50% - 4px);
+    right: calc(var(--endpoint-inset) - 2px);
+    width: 9px;
+    height: 9px;
+    border-top: 2px solid rgb(var(--accent));
+    border-right: 2px solid rgb(var(--accent));
     transform: rotate(45deg);
   }
 
   .sequence-exchange.reverse::after {
     right: auto;
-    left: calc(var(--endpoint-inset) - 1px);
+    left: calc(var(--endpoint-inset) - 2px);
     transform: rotate(-135deg);
   }
 
   .sequence-exchange.human-review::before {
     background: repeating-linear-gradient(
       to right,
-      rgba(52, 211, 153, 0.72) 0,
-      rgba(52, 211, 153, 0.72) 5px,
-      transparent 5px,
-      transparent 9px
+      #34d399 0,
+      #34d399 6px,
+      transparent 6px,
+      transparent 11px
     );
   }
 
@@ -369,5 +394,26 @@ const handoffs = workflow.handoffs.map((handoff) => {
   .sequence-label {
     position: relative;
     z-index: 1;
+  }
+
+  @media (forced-colors: active) {
+    .lane-guides span {
+      border-left-color: CanvasText;
+    }
+    .pipeline-node::before {
+      border-color: CanvasText;
+      background: Canvas;
+    }
+    .pipeline-node::after,
+    .sequence-exchange::before,
+    .sequence-exchange.human-review::before {
+      background: CanvasText;
+      forced-color-adjust: none;
+    }
+    .sequence-exchange::after {
+      border-top-color: CanvasText;
+      border-right-color: CanvasText;
+      forced-color-adjust: none;
+    }
   }
 </style>

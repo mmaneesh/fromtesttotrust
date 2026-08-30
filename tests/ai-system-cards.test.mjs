@@ -30,6 +30,28 @@ test('AI system cards omit the category eyebrow and subtitle', async () => {
   assert.doesNotMatch(view, /\{system\.subtitle\}/);
 });
 
+test('AI system cards show a plain blurb, not the first-person brief summary', async () => {
+  const [view, systems] = await Promise.all([
+    readSource('src/components/views/AISystemsView.astro'),
+    readSource('src/data/ai-systems.ts'),
+  ]);
+
+  assert.match(view, /\{system\.blurb\}/);
+  assert.doesNotMatch(view, /\{system\.summary\}/);
+
+  const blurbs = [...systems.matchAll(/\n {4}blurb:\n {6}'([^']+)'/g)].map(
+    ([, b]) => b,
+  );
+  assert.equal(blurbs.length, 6, 'every system needs a blurb');
+  for (const blurb of blurbs) {
+    assert.doesNotMatch(blurb, /^(Built|To address it|I built|My team built)/);
+    assert.ok(
+      blurb.length <= 200,
+      `blurb too long to fit 3 card lines: ${blurb}`,
+    );
+  }
+});
+
 test('AI system illustrations do not render a background grid', async () => {
   const illustration = await readSource(
     'src/components/SystemIllustration.astro',
@@ -61,6 +83,25 @@ test('the LiteLLM brief uses the confirmed gateway stack and default-provider fa
   assert.match(systems, /Okta-provisioned identity/);
   assert.doesNotMatch(diagrams, /Claude|GPT-4o|Mistral/);
   assert.match(systems, /A2A/);
+});
+
+test('the support intake brief funnels every channel into one Teams queue and a routed Asana task', async () => {
+  const [systemBrief, diagram, systems] = await Promise.all([
+    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SupportIntakeDiagram.astro'),
+    readSource('src/data/ai-systems.ts'),
+  ]);
+
+  assert.match(systemBrief, /<SupportIntakeDiagram \/>/);
+  assert.match(systemBrief, /'support-intake-agent': \{\s*riskAnalysis:/);
+  assert.match(diagram, /<svg/);
+  assert.match(diagram, /marker-end="url\(#si-arrow\)"/);
+  assert.match(diagram, /Microsoft Teams/);
+  assert.match(diagram, /Power Automate/);
+  assert.match(diagram, /Asana/);
+  assert.match(systems, /one Microsoft Teams channel/);
+  assert.match(systems, /Support Intake Agent action/);
+  assert.match(systems, /assigns the task to that team’s project/);
 });
 
 test('brief pages use a continuous article layout instead of card surfaces', async () => {
@@ -96,7 +137,7 @@ test('brief pages use a continuous article layout instead of card surfaces', asy
   );
   assert.match(
     systems,
-    /Teams across the company were building agents on different stacks/,
+    /Teams across our company were building agents on different stacks/,
   );
   assert.doesNotMatch(
     systemBrief,

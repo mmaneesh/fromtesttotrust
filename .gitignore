@@ -20,3 +20,7 @@ pnpm-debug.log*
 
 # macOS metadata
 .DS_Store
+
+# Local design notes and tooling state
+.impeccable/
+PRODUCT.md

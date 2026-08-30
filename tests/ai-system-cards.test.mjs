@@ -31,7 +31,9 @@ test('AI system cards omit the category eyebrow and subtitle', async () => {
 });
 
 test('AI system illustrations do not render a background grid', async () => {
-  const illustration = await readSource('src/components/SystemIllustration.astro');
+  const illustration = await readSource(
+    'src/components/SystemIllustration.astro',
+  );
 
   assert.doesNotMatch(illustration, /gridPath/);
   assert.doesNotMatch(illustration, /class="grid"/);
@@ -51,10 +53,12 @@ test('the LiteLLM brief uses the confirmed gateway stack and default-provider fa
   assert.match(diagrams, /SQS/);
   assert.match(diagrams, /AWS Bedrock/);
   assert.match(diagrams, /DynamoDB/);
-  assert.match(diagrams, /Planned memory/);
+  assert.match(diagrams, /planned: run memory/);
+  assert.match(diagrams, /Okta/);
   assert.match(diagrams, /<svg/);
-  assert.match(diagrams, /marker-end="url\(#arrow\)"/);
+  assert.match(diagrams, /marker-end="url\(#gw-arrow\)"/);
   assert.match(systems, /falls back to the default provider/);
+  assert.match(systems, /Okta-provisioned identity/);
   assert.doesNotMatch(diagrams, /Claude|GPT-4o|Mistral/);
   assert.match(systems, /A2A/);
 });
@@ -72,7 +76,10 @@ test('brief pages use a continuous article layout instead of card surfaces', asy
   }
   assert.match(speakingBrief, /border-line/);
 
-  assert.match(systemBrief, /AgentPipelineBrief workflow=\{system\.workflow\} diagramsOnly/);
+  assert.match(
+    systemBrief,
+    /AgentPipelineBrief workflow=\{system\.workflow\} diagramsOnly/,
+  );
   assert.doesNotMatch(systemBrief, /\{system\.category\}/);
   assert.doesNotMatch(systemBrief, /max-w-3xl/);
   assert.doesNotMatch(speakingBrief, /max-w-3xl/);
@@ -81,17 +88,26 @@ test('brief pages use a continuous article layout instead of card surfaces', asy
   const systems = await readSource('src/data/ai-systems.ts');
   assert.match(
     systems,
-    /To address it, I built a workflow that turns a Jira ticket into reviewed scenarios/
+    /To address it, I built a workflow that turns a Jira ticket into reviewed scenarios/,
   );
-  assert.match(systems, /Test planning, test-case design, and automation were separate/);
-  assert.match(systems, /Teams across the company were building agents with different stacks/);
-  assert.doesNotMatch(systemBrief, /system\.architecture\.map\(\(arch\) => <li>/);
+  assert.match(
+    systems,
+    /Test planning, test-case design, and automation were separate/,
+  );
+  assert.match(
+    systems,
+    /Teams across the company were building agents on different stacks/,
+  );
+  assert.doesNotMatch(
+    systemBrief,
+    /system\.architecture\.map\(\(arch\) => <li>/,
+  );
   assert.doesNotMatch(systemBrief, /system\.impact\.map\(\(item\) => <li>/);
   assert.doesNotMatch(systemBrief, /Principal SDET Engineer/);
   assert.doesNotMatch(systemBrief, /footer class="mt-14 pt-8 border-t/);
   assert.doesNotMatch(systemBrief, /All systems/);
   assert.doesNotMatch(
     await readSource('src/components/AgentPipelineBrief.astro'),
-    /<section class="my-12 max-w-3xl/
+    /<section class="my-12 max-w-3xl/,
   );
 });

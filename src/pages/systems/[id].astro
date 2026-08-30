@@ -24,9 +24,6 @@ const systemDetails: Record<
   string,
   {
     riskAnalysis: { risk: string; mitigation: string }[];
-    technicalDecisions: string[];
-    workflowSteps?: { step: string; detail: string }[];
-    metricsSummary?: string[];
   }
 > = {
   'multi-agent-sdlc': {
@@ -47,61 +44,29 @@ const systemDetails: Record<
           'The Playwright step reads the repository structure, routes work to UI, API, visual, or component suites, reuses page objects and fixtures, and prefers user-facing locators.',
       },
     ],
-    technicalDecisions: [
-      'Command-Gated Execution: /start-planning, /test-cases, and /automate create explicit, independently reviewable transitions.',
-      'Risk-Tiered Scenario Floors: Generate at least 5 low-criticality, 6-8 medium-criticality, or 10-15 critical scenarios before human refinement.',
-      'Tool-Specific MCP Boundaries: Jira, TestRail, and Playwright integrations each own one phase while shared repository context preserves continuity.',
-    ],
   },
   'litellm-gateway': {
     riskAnalysis: [
       {
-        risk: 'A provider outage can interrupt every workflow that depends on it.',
+        risk: 'A long-running or stuck agent could hold resources indefinitely.',
         mitigation:
-          'Requests route through LiteLLM and OpenRouter, then fall back to the default provider when the selected provider is unavailable.',
+          'Each run is an ephemeral Fargate task with its own lifecycle, and an EventBridge reaper shuts down tasks that pass their time budget.',
       },
       {
-        risk: 'Direct provider calls make it hard to see where model traffic is going.',
+        risk: 'Two events for the same ticket could start duplicate work.',
         mitigation:
-          'The shared gateway gives the workflows one route to use instead of scattering provider calls across clients.',
+          'The dev-loop-api Lambda takes a per-ticket lock in DynamoDB before it enqueues anything, so a second event for a ticket already in flight is dropped.',
       },
       {
-        risk: 'Different clients can drift into different integration patterns over time.',
+        risk: 'A single model provider outage could stall every run.',
         mitigation:
-          'OpenCode, A2A, and MCP workflows use the same LiteLLM and OpenRouter path.',
-      },
-    ],
-    technicalDecisions: [
-      'LiteLLM Gateway Deployment: Decoupled client agents from proprietary SDKs, exposing a unified OpenAI-compatible endpoint.',
-      'Distributed Redis Caching: Cached deterministic evaluation prompts, saving ~35% on redundant token requests.',
-      'OpenTelemetry Instrumentation: Emitted granular spans for latency, token consumption, and response drift to Grafana/Kibana.',
-    ],
-    workflowSteps: [
-      {
-        step: '01. Unified Client Request',
-        detail:
-          'Agent SDK sends standard request to LiteLLM proxy with squad metadata.',
+          'Model calls go through LiteLLM rather than a provider SDK, so a request routes to OpenRouter or AWS Bedrock and falls back to the default provider when the selected one is unavailable.',
       },
       {
-        step: '02. Routing & Budget Check',
-        detail:
-          'Proxy verifies team budget, checks Redis cache for existing prompt matches, and evaluates endpoint health.',
+        risk: 'Scattered API keys would make model access hard to govern or revoke.',
+        mitigation:
+          'LiteLLM authorizes every call against an Okta-provisioned identity, so provider access is one policy the platform team manages, and sandboxes read only short-lived credentials from Secrets Manager.',
       },
-      {
-        step: '03. Dynamic Model Dispatch',
-        detail:
-          "Dispatches to the lowest-latency model matching the task's complexity tier.",
-      },
-      {
-        step: '04. Telemetry Logging',
-        detail:
-          'Logs token counts, latency, and costs to central observability storage.',
-      },
-    ],
-    metricsSummary: [
-      '99.9% uptime for AI-assisted QA infrastructure',
-      'Zero vendor lock-in across major LLM providers',
-      'Actionable cost governance across engineering teams',
     ],
   },
   'llm-guardrails-evals': {
@@ -122,38 +87,6 @@ const systemDetails: Record<
           'Non-deterministic benchmark suites executed nightly to track output drift and semantic consistency.',
       },
     ],
-    technicalDecisions: [
-      'Replacing Assertions with Evals: Built Python and TypeScript evaluations that score variable model outputs.',
-      'Multi-Layer Guardrail Architecture: Enforced schema constraints (JSON Schema), PII scrubbers, and LLM-as-a-judge scoring.',
-      'Non-Negotiable CI/CD Gates: Pull requests fail if hallucination indices exceed strict threshold tolerances.',
-    ],
-    workflowSteps: [
-      {
-        step: '01. Adversarial Test Generation',
-        detail:
-          'Synthetically generate edge-case prompts and jailbreak attempts targeting system boundaries.',
-      },
-      {
-        step: '02. Parallel Execution',
-        detail:
-          'Harness runs prompt variations across temperature matrices to measure output variance.',
-      },
-      {
-        step: '03. Multi-Metric Scoring',
-        detail:
-          'Scores output for semantic similarity, schema validity, tone adherence, and factual accuracy.',
-      },
-      {
-        step: '04. CI/CD Gate Enforcement',
-        detail:
-          'Generates pass/fail evaluation report determining release deployment readiness.',
-      },
-    ],
-    metricsSummary: [
-      'Near-zero critical defect escape across generative features',
-      'Presented as an industry benchmark at Ministry of Testing 2024',
-      'Continuous hallucination and prompt injection protection',
-    ],
   },
   'shared-skills-platform': {
     riskAnalysis: [
@@ -173,37 +106,6 @@ const systemDetails: Record<
           'Semantic versioning (semver) with automated integration tests for published skills.',
       },
     ],
-    technicalDecisions: [
-      'Standardized Skill Schema: Defined typed parameter schemas and return types using JSON Schema.',
-      'Shared Registry Bus: Built create-skill, publish-skill, and invoke-skill commands accessible across engineering squads.',
-      'Cross-Functional Enablement: Extended skill creation tools to Creative Services, Marketing Ops, and Content teams.',
-    ],
-    workflowSteps: [
-      {
-        step: '01. Skill Authoring',
-        detail:
-          'Team defines tool parameters, system prompts, and execution scripts in a standard schema.',
-      },
-      {
-        step: '02. Automated Lint & Test',
-        detail:
-          'CI pipeline runs security audits and schema validation on the submitted skill.',
-      },
-      {
-        step: '03. Registry Publishing',
-        detail: 'Skill is versioned and published to the company-wide catalog.',
-      },
-      {
-        step: '04. Universal Invocation',
-        detail:
-          'Other squads use the skill in Playwright tests, CLI tools, and agent workflows.',
-      },
-    ],
-    metricsSummary: [
-      'Democratized AI tooling across engineering and business units',
-      'Standardized security and quality baselines across custom plugins',
-      "Featured in 'Everyday AI Coding' keynote",
-    ],
   },
 };
 
@@ -216,7 +118,9 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
 >
   <Header />
 
-  <main class="flex-1 w-full max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+  <main
+    class="flex-1 w-full max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16"
+  >
     <div class="mb-10">
       <a
         href="/#ai-systems"
@@ -228,7 +132,9 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
 
     <article class="pb-16">
       <header class="mb-12">
-        <h1 class="text-[34px] sm:text-[42px] font-display font-bold text-foreground leading-[1.05] tracking-tight mb-5">
+        <h1
+          class="text-[34px] sm:text-[42px] font-display font-bold text-foreground leading-[1.05] tracking-tight mb-5"
+        >
           {system.title}
         </h1>
         <p class="text-base sm:text-lg text-body leading-relaxed mb-7">
@@ -243,19 +149,31 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
         <p>{system.problem}</p>
         <p>{system.summary}</p>
         {system.architecture.map((arch) => <p>{arch}</p>)}
-        {system.workflow && <p>Each step produces an artifact that someone can review before the next step begins.</p>}
+        {
+          system.workflow && (
+            <p>
+              Each step produces an artifact that someone can review before the
+              next step begins.
+            </p>
+          )
+        }
       </div>
-      {system.workflow && <AgentPipelineBrief workflow={system.workflow} diagramsOnly />}
+      {
+        system.workflow && (
+          <AgentPipelineBrief workflow={system.workflow} diagramsOnly />
+        )
+      }
       {system.id === 'litellm-gateway' && <GatewayDiagrams />}
       <div class="text-base text-body leading-8 space-y-7">
-        {details.riskAnalysis.map((item) => (
-          <p>
-            {item.risk} {item.mitigation}
-          </p>
-        ))}
+        {
+          details.riskAnalysis.map((item) => (
+            <p>
+              {item.risk} {item.mitigation}
+            </p>
+          ))
+        }
         {system.impact.map((item) => <p>{item}</p>)}
       </div>
-
     </article>
   </main>
 

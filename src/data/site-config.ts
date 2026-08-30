@@ -8,11 +8,6 @@ export interface SiteConfig {
   location: string;
   email: string;
   bio: string;
-  currentFocus: {
-    title: string;
-    description: string;
-    tag: string;
-  }[];
   socials: {
     id: 'linkedin' | 'github' | 'speaking';
     name: string;
@@ -37,26 +32,6 @@ export const siteConfig: SiteConfig = {
   location: 'Chicago, IL',
   email: 'maneesh.maddala@gmail.com',
   bio: 'Over 15+ years, I have worked across test architecture, risk engineering, and AI systems in fintech, insurance, and enterprise software. I build evaluation, governance, and automation that teams can understand and maintain.',
-  currentFocus: [
-    {
-      title: 'Multi-Agent SDLC Orchestration',
-      description:
-        'Jira-based agent workflows for accessibility, SEO, and regression testing.',
-      tag: 'Active Architecture',
-    },
-    {
-      title: 'Model Routing & Cost Control via LiteLLM',
-      description:
-        'Centralized fallback, latency routing, and token optimization for enterprise agent swarms.',
-      tag: 'Infrastructure',
-    },
-    {
-      title: 'Crash-Testing LLM Guardrails & Evals',
-      description:
-        'Evaluation and red-team tests for accuracy, safety, and output constraints.',
-      tag: 'Risk Engineering',
-    },
-  ],
   socials: [
     {
       id: 'linkedin',

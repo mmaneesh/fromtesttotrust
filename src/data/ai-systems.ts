@@ -10,6 +10,8 @@ export interface AISystem {
   id: AISystemId;
   title: string;
   subtitle: string;
+  /** Plain "what it does" line shown on the AI Systems card (2-3 lines, present tense). */
+  blurb: string;
   category:
     | 'Multi-Agent Systems'
     | 'LLM Evals & Guardrails'
@@ -61,20 +63,22 @@ export const aiSystems: AISystem[] = [
     title: 'Human-Guided Agentic Test Engineering Pipeline',
     subtitle:
       'From Jira ticket to reviewed test scenarios, TestRail coverage, and Playwright tests.',
+    blurb:
+      'Turns a Jira ticket into reviewed test scenarios, TestRail coverage, and Playwright tests, stopping for human approval before each stage.',
     category: 'Multi-Agent Systems',
     summary:
-      'To address it, I built a workflow that turns a Jira ticket into reviewed scenarios, TestRail cases, and maintainable Playwright tests. It stops for approval before it changes coverage, writes code, or opens a pull request.',
+      'To address it, I built a workflow that turns a Jira ticket into reviewed scenarios, TestRail cases, and Playwright tests. It stops for approval before it changes coverage, writes code, or opens a pull request.',
     problem:
       'Test planning, test-case design, and automation were separate activities. Engineers rebuilt ticket context, duplicated TestRail coverage, and wrote brittle tests without a clear view of the feature, epic, repository, or existing test architecture.',
     architecture: [
-      'Planning starts with /start-planning. It gathers the ticket, acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets before it proposes risk-tiered scenarios.',
-      'Next, /test-cases reads the existing TestRail project and folder structure. It updates matching coverage or creates the missing folders and cases.',
+      'Planning starts with /start-planning. It gathers the ticket, acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets, then proposes risk-tiered scenarios.',
+      '/test-cases reads the existing TestRail project and folder structure, then updates matching coverage or creates the missing folders and cases.',
       'After deployment, /automate uses Playwright MCP and repository context to add POM-based UI, API, visual, or component tests.',
     ],
     impact: [
       'Scenario floors match ticket criticality: 5+ for low, 6-8+ for medium, and 10-15+ for critical work.',
       'A person approves test-case creation, automation work, and pull-request delivery.',
-      'The result is a traceable path from planning evidence through test management, automation, and PR review.',
+      'Anyone can trace a change from its planning evidence through TestRail, the automation, and the PR review.',
     ],
     technologies: [
       'Jira MCP',
@@ -261,19 +265,21 @@ export const aiSystems: AISystem[] = [
     title: 'Dev Loop: A Sandboxed Multi-Agent Delivery Platform',
     subtitle:
       'From a Jira comment to an isolated agent that opens a pull request, with governed model access and agent-to-agent interop.',
+    blurb:
+      'Runs each Jira ticket as an isolated agent that works in its own sandbox and opens a pull request, with every model call routed through one governed gateway.',
     category: 'Multi-Agent Systems',
     summary:
-      'My team built Dev Loop so a Jira comment can start an isolated agent that does the work in its own sandbox and ends by opening a pull request for review. Each ticket runs alone, every model call goes through one governed path, and an agent can hand work to another team’s agent without either side standardizing on a stack.',
+      'My team built Dev Loop so a Jira comment starts an isolated agent that works a ticket in its own sandbox and ends with a reviewed pull request. Every model call goes through one governed path.',
     problem:
-      'Teams across the company were building agents on different stacks, each chosen for that team’s needs. The agents worked on their own, but had no shared way to run safely, reach a model, or ask another team’s agent for help. Every team was re-solving isolation, credentials, model access, and interop from scratch.',
+      'Teams across our company were building agents on different stacks, each chosen for that team’s needs. Each agent ran on its own, with no shared way to execute safely, reach a model, or ask another team’s agent for help. Every team was re-solving isolation, credentials, model access, and interop from scratch.',
     architecture: [
-      'A ticket enters through a WAF that only accepts Jira, then API Gateway and the dev-loop-api Lambda. The Lambda takes a per-ticket lock in DynamoDB so the same ticket is never processed twice, then puts an event on SQS; a dead-letter queue holds anything that fails to start.',
+      'A ticket enters through a WAF that only accepts Jira, then API Gateway and the dev-loop-api Lambda. The Lambda takes a per-ticket lock in DynamoDB so the same ticket never runs twice, then puts an event on SQS; a dead-letter queue holds anything that fails to start.',
       'A dispatcher Lambda reads the queue and launches one ephemeral ECS Fargate task per ticket. Each task runs an OpenCode agent in its own sandbox, pulls its image from ECR, and reads short-lived Jira, Git, and LiteLLM credentials from Secrets Manager. An EventBridge reaper shuts down tasks that overrun.',
-      'From the sandbox the agent calls MCP tool servers for tools and context, commits to a branch and opens a pull request on the Git host, and speaks A2A to reach agents built by other teams on other stacks. Every model call goes through LiteLLM, which authorizes the call against an Okta-provisioned identity before routing to OpenRouter or AWS Bedrock, then falls back to the default provider when one is unavailable. Persisting run memory in DynamoDB is the next planned step.',
+      'From the sandbox the agent calls MCP tool servers for tools and context, commits to a branch and opens a pull request on the Git host, and speaks A2A to reach agents built by other teams on other stacks. Every model call goes through LiteLLM. It authorizes the call against an Okta-provisioned identity, routes to OpenRouter or AWS Bedrock, and falls back to the default provider when one is down. Persisting run memory in DynamoDB comes next.',
     ],
     impact: [
       'Agents built by different teams take part in the same workflow without anyone standardizing on one application stack.',
-      'Model access is one policy, not scattered keys: LiteLLM checks every call against an Okta identity that the platform team provisions.',
+      'LiteLLM checks every model call against an Okta identity the platform team provisions, so model access is one policy instead of keys spread across teams.',
       'Every run is isolated, credential-scoped, and ends in a pull request a person reviews before merge.',
     ],
     technologies: [
@@ -291,6 +297,8 @@ export const aiSystems: AISystem[] = [
     id: 'llm-guardrails-evals',
     title: 'LLM Guardrails & Continuous Red-Teaming Harness',
     subtitle: 'Automated boundary testing and hallucination defense in CI/CD',
+    blurb:
+      'Evaluates model outputs for prompt injection, hallucination, structure, and brand rules, and blocks a merge in CI when they fail.',
     category: 'LLM Evals & Guardrails',
     summary:
       'Built automated evaluations for model outputs before deployment, covering prompt injection, hallucination, output structure, and brand requirements.',
@@ -326,6 +334,8 @@ export const aiSystems: AISystem[] = [
     id: 'shared-skills-platform',
     title: 'Shared Create/Publish/Invoke Skills Platform',
     subtitle: 'Reusable AI tools and agent skills for product teams',
+    blurb:
+      'An internal registry where teams define, test, publish, and reuse AI skills that share common security and quality checks.',
     category: 'Test Architecture',
     summary:
       'Built an internal platform where teams define, test, publish, and use shared AI skills with common security and quality checks.',
@@ -360,28 +370,41 @@ export const aiSystems: AISystem[] = [
     id: 'support-intake-agent',
     title: 'Support Intake Agent',
     subtitle:
-      'Structured triage and context-aware routing for incoming requests',
+      'From requests scattered across email, Slack, and Jira to one Teams queue and a routed Asana task.',
+    blurb:
+      'Funnels support requests from email, Slack, and Jira into one Microsoft Teams queue, then turns a triaged message into a routed Asana task on demand.',
     category: 'Multi-Agent Systems',
     summary:
-      'Built an intake agent that turns scattered incoming requests into structured cases, clarifies the relevant context, and routes each case to the right next step.',
+      'To address it, I built an intake workflow that funnels email, Slack, and Jira into one Microsoft Teams queue, where a support engineer turns a real request into a routed Asana task by hand.',
     problem:
-      'Support requests arrived with uneven detail and often required manual follow-up before the right team could act, slowing response and making handoffs difficult to trace.',
+      'The support team took requests from four places at once. Email, Microsoft Teams chat, Slack, and Jira tickets each had their own queue and their own notifications, and no one could watch all four together. The team missed requests, worked the same one twice, or left some unanswered, and nothing recorded how a request turned into a tracked task.',
     architecture: [
-      'Collects incoming requests and extracts the context needed to understand the case.',
-      'Applies a consistent triage structure before recommending the appropriate owner or workflow.',
-      'Keeps the final routing decision visible and reviewable by the people responsible for the outcome.',
+      'Each source has its own webhook: one on the support email address, one on the Slack channel, one on the Jira project. When a request lands, the webhook normalizes the sender, subject, body, and attachments into a single message and posts it to one Microsoft Teams channel, so the team watches one queue instead of four.',
+      'The team triages in that channel. Most messages are noise and go no further. When a request is a real issue, an engineer opens the message actions menu and runs the Support Intake Agent action, which starts a Power Automate flow with that message as its input.',
+      'The flow reads the message and its thread for the requestor, description, and any attachments, then creates an Asana task with those fields copied across. It matches the request type to the team that owns it and assigns the task to that team’s project, so the receiving team gets the whole request in one place.',
     ],
     impact: [
-      'Reduced the effort required to turn incomplete requests into actionable cases.',
-      'Established a consistent handoff pattern without exposing internal support operations.',
+      'The support team works one Teams queue instead of monitoring email, Slack, Teams chat, and Jira separately.',
+      'One action on a message turns a request into a tracked Asana task that already carries the requestor, description, and attachments.',
+      'Every task goes to the team that owns its request type, and anyone can trace the path from the first message to the assigned task.',
     ],
-    technologies: ['AI Agents', 'Workflow Design', 'Human Review'],
+    technologies: [
+      'Power Automate',
+      'Microsoft Teams',
+      'Webhooks',
+      'Asana API',
+      'Slack',
+      'Jira',
+      'Workflow Design',
+    ],
     featured: true,
   },
   {
     id: 'brand-unification-skill',
     title: 'Brand Unification Skill',
     subtitle: 'Shared standards for consistent AI-assisted work',
+    blurb:
+      'A reusable skill that applies shared brand standards to AI-assisted work without exposing the underlying internal guidance.',
     category: 'Governance',
     summary:
       'Built a reusable skill that helps teams apply shared brand standards consistently across AI-assisted work without exposing the underlying internal guidance.',

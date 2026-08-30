@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import AgentPipelineBrief from '../../components/AgentPipelineBrief.astro';
 import GatewayDiagrams from '../../components/GatewayDiagrams.astro';
+import SupportIntakeDiagram from '../../components/SupportIntakeDiagram.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 
 export function getStaticPaths() {
@@ -29,7 +30,7 @@ const systemDetails: Record<
   'multi-agent-sdlc': {
     riskAnalysis: [
       {
-        risk: 'Jira tickets can be incomplete or ambiguous, which leads to weak scenarios.',
+        risk: 'Jira tickets can be incomplete or ambiguous, leaving the planner too little to build strong scenarios from.',
         mitigation:
           'Before planning begins, the workflow gathers acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets.',
       },
@@ -39,7 +40,7 @@ const systemDetails: Record<
           'The TestRail step inspects the project and folder hierarchy, compares similar functionality, and returns every updated or created case link for review.',
       },
       {
-        risk: 'Automation becomes brittle when it ignores the repository’s existing conventions.',
+        risk: 'Tests turn brittle when the automation ignores the repository’s existing conventions.',
         mitigation:
           'The Playwright step reads the repository structure, routes work to UI, API, visual, or component suites, reuses page objects and fixtures, and prefers user-facing locators.',
       },
@@ -48,19 +49,19 @@ const systemDetails: Record<
   'litellm-gateway': {
     riskAnalysis: [
       {
-        risk: 'A long-running or stuck agent could hold resources indefinitely.',
+        risk: 'A long-running or stuck agent could hold resources with nothing to show for it.',
         mitigation:
           'Each run is an ephemeral Fargate task with its own lifecycle, and an EventBridge reaper shuts down tasks that pass their time budget.',
       },
       {
         risk: 'Two events for the same ticket could start duplicate work.',
         mitigation:
-          'The dev-loop-api Lambda takes a per-ticket lock in DynamoDB before it enqueues anything, so a second event for a ticket already in flight is dropped.',
+          'The dev-loop-api Lambda takes a per-ticket lock in DynamoDB before it enqueues anything, so it drops any second event for a ticket already in flight.',
       },
       {
         risk: 'A single model provider outage could stall every run.',
         mitigation:
-          'Model calls go through LiteLLM rather than a provider SDK, so a request routes to OpenRouter or AWS Bedrock and falls back to the default provider when the selected one is unavailable.',
+          'Model calls go through LiteLLM rather than a provider SDK, so a request routes to OpenRouter or AWS Bedrock and falls back to the default provider when the selected one is down.',
       },
       {
         risk: 'Scattered API keys would make model access hard to govern or revoke.',
@@ -85,6 +86,25 @@ const systemDetails: Record<
         risk: 'Silent regression when underlying foundational models update',
         mitigation:
           'Non-deterministic benchmark suites executed nightly to track output drift and semantic consistency.',
+      },
+    ],
+  },
+  'support-intake-agent': {
+    riskAnalysis: [
+      {
+        risk: 'Pulling four channels into one Teams channel could bury real issues under noise.',
+        mitigation:
+          'The workflow creates nothing in Asana on its own; the team reads every message in the queue, and only a deliberate action on one starts the Power Automate flow.',
+      },
+      {
+        risk: 'A request forwarded in from email or Slack often arrives without its attachments or the name of the person who sent it.',
+        mitigation:
+          'Each webhook captures the sender and files at the source and attaches them to the Teams message, and the flow copies the requestor, description, and attachments into the Asana task.',
+      },
+      {
+        risk: 'When the team routes by hand, tasks land with the wrong group and bounce back.',
+        mitigation:
+          'The flow matches each request type to one owning team and assigns the Asana task to that team’s project, so the same kind of request always goes to the same place.',
       },
     ],
   },
@@ -164,6 +184,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
         )
       }
       {system.id === 'litellm-gateway' && <GatewayDiagrams />}
+      {system.id === 'support-intake-agent' && <SupportIntakeDiagram />}
       <div class="text-base text-body leading-8 space-y-7">
         {
           details.riskAnalysis.map((item) => (

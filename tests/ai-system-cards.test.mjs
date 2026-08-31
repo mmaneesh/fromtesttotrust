@@ -139,11 +139,26 @@ test('the shared skills brief routes both author types to one GitHub repository'
   assert.match(diagram, /Claude Desktop/);
   assert.match(diagram, /\/skill-creator/);
   assert.match(diagram, /stamps username/);
-  assert.match(
-    systems,
-    /generic skills any team can use and team-specific skills/,
-  );
-  assert.match(systems, /stamped with the author’s username/);
+  assert.match(systems, /generic ones any team can use and team-specific ones/);
+  assert.match(systems, /with the author’s username attached/);
+});
+
+test('the office hours brief converts recordings and answers across sessions', async () => {
+  const [systemBrief, diagram, systems] = await Promise.all([
+    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/OfficeHoursDiagram.astro'),
+    readSource('src/data/ai-systems.ts'),
+  ]);
+
+  assert.match(systemBrief, /<OfficeHoursDiagram \/>/);
+  assert.match(systemBrief, /'office-hours-agent': \{\s*riskAnalysis:/);
+  assert.match(diagram, /<svg/);
+  assert.match(diagram, /marker-end="url\(#oh-arrow\)"/);
+  assert.match(diagram, /Webhook/);
+  assert.match(diagram, /Semantic index/);
+  assert.match(diagram, /Claude Desktop/);
+  assert.match(systems, /raw \.vtt transcript/);
+  assert.match(systems, /indexed by meaning/);
 });
 
 test('brief pages use a continuous article layout instead of card surfaces', async () => {
@@ -171,15 +186,15 @@ test('brief pages use a continuous article layout instead of card surfaces', asy
   const systems = await readSource('src/data/ai-systems.ts');
   assert.match(
     systems,
-    /To address it, I built a workflow that turns a Jira ticket into reviewed scenarios/,
+    /The workflow I built carries one Jira ticket through scenario design/,
   );
   assert.match(
     systems,
-    /Test planning, test-case design, and automation were separate/,
+    /On my team, test planning, case design, and automation were three separate activities/,
   );
   assert.match(
     systems,
-    /Teams across our company were building agents on different stacks/,
+    /Across our company, teams were building their own agents/,
   );
   assert.doesNotMatch(
     systemBrief,

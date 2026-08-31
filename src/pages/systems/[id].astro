@@ -7,6 +7,7 @@ import GatewayDiagrams from '../../components/GatewayDiagrams.astro';
 import SupportIntakeDiagram from '../../components/SupportIntakeDiagram.astro';
 import BrandAuditDiagram from '../../components/BrandAuditDiagram.astro';
 import SkillsRepoDiagram from '../../components/SkillsRepoDiagram.astro';
+import OfficeHoursDiagram from '../../components/OfficeHoursDiagram.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 
 export function getStaticPaths() {
@@ -32,79 +33,79 @@ const systemDetails: Record<
   'multi-agent-sdlc': {
     riskAnalysis: [
       {
-        risk: 'Jira tickets can be incomplete or ambiguous, leaving the planner too little to build strong scenarios from.',
+        risk: 'A thin or ambiguous ticket leaves the planning stage with little to work from.',
         mitigation:
-          'Before planning begins, the workflow gathers acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets.',
+          'Before it drafts a single scenario, the workflow gathers the acceptance criteria, the technical notes and attachments, the parent epic, and any sibling tickets that are done or in review, so the plan starts from the full picture.',
       },
       {
-        risk: 'TestRail can already contain similar coverage, or the right folder may not exist.',
+        risk: 'TestRail often already holds similar coverage, and the right folder may not exist yet.',
         mitigation:
-          'The TestRail step inspects the project and folder hierarchy, compares similar functionality, and returns every updated or created case link for review.',
+          'The coverage stage walks the project and folder hierarchy first, compares against similar functionality, and returns every case it touched for review before it counts.',
       },
       {
-        risk: 'Tests turn brittle when the automation ignores the repository’s existing conventions.',
+        risk: 'Automation that ignores a repository’s conventions ages badly.',
         mitigation:
-          'The Playwright step reads the repository structure, routes work to UI, API, visual, or component suites, reuses page objects and fixtures, and prefers user-facing locators.',
+          'The automation stage reads the repository structure, routes each test into the suite that fits, and reuses the existing page objects, fixtures, and user-facing locators.',
       },
     ],
   },
   'litellm-gateway': {
     riskAnalysis: [
       {
-        risk: 'A long-running or stuck agent could hold resources with nothing to show for it.',
+        risk: 'A stuck agent could hold a Fargate task open with nothing to show for it.',
         mitigation:
-          'Each run is an ephemeral Fargate task with its own lifecycle, and an EventBridge reaper shuts down tasks that pass their time budget.',
+          'Each run is an ephemeral task with its own lifecycle, and an EventBridge reaper shuts down anything that passes its time budget.',
       },
       {
-        risk: 'Two events for the same ticket could start duplicate work.',
+        risk: 'Two events for one ticket could start the work twice.',
         mitigation:
           'The dev-loop-api Lambda takes a per-ticket lock in DynamoDB before it enqueues anything, so it drops any second event for a ticket already in flight.',
       },
       {
-        risk: 'A single model provider outage could stall every run.',
+        risk: 'One model provider having an outage could stall every run.',
         mitigation:
-          'Model calls go through LiteLLM rather than a provider SDK, so a request routes to OpenRouter or AWS Bedrock and falls back to the default provider when the selected one is down.',
+          'Every call goes through LiteLLM rather than a provider SDK, so a request can route to OpenRouter or AWS Bedrock and fall back to the default provider when the first choice is down.',
       },
       {
-        risk: 'Scattered API keys would make model access hard to govern or revoke.',
+        risk: 'Provider keys spread across repositories would be hard to govern or revoke.',
         mitigation:
-          'LiteLLM authorizes every call against an Okta-provisioned identity, so provider access is one policy the platform team manages, and sandboxes read only short-lived credentials from Secrets Manager.',
+          'LiteLLM authorizes every call against an Okta-provisioned identity, so access is one policy the platform team manages, and each sandbox only ever reads short-lived credentials from Secrets Manager.',
       },
     ],
   },
-  'llm-guardrails-evals': {
+  'office-hours-agent': {
     riskAnalysis: [
       {
-        risk: 'Probabilistic output hallucinations in client-facing features',
+        risk: 'A transcript pulled straight from a recording is messy: crosstalk, filler, half-finished sentences.',
         mitigation:
-          'Statistical evaluation suites measuring semantic distance and factuality against verified ground truth.',
+          'The conversion step rewrites each .vtt into clean Markdown and titles it by topic before anything is indexed, so the agent retrieves readable passages rather than raw captions.',
       },
       {
-        risk: 'Prompt injection & boundary bypass',
+        risk: 'A real question rarely maps to a single session; the answer is spread across several.',
         mitigation:
-          'Red-team datasets that test model behavior in CI/CD pull request checks.',
+          'The transcripts are indexed by meaning, so related material sits together no matter which session it came from, and the agent gathers across all of it before it answers.',
       },
       {
-        risk: 'Silent regression when underlying foundational models update',
+        risk: 'An agent over a knowledge base can drift into answering from general knowledge instead of the source.',
         mitigation:
-          'Non-deterministic benchmark suites executed nightly to track output drift and semantic consistency.',
+          'The agent answers only from the retrieved office-hours passages and names the sessions it drew from, so a reader can go back to the original.',
       },
     ],
   },
   'support-intake-agent': {
     riskAnalysis: [
       {
-        risk: 'Pulling four channels into one Teams channel could bury real issues under noise.',
+        risk: 'Funneling four channels into one could just relocate the noise instead of clearing it.',
         mitigation:
-          'The workflow creates nothing in Asana on its own; the team reads every message in the queue, and only a deliberate action on one starts the Power Automate flow.',
+          'The workflow creates nothing in Asana on its own. The team still reads every message, and a task appears only when someone runs the action on a specific one.',
       },
       {
-        risk: 'A request forwarded in from email or Slack often arrives without its attachments or the name of the person who sent it.',
+        risk: 'A request forwarded from email or Slack often loses its attachments and the name of the person who raised it.',
         mitigation:
-          'Each webhook captures the sender and files at the source and attaches them to the Teams message, and the flow copies the requestor, description, and attachments into the Asana task.',
+          'Each webhook captures the sender and the files at the source and carries them on the Teams message, and the flow copies all of it into the Asana task.',
       },
       {
-        risk: 'When the team routes by hand, tasks land with the wrong group and bounce back.',
+        risk: 'Routing by hand sends tasks to the wrong team, where they stall and get bounced back.',
         mitigation:
           'The flow matches each request type to one owning team and assigns the Asana task to that team’s project, so the same kind of request always goes to the same place.',
       },
@@ -113,19 +114,19 @@ const systemDetails: Record<
   'shared-skills-platform': {
     riskAnalysis: [
       {
-        risk: 'Two people can still start the same skill at the same time.',
+        risk: 'Two people can still start the same skill on the same day.',
         mitigation:
-          'Anyone can search the repository before building, in GitHub or through the Claude Desktop connector, so an existing skill surfaces before a duplicate is written.',
+          'The workflow cannot prevent that, but it makes checking cheap: anyone can search the repo first, in GitHub or through the connector, before they build anything.',
       },
       {
-        risk: 'A skill published by another team can misbehave, and it is not obvious who to ask.',
+        risk: 'When a skill from another team malfunctions, you need to know who to ask.',
         mitigation:
-          'Every skill is published with its author’s username attached, so a question or a malfunction routes straight to the person who wrote it.',
+          'Every skill is published with its author’s username attached, so a question or a bug goes straight to the person who wrote it.',
       },
       {
-        risk: 'A GitHub-based catalog could shut out non-technical staff.',
+        risk: 'A GitHub-based catalog could leave out everyone who does not work in GitHub.',
         mitigation:
-          'The Claude Desktop connector gives them the same search and the same publish path from chat, so the repository is not developer-only.',
+          'The Claude Desktop connector gives them the same search and the same way to publish, from chat, so the repository is not developer-only.',
       },
     ],
   },
@@ -208,6 +209,7 @@ const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
       {system.id === 'support-intake-agent' && <SupportIntakeDiagram />}
       {system.id === 'brand-unification-skill' && <BrandAuditDiagram />}
       {system.id === 'shared-skills-platform' && <SkillsRepoDiagram />}
+      {system.id === 'office-hours-agent' && <OfficeHoursDiagram />}
       <div class="mt-7 text-base text-body leading-8 space-y-7">
         {
           details.riskAnalysis.map((item) => (

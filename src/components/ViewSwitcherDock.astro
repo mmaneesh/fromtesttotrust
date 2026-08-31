@@ -149,7 +149,10 @@ const tabs = [
   }
   .menu-toggle {
     display: none;
+    align-items: center;
+    justify-content: center;
     border: 0;
+    padding: 0;
     background: transparent;
     color: rgb(var(--foreground));
     min-width: 44px;
@@ -162,12 +165,12 @@ const tabs = [
   @media (max-width: 720px) {
     .topbar {
       grid-template-columns: 1fr auto auto;
-      column-gap: 8px;
+      column-gap: 6px;
       min-height: 64px;
       padding: 0 16px;
     }
     .menu-toggle {
-      display: block;
+      display: inline-flex;
       grid-column: 3;
     }
     #primary-nav {

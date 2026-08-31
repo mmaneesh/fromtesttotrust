@@ -1,0 +1,328 @@
+<figure class="oh-fig">
+  <figcaption>
+    <span>Architecture diagram</span>
+  </figcaption>
+
+  <div class="oh-scroll">
+    <svg viewBox="0 0 1080 360" role="img" aria-labelledby="oh-title oh-desc">
+      <title id="oh-title">Office hours agent architecture</title>
+      <desc id="oh-desc">
+        A webhook watches the recordings folder. When a new session lands, a
+        convert step turns its raw .vtt transcript into clean Markdown, titles
+        it by topic, and saves it to SharePoint. SharePoint holds the titled
+        transcripts and a semantic index that keeps related topics together.
+        From Claude Desktop a person asks a question; the agent retrieves the
+        relevant passages across sessions from the index and returns one
+        organized answer to the person who asked.
+      </desc>
+
+      <defs>
+        <marker
+          id="oh-arrow"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="oh-arrow" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+        <marker
+          id="oh-arrow-return"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+        >
+          <path class="oh-arrow return" d="M0 0 L9 4.5 L0 9 Z"></path>
+        </marker>
+      </defs>
+
+      <!-- Boundary: SharePoint store -->
+      <rect class="oh-boundary" x="620" y="36" width="232" height="170" rx="6"
+      ></rect>
+      <text class="oh-boundary-label" x="636" y="54">SHAREPOINT</text>
+
+      <!-- Edges -->
+      <g class="oh-edge-group">
+        <path class="oh-edge" d="M160 88 H214" marker-end="url(#oh-arrow)"
+        ></path>
+        <path class="oh-edge" d="M354 88 H408" marker-end="url(#oh-arrow)"
+        ></path>
+        <path class="oh-edge" d="M578 88 H640" marker-end="url(#oh-arrow)"
+        ></path>
+        <path class="oh-edge" d="M736 110 V146" marker-end="url(#oh-arrow)"
+        ></path>
+
+        <path class="oh-edge" d="M170 260 H246" marker-end="url(#oh-arrow)"
+        ></path>
+        <path class="oh-edge" d="M331 228 V168 H640" marker-end="url(#oh-arrow)"
+        ></path>
+        <path class="oh-edge" d="M416 260 H886" marker-end="url(#oh-arrow)"
+        ></path>
+
+        <path
+          class="oh-edge return"
+          d="M972 288 V308 H60 V286"
+          marker-end="url(#oh-arrow-return)"></path>
+      </g>
+
+      <!-- Edge labels -->
+      <g class="oh-elabel">
+        <g transform="translate(187,88)"
+          ><rect x="-22" y="-9" width="44" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">new .vtt</text
+          ></g
+        >
+        <g transform="translate(381,88)"
+          ><rect x="-22" y="-9" width="44" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">trigger</text
+          ></g
+        >
+        <g transform="translate(609,88)"
+          ><rect x="-19" y="-9" width="38" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">saved</text
+          ></g
+        >
+        <g transform="translate(736,128)"
+          ><rect x="-52" y="-9" width="104" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">indexed by meaning</text
+          ></g
+        >
+        <g transform="translate(208,260)"
+          ><rect x="-24" y="-9" width="48" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">question</text
+          ></g
+        >
+        <g transform="translate(478,168)"
+          ><rect x="-66" y="-9" width="132" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">retrieve across sessions</text
+          ></g
+        >
+        <g transform="translate(651,260)"
+          ><rect x="-64" y="-9" width="128" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">one organized answer</text
+          ></g
+        >
+        <g transform="translate(400,308)"
+          ><rect x="-84" y="-9" width="168" height="16" rx="3"></rect><text
+            text-anchor="middle"
+            y="3">back to the person who asked</text
+          ></g
+        >
+      </g>
+
+      <!-- Nodes: ingest lane -->
+      <g class="oh-node source">
+        <rect x="20" y="64" width="140" height="48" rx="6"></rect>
+        <text class="t" x="90" y="86" text-anchor="middle">Recordings</text>
+        <text class="s" x="90" y="102" text-anchor="middle">.vtt files</text>
+      </g>
+      <g class="oh-node step">
+        <rect x="214" y="64" width="140" height="48" rx="6"></rect>
+        <text class="t" x="284" y="86" text-anchor="middle">Webhook</text>
+        <text class="s" x="284" y="102" text-anchor="middle"
+          >watches for new</text
+        >
+      </g>
+      <g class="oh-node step">
+        <rect x="408" y="58" width="170" height="60" rx="6"></rect>
+        <text class="t" x="493" y="80" text-anchor="middle">Convert</text>
+        <text class="s" x="493" y="96" text-anchor="middle">clean Markdown</text
+        >
+        <text class="s" x="493" y="110" text-anchor="middle"
+          >title by topic</text
+        >
+      </g>
+
+      <!-- Nodes: SharePoint store -->
+      <g class="oh-node store">
+        <rect x="640" y="66" width="192" height="44" rx="6"></rect>
+        <text class="t" x="736" y="93" text-anchor="middle"
+          >Titled transcripts</text
+        >
+      </g>
+      <g class="oh-node store">
+        <rect x="640" y="146" width="192" height="44" rx="6"></rect>
+        <text class="t" x="736" y="167" text-anchor="middle"
+          >Semantic index</text
+        >
+        <text class="s" x="736" y="181" text-anchor="middle"
+          >related topics together</text
+        >
+      </g>
+
+      <!-- Nodes: query lane -->
+      <g class="oh-node source">
+        <rect x="20" y="234" width="150" height="52" rx="6"></rect>
+        <text class="t" x="95" y="257" text-anchor="middle">Claude Desktop</text
+        >
+        <text class="s" x="95" y="273" text-anchor="middle">user question</text>
+      </g>
+      <g class="oh-node agent">
+        <rect x="246" y="228" width="170" height="64" rx="6"></rect>
+        <text class="t" x="331" y="254" text-anchor="middle">Agent</text>
+        <text class="s" x="331" y="272" text-anchor="middle"
+          >gathers across sessions</text
+        >
+      </g>
+      <g class="oh-node sink">
+        <rect x="886" y="232" width="172" height="56" rx="6"></rect>
+        <text class="t" x="972" y="255" text-anchor="middle">Answer</text>
+        <text class="s" x="972" y="271" text-anchor="middle"
+          >one organized response</text
+        >
+      </g>
+
+      <!-- Legend -->
+      <g class="oh-legend" transform="translate(20,344)">
+        <line x1="0" y1="0" x2="30" y2="0" class="oh-edge"></line>
+        <text x="40" y="4">ingest / query flow</text>
+        <line x1="188" y1="0" x2="218" y2="0" class="oh-edge return"></line>
+        <text x="228" y="4">answer back to the asker</text>
+        <rect x="430" y="-8" width="22" height="16" rx="3" class="oh-boundary"
+        ></rect>
+        <text x="462" y="4">SharePoint · transcripts + index</text>
+      </g>
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .oh-fig {
+    margin: 3rem 0;
+    border-top: 1px solid rgb(var(--line));
+    border-bottom: 1px solid rgb(var(--line));
+    padding: 1.35rem 0 1.5rem;
+  }
+  .oh-fig figcaption {
+    margin-bottom: 1.2rem;
+  }
+  .oh-fig figcaption span {
+    color: rgb(var(--accent));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .oh-scroll {
+    overflow-x: auto;
+  }
+  .oh-scroll svg {
+    display: block;
+    width: 100%;
+    min-width: 720px;
+    height: auto;
+  }
+
+  .oh-boundary {
+    fill: rgb(var(--surface) / 0.28);
+    stroke: rgb(var(--line));
+  }
+  .oh-boundary-label {
+    fill: rgb(var(--muted-text));
+    font:
+      600 10px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .oh-node rect {
+    fill: rgb(var(--surface));
+    stroke: rgb(var(--line));
+    stroke-width: 1.2;
+  }
+  .oh-node .t {
+    fill: rgb(var(--foreground));
+    font:
+      600 12px 'Geist Mono',
+      monospace;
+  }
+  .oh-node .s {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .oh-node.store .t {
+    font-size: 11px;
+  }
+  .oh-node.agent rect {
+    fill: rgb(var(--surface-raised));
+    stroke: rgb(var(--accent));
+    stroke-width: 1.6;
+  }
+  .oh-node.sink rect {
+    stroke: rgb(var(--accent));
+  }
+
+  .oh-edge {
+    fill: none;
+    stroke: rgb(var(--control-line));
+    stroke-width: 1.5;
+  }
+  .oh-edge.return {
+    stroke: rgb(var(--accent));
+    stroke-dasharray: 4 4;
+  }
+  .oh-arrow {
+    fill: rgb(var(--control-line));
+  }
+  .oh-arrow.return {
+    fill: rgb(var(--accent));
+  }
+
+  .oh-elabel rect {
+    fill: rgb(var(--surface));
+  }
+  .oh-elabel text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 9.5px 'Geist Mono',
+      monospace;
+  }
+
+  .oh-legend text {
+    fill: rgb(var(--muted-text));
+    font:
+      500 10px 'Geist Mono',
+      monospace;
+  }
+  .oh-legend line {
+    stroke-width: 1.6;
+  }
+
+  @media (forced-colors: active) {
+    .oh-node rect,
+    .oh-boundary {
+      stroke: CanvasText;
+      fill: Canvas;
+    }
+    .oh-node .t,
+    .oh-node .s,
+    .oh-boundary-label,
+    .oh-elabel text,
+    .oh-legend text {
+      fill: CanvasText;
+    }
+    .oh-edge {
+      stroke: CanvasText;
+    }
+    .oh-elabel rect {
+      fill: Canvas;
+    }
+    .oh-arrow {
+      fill: CanvasText;
+    }
+  }
+</style>

@@ -1,9 +1,9 @@
 export type AISystemId =
-  | 'multi-agent-sdlc'
   | 'litellm-gateway'
-  | 'llm-guardrails-evals'
   | 'shared-skills-platform'
+  | 'multi-agent-sdlc'
   | 'support-intake-agent'
+  | 'office-hours-agent'
   | 'brand-unification-skill';
 
 export interface AISystem {
@@ -59,6 +59,79 @@ export interface AISystem {
 
 export const aiSystems: AISystem[] = [
   {
+    id: 'litellm-gateway',
+    title: 'Dev Loop: A Sandboxed Multi-Agent Delivery Platform',
+    subtitle:
+      'From a Jira comment to an isolated agent that opens a pull request, with governed model access and agent-to-agent interop.',
+    blurb:
+      'Runs each Jira ticket as an isolated agent that works in its own sandbox and opens a pull request, with every model call routed through one governed gateway.',
+    category: 'Multi-Agent Systems',
+    summary:
+      'Our team built Dev Loop as one shared path from a Jira comment to a reviewed pull request. The comment starts an isolated agent, the agent works the ticket in its own sandbox, and every model call goes through one governed route.',
+    problem:
+      'Across our company, teams were building their own agents, each on the stack that suited them. Every one ran alone, with no shared way to execute safely, reach a model, or hand work to another team’s agent. We watched team after team re-solve the same four problems from scratch: isolation, credentials, model access, and interop.',
+    architecture: [
+      'A ticket enters through a WAF that only trusts Jira, then passes API Gateway and the dev-loop-api Lambda. The Lambda takes a per-ticket lock in DynamoDB so the same ticket never runs twice, then puts an event on SQS. Anything that fails to start lands in a dead-letter queue we can inspect.',
+      'A dispatcher Lambda reads the queue and launches one ephemeral ECS Fargate task per ticket. Each task runs an OpenCode agent in its own sandbox, pulls its image from ECR, and reads short-lived Jira, Git, and LiteLLM credentials from Secrets Manager. An EventBridge reaper shuts down any task that runs past its budget.',
+      'From inside the sandbox the agent calls MCP tool servers for its tools and context, commits to a branch, and opens a pull request. It speaks A2A when it needs an agent from another team. Every model call goes through LiteLLM, which authorizes it against an Okta-provisioned identity, routes to OpenRouter or AWS Bedrock, and falls back to the default provider when one is down. Persisting run memory in DynamoDB is the next piece.',
+    ],
+    impact: [
+      'Agents from different teams now take part in the same workflow, and no team had to move to a shared stack to join.',
+      'Model access is one policy the platform team owns: LiteLLM checks every call against an Okta identity, so there are no provider keys scattered across repositories.',
+      'Every run is isolated, scoped to the credentials it needs, and ends at a pull request a person reviews before merge.',
+    ],
+    technologies: [
+      'A2A',
+      'LiteLLM',
+      'Okta',
+      'OpenCode',
+      'AWS',
+      'ECS Fargate',
+      'Python',
+    ],
+    featured: true,
+  },
+  {
+    id: 'shared-skills-platform',
+    title: 'Shared Skills Repository',
+    subtitle:
+      'From every team building skills in isolation to one GitHub repository the whole company publishes to and reuses.',
+    blurb:
+      'A GitHub repository of shared Claude skills, generic and team-specific: developers browse it directly, non-technical staff search it through a Claude Desktop connector.',
+    category: 'Governance',
+    summary:
+      'Our team built a shared skills repository on GitHub where any team can publish its skills and check for an existing one before building a new copy. Every skill carries its author’s username, so a broken or unclear one traces straight back.',
+    problem:
+      'Across our company, teams were writing their own Claude skills and keeping them to themselves. When two teams worked on similar problems, they often built the same skill twice, because neither could see the other’s. A skill that broke had no name attached, so no one knew who to ask.',
+    architecture: [
+      'The repository lives in GitHub, where everyone already has access. Skills are split into two groups, generic ones any team can use and team-specific ones, so an author checks the right set first. Developers browse and search it directly.',
+      'For staff who do not work in GitHub, a connector links Claude Desktop to the repo. They ask Claude to search for an existing skill and get the same catalog from the chat window they already use.',
+      'To add a skill, an author runs /skill-creator, describes what it should do, and gets a working scaffold back. The connector publishes it to the repo with the author’s username attached.',
+    ],
+    impact: [
+      'Teams stopped rebuilding skills that already existed and started pulling the published ones.',
+      'Developers and non-developers work from one catalog, one through GitHub and the other through the connector.',
+      'Every skill has a named owner, so a broken or unclear one traces back to the person who wrote it.',
+    ],
+    technologies: [
+      'Claude Skills',
+      'GitHub',
+      'Claude Desktop',
+      'MCP Connectors',
+      'skill-creator',
+      'Claude Enterprise',
+      'Knowledge Sharing',
+    ],
+    links: [
+      {
+        label: 'View Everyday AI Coding Slides ↗',
+        url: 'https://everyday-ai-coding.vercel.app/',
+        type: 'deck',
+      },
+    ],
+    featured: false,
+  },
+  {
     id: 'multi-agent-sdlc',
     title: 'Human-Guided Agentic Test Engineering Pipeline',
     subtitle:
@@ -67,18 +140,18 @@ export const aiSystems: AISystem[] = [
       'Turns a Jira ticket into reviewed test scenarios, TestRail coverage, and Playwright tests, stopping for human approval before each stage.',
     category: 'Multi-Agent Systems',
     summary:
-      'To address it, I built a workflow that turns a Jira ticket into reviewed scenarios, TestRail cases, and Playwright tests. It stops for approval before it changes coverage, writes code, or opens a pull request.',
+      'The workflow I built carries one Jira ticket through scenario design, TestRail coverage, and Playwright automation as a single reviewed path. It stops for a person before it changes coverage, writes code, or opens a pull request.',
     problem:
-      'Test planning, test-case design, and automation were separate activities. Engineers rebuilt ticket context, duplicated TestRail coverage, and wrote brittle tests without a clear view of the feature, epic, repository, or existing test architecture.',
+      'On my team, test planning, case design, and automation were three separate activities, usually picked up by different people at different times. Each hand-off started by rebuilding the same context: the feature, its epic, the repository, and the shape of the existing test suite. Coverage drifted in TestRail as similar cases got written twice, and automation built without that context turned brittle.',
     architecture: [
-      'Planning starts with /start-planning. It gathers the ticket, acceptance criteria, documentation, attachments, references, parent-epic context, and completed or in-review sibling tickets, then proposes risk-tiered scenarios.',
-      '/test-cases reads the existing TestRail project and folder structure, then updates matching coverage or creates the missing folders and cases.',
-      'After deployment, /automate uses Playwright MCP and repository context to add POM-based UI, API, visual, or component tests.',
+      'The workflow opens with /start-planning. Before it proposes anything, it reads the ticket in full: acceptance criteria, technical notes, attachments, linked references, the parent epic, and any sibling tickets already done or in review. From that context it drafts risk-tiered scenarios and returns them for review.',
+      'Once the scenarios are approved, /test-cases maps them onto the existing TestRail project. It updates the cases that already match, creates the folders and cases that are missing, and returns every affected link so the coverage can be checked before the feature ships.',
+      'After deployment, /automate takes the approved cases together with the repository context and writes POM-based tests, each routed to the UI, API, visual, or component suite that fits. It builds on the page objects and fixtures already in the codebase rather than adding parallel ones.',
     ],
     impact: [
-      'Scenario floors match ticket criticality: 5+ for low, 6-8+ for medium, and 10-15+ for critical work.',
-      'A person approves test-case creation, automation work, and pull-request delivery.',
-      'Anyone can trace a change from its planning evidence through TestRail, the automation, and the PR review.',
+      'Scenario depth scales with risk: a floor of 5+ scenarios for low-criticality tickets, 6-8+ for medium, and 10-15+ for critical work.',
+      'Three points in the path need a person’s decision: creating the TestRail cases, starting the automation, and delivering the pull request.',
+      'A change stays traceable from its planning evidence through the TestRail cases, the test code, and the review that approved it.',
     ],
     technologies: [
       'Jira MCP',
@@ -261,116 +334,6 @@ export const aiSystems: AISystem[] = [
     },
   },
   {
-    id: 'litellm-gateway',
-    title: 'Dev Loop: A Sandboxed Multi-Agent Delivery Platform',
-    subtitle:
-      'From a Jira comment to an isolated agent that opens a pull request, with governed model access and agent-to-agent interop.',
-    blurb:
-      'Runs each Jira ticket as an isolated agent that works in its own sandbox and opens a pull request, with every model call routed through one governed gateway.',
-    category: 'Multi-Agent Systems',
-    summary:
-      'My team built Dev Loop so a Jira comment starts an isolated agent that works a ticket in its own sandbox and ends with a reviewed pull request. Every model call goes through one governed path.',
-    problem:
-      'Teams across our company were building agents on different stacks, each chosen for that team’s needs. Each agent ran on its own, with no shared way to execute safely, reach a model, or ask another team’s agent for help. Every team was re-solving isolation, credentials, model access, and interop from scratch.',
-    architecture: [
-      'A ticket enters through a WAF that only accepts Jira, then API Gateway and the dev-loop-api Lambda. The Lambda takes a per-ticket lock in DynamoDB so the same ticket never runs twice, then puts an event on SQS; a dead-letter queue holds anything that fails to start.',
-      'A dispatcher Lambda reads the queue and launches one ephemeral ECS Fargate task per ticket. Each task runs an OpenCode agent in its own sandbox, pulls its image from ECR, and reads short-lived Jira, Git, and LiteLLM credentials from Secrets Manager. An EventBridge reaper shuts down tasks that overrun.',
-      'From the sandbox the agent calls MCP tool servers for tools and context, commits to a branch and opens a pull request on the Git host, and speaks A2A to reach agents built by other teams on other stacks. Every model call goes through LiteLLM. It authorizes the call against an Okta-provisioned identity, routes to OpenRouter or AWS Bedrock, and falls back to the default provider when one is down. Persisting run memory in DynamoDB comes next.',
-    ],
-    impact: [
-      'Agents built by different teams take part in the same workflow without anyone standardizing on one application stack.',
-      'LiteLLM checks every model call against an Okta identity the platform team provisions, so model access is one policy instead of keys spread across teams.',
-      'Every run is isolated, credential-scoped, and ends in a pull request a person reviews before merge.',
-    ],
-    technologies: [
-      'A2A',
-      'LiteLLM',
-      'Okta',
-      'OpenCode',
-      'AWS',
-      'ECS Fargate',
-      'Python',
-    ],
-    featured: true,
-  },
-  {
-    id: 'llm-guardrails-evals',
-    title: 'LLM Guardrails & Continuous Red-Teaming Harness',
-    subtitle: 'Automated boundary testing and hallucination defense in CI/CD',
-    blurb:
-      'Evaluates model outputs for prompt injection, hallucination, structure, and brand rules, and blocks a merge in CI when they fail.',
-    category: 'LLM Evals & Guardrails',
-    summary:
-      'Built automated evaluations for model outputs before deployment, covering prompt injection, hallucination, output structure, and brand requirements.',
-    problem:
-      'Generative AI systems cannot be verified with traditional assert statements due to output non-determinism, requiring programmatic statistical and semantic evaluation.',
-    architecture: [
-      'Synthetically generated edge-case suites and red-teaming adversarial prompts.',
-      'Evaluation metrics for semantic similarity, hallucinations, and PII leakage.',
-      'Required evaluation checks in CI/CD before pull requests can merge.',
-    ],
-    impact: [
-      'Near-zero critical defect escape across generative AI features.',
-      'Presented as a benchmark methodology at the Ministry of Testing (2024).',
-    ],
-    technologies: [
-      'LLM Evals',
-      'Python',
-      'TypeScript',
-      'Prompt Engineering',
-      'CI/CD Gates',
-      'Statistical Testing',
-    ],
-    links: [
-      {
-        label: 'View Ministry of Testing Slide Deck ↗',
-        url: 'https://guardrails-with-evals.vercel.app/',
-        type: 'deck',
-      },
-    ],
-    featured: true,
-  },
-  {
-    id: 'shared-skills-platform',
-    title: 'Shared Skills Repository',
-    subtitle:
-      'From every team building skills in isolation to one GitHub repository the whole company publishes to and reuses.',
-    blurb:
-      'A GitHub repository of shared Claude skills, generic and team-specific: developers browse it directly, non-technical staff search it through a Claude Desktop connector.',
-    category: 'Governance',
-    summary:
-      'My team built a shared skills repository on GitHub where anyone publishes their team’s skills and checks for an existing one before building a new copy. Every skill carries its author’s username, so a broken or unclear one traces straight back.',
-    problem:
-      'Individual teams were building their own Claude skills and keeping them inside the team. When two teams did similar work, they often built the same skill twice, with no way to see that the other version already existed. Nothing recorded who wrote a skill, so a broken or unclear one had no clear owner.',
-    architecture: [
-      'The repository is a GitHub repo. Published skills are split into generic skills any team can use and team-specific skills, so an author scans the right set first. Everyone already has GitHub access, so developers search and read it directly.',
-      'For staff who do not work in GitHub, a connector links Claude Desktop to the repo. They ask Claude from chat to search existing skills and get the same catalog without leaving the tool they already use.',
-      'To build a skill, an author runs the /skill-creator skill, which scaffolds it from a short description. The GitHub connector publishes it back to the repo, stamped with the author’s username.',
-    ],
-    impact: [
-      'Duplicate skill work dropped sharply: teams reuse a published skill instead of rebuilding it locally.',
-      'Technical and non-technical staff work from one catalog: developers through GitHub, everyone else through the Claude Desktop connector.',
-      'Every skill is attributable, so a malfunctioning or unclear skill routes back to the person who wrote it.',
-    ],
-    technologies: [
-      'Claude Skills',
-      'GitHub',
-      'Claude Desktop',
-      'MCP Connectors',
-      'skill-creator',
-      'Claude Enterprise',
-      'Knowledge Sharing',
-    ],
-    links: [
-      {
-        label: 'View Everyday AI Coding Slides ↗',
-        url: 'https://everyday-ai-coding.vercel.app/',
-        type: 'deck',
-      },
-    ],
-    featured: false,
-  },
-  {
     id: 'support-intake-agent',
     title: 'Support Intake Agent',
     subtitle:
@@ -379,18 +342,18 @@ export const aiSystems: AISystem[] = [
       'Funnels support requests from email, Slack, and Jira into one Microsoft Teams queue, then turns a triaged message into a routed Asana task on demand.',
     category: 'Multi-Agent Systems',
     summary:
-      'To address it, I built an intake workflow that funnels email, Slack, and Jira into one Microsoft Teams queue, where a support engineer turns a real request into a routed Asana task by hand.',
+      'The intake workflow I built for the support team funnels email, Slack, and Jira into one Microsoft Teams channel, where an engineer turns a real request into a routed Asana task with one action.',
     problem:
-      'The support team took requests from four places at once. Email, Microsoft Teams chat, Slack, and Jira tickets each had their own queue and their own notifications, and no one could watch all four together. The team missed requests, worked the same one twice, or left some unanswered, and nothing recorded how a request turned into a tracked task.',
+      'A colleague on the support team told me they were struggling to keep up. Requests reached the team from four places at once: email, Microsoft Teams chat, Slack, and Jira tickets, each with its own queue and its own notifications, and no one could watch all four. Some slipped through, some got worked twice, and there was no record of how a request turned into tracked work.',
     architecture: [
-      'Each source has its own webhook: one on the support email address, one on the Slack channel, one on the Jira project. When a request lands, the webhook normalizes the sender, subject, body, and attachments into a single message and posts it to one Microsoft Teams channel, so the team watches one queue instead of four.',
-      'The team triages in that channel. Most messages are noise and go no further. When a request is a real issue, an engineer opens the message actions menu and runs the Support Intake Agent action, which starts a Power Automate flow with that message as its input.',
-      'The flow reads the message and its thread for the requestor, description, and any attachments, then creates an Asana task with those fields copied across. It matches the request type to the team that owns it and assigns the task to that team’s project, so the receiving team gets the whole request in one place.',
+      'Each source has its own webhook, keyed to the support email address, the Slack channel, or the Jira project. When a request lands, the webhook pulls the sender, subject, body, and attachments into a single message and posts it to one Microsoft Teams channel, so the team watches one queue instead of four.',
+      'The team triages in that channel. Most messages are noise and go no further. When a request is a real issue, an engineer opens the message actions menu and runs the Support Intake Agent action, which passes that message to a Power Automate flow.',
+      'The flow reads the message and its thread for the requestor, the description, and any attachments, then opens an Asana task with those fields copied across. It matches the request type to the team that owns it and assigns the task to that team’s project.',
     ],
     impact: [
-      'The support team works one Teams queue instead of monitoring email, Slack, Teams chat, and Jira separately.',
-      'One action on a message turns a request into a tracked Asana task that already carries the requestor, description, and attachments.',
-      'Every task goes to the team that owns its request type, and anyone can trace the path from the first message to the assigned task.',
+      'The support team watches one Teams channel instead of four separate inboxes.',
+      'Turning a request into a tracked Asana task is one action, and the task arrives with the requestor, the description, and the files already on it.',
+      'Every task lands with the team that owns its request type, and anyone can trace it back to the message it started as.',
     ],
     technologies: [
       'Power Automate',
@@ -400,6 +363,40 @@ export const aiSystems: AISystem[] = [
       'Slack',
       'Jira',
       'Workflow Design',
+    ],
+    featured: true,
+  },
+  {
+    id: 'office-hours-agent',
+    title: 'Office Hours Agent',
+    subtitle:
+      'From raw office-hours recordings to organized answers that span every past session.',
+    blurb:
+      'Turns recorded office-hours sessions into titled, indexed transcripts, then answers questions from Claude Desktop by drawing on every session that touches the topic.',
+    category: 'Multi-Agent Systems',
+    summary:
+      'The office-hours agent I built converts each recorded session into a titled, indexed transcript, then answers questions from Claude Desktop by pulling from every session that touches the topic. Its answers stay grounded in what was said in the room.',
+    problem:
+      'My team runs biweekly office hours for the rest of the company: CMS feature demos, content authoring and asset best practices, taxonomy tagging, and how to build each content type, from blogs to product pages. Every session was recorded, but the same questions kept coming back weeks later. The answers were sitting in the recordings, and no one wanted to scrub through hours of video to find them.',
+    architecture: [
+      'A webhook watches the recordings folder. When a new session lands, a workflow takes its raw .vtt transcript, cleans it into Markdown, titles it after the topic that was discussed, and files it in SharePoint next to the others.',
+      'The formatted transcripts are indexed by meaning, so related topics sit near each other. A question about taxonomy tagging pulls the passages where tagging came up, even from sessions months apart.',
+      'From Claude Desktop, someone asks a question the way they would ask a colleague. The agent works out which topics it touches, gathers the relevant passages from across sessions, and returns one organized answer instead of scattered fragments.',
+    ],
+    impact: [
+      'The same question stops coming back: the answer from any past session is a chat message away.',
+      'An answer can span several sessions, so a topic that was covered in pieces over months reads as one explanation.',
+      'New recordings join the knowledge base on their own, with no manual transcription or filing.',
+      'It started with our team’s office hours; other teams saw it working and now run their own sessions through the same agent.',
+    ],
+    technologies: [
+      'Claude Desktop',
+      'MCP',
+      'SharePoint',
+      'Webhooks',
+      'RAG',
+      'Semantic Search',
+      'Markdown',
     ],
     featured: true,
   },

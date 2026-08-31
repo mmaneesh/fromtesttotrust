@@ -80,29 +80,36 @@ const { systemId } = Astro.props;
     )
   }
   {
-    systemId === 'llm-guardrails-evals' && (
+    systemId === 'office-hours-agent' && (
       <svg viewBox="0 0 360 156" preserveAspectRatio="none">
         <>
-          <rect class="outline" x="122" y="34" width="116" height="88" rx="2" />
-          <path class="line" d="M149 58H212M149 78H212M149 98H186" />
+          <rect class="outline" x="20" y="22" width="84" height="32" rx="2" />
+          <rect class="outline" x="20" y="62" width="84" height="32" rx="2" />
+          <rect class="outline" x="20" y="102" width="84" height="32" rx="2" />
+          <path
+            class="muted"
+            d="M32 34H92M32 44H92M32 74H92M32 84H92M32 114H92M32 124H92"
+          />
         </>
-        <path
-          class="muted"
-          d="M26 48H94M26 78H94M26 108H94M266 48H334M266 78H334M266 108H334"
-        />
-        <path
-          class="accent"
-          d="M84 43L96 55M96 43L84 55M84 73L96 85M96 73L84 85M84 103L96 115M96 103L84 115M264 43L276 55M276 43L264 55M264 73L276 85M276 73L264 85M264 103L276 115M276 103L264 115"
-        />
+        <path class="accent" d="M104 38L182 76M104 78H182M104 118L182 80" />
+        <path class="accent" d="M192 78H248" />
         <>
-          <text class="label" x="22" y="27">
-            PROBE
+          <circle class="dot" cx="104" cy="38" r="3.5" />
+          <circle class="dot" cx="104" cy="78" r="3.5" />
+          <circle class="dot" cx="104" cy="118" r="3.5" />
+          <circle class="dot" cx="186" cy="78" r="6.5" />
+        </>
+        <rect class="outline" x="250" y="36" width="90" height="84" rx="2" />
+        <path class="line" d="M262 54H328M262 72H328M262 90H328M262 108H306" />
+        <>
+          <text class="label" x="20" y="15">
+            SESSIONS
           </text>
-          <text class="label" x="148" y="26">
-            EVAL
+          <text class="label" x="158" y="150">
+            INDEXED
           </text>
-          <text class="label" x="284" y="27">
-            BLOCK
+          <text class="label" x="250" y="28">
+            ANSWER
           </text>
         </>
       </svg>

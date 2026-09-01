@@ -5,13 +5,22 @@ import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <header class="w-full sticky top-0 z-40 bg-canvas border-b border-line">
-  <div class="max-w-[1024px] mx-auto px-4 sm:px-7 h-16 flex items-center justify-between">
-    <a href="/" class="inline-flex focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="From Test to Trust">
+  <div
+    class="max-w-[1024px] mx-auto px-4 sm:px-7 h-16 flex items-center justify-between"
+  >
+    <a
+      href="https://www.fromtesttotrust.com"
+      class="inline-flex focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+      aria-label="From Test to Trust"
+    >
       <BrandMark class="w-[88px] h-auto" />
     </a>
     <div class="flex items-center gap-1.5">
       <ThemeToggle />
-      <a href={`mailto:${siteConfig.email}`} class="inline-flex items-center gap-2 border border-accent rounded-[4px] bg-accent px-3.5 py-2 text-[10px] font-mono font-medium uppercase tracking-[0.08em] text-white transition-colors duration-180 hover:bg-transparent hover:text-accent">
+      <a
+        href={`mailto:${siteConfig.email}`}
+        class="inline-flex items-center gap-2 border border-accent rounded-[4px] bg-accent px-3.5 py-2 text-[10px] font-mono font-medium uppercase tracking-[0.08em] text-white transition-colors duration-180 hover:bg-transparent hover:text-accent"
+      >
         Connect <span aria-hidden="true" class="text-xs">→</span>
       </a>
     </div>

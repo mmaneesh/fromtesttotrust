@@ -4,9 +4,9 @@ import ViewSwitcherDock from '../components/ViewSwitcherDock.astro';
 import FieldNotesView from '../components/views/FieldNotesView.astro';
 import Footer from '../components/Footer.astro';
 import { siteConfig } from '../data/site-config';
+import { siteOrigin } from '../lib/seo';
 
-const site =
-  Astro.site?.href.replace(/\/$/, '') ?? 'https://fromtesttotrust.com';
+const site = siteOrigin(Astro.site);
 
 const structuredData = [
   {

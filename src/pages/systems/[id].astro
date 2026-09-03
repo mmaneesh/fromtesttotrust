@@ -9,6 +9,7 @@ import BrandAuditDiagram from '../../components/BrandAuditDiagram.astro';
 import SkillsRepoDiagram from '../../components/SkillsRepoDiagram.astro';
 import OfficeHoursDiagram from '../../components/OfficeHoursDiagram.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
+import { siteOrigin, clampText } from '../../lib/seo';
 
 export function getStaticPaths() {
   return aiSystems.map((system) => ({
@@ -153,11 +154,8 @@ const systemDetails: Record<
 
 const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
 
-const site =
-  Astro.site?.href.replace(/\/$/, '') ?? 'https://fromtesttotrust.com';
-const clamp = (s: string, n = 155) =>
-  s.length <= n ? s : `${s.slice(0, s.lastIndexOf(' ', n))}…`;
-const description = clamp(system.summary);
+const site = siteOrigin(Astro.site);
+const description = clampText(system.summary);
 const pageUrl = `${site}/systems/${system.id}`;
 
 const structuredData = [

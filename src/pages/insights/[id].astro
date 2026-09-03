@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { speakingEvents, type SpeakingEvent } from '../../data/speaking';
+import { siteOrigin, clampText } from '../../lib/seo';
 
 export function getStaticPaths() {
   return speakingEvents.map((event) => ({
@@ -17,11 +18,8 @@ interface Props {
 
 const { event } = Astro.props;
 
-const site =
-  Astro.site?.href.replace(/\/$/, '') ?? 'https://fromtesttotrust.com';
-const clamp = (s: string, n = 155) =>
-  s.length <= n ? s : `${s.slice(0, s.lastIndexOf(' ', n))}…`;
-const description = clamp(event.abstract);
+const site = siteOrigin(Astro.site);
+const description = clampText(event.abstract);
 const pageUrl = `${site}/insights/${event.id}`;
 const parsedDate = new Date(event.date);
 const publishedTime = Number.isNaN(parsedDate.valueOf())

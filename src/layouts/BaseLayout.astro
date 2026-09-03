@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { siteOrigin } from '../lib/seo';
 
 interface Props {
   title?: string;
@@ -17,9 +18,10 @@ const {
   publishedTime,
 } = Astro.props;
 
-const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const canonical = new URL(path, Astro.site).href;
-const ogImage = new URL(image, Astro.site).href;
+const origin = siteOrigin(Astro.site);
+const path = Astro.url.pathname.replace(/\/+$/, '');
+const canonical = `${origin}${path}`;
+const ogImage = new URL(image, `${origin}/`).href;
 ---
 
 <!doctype html>

@@ -54,7 +54,7 @@
         ></path>
         <path
           class="ba-edge"
-          d="M354 170 H378 V36 H477 V48"
+          d="M366 170 H378 V36 H477 V48"
           marker-end="url(#ba-arrow)"></path>
 
         <path class="ba-edge" d="M477 88 V102" marker-end="url(#ba-arrow)"
@@ -108,8 +108,8 @@
             y="3">in scope</text
           ></g
         >
-        <g transform="translate(860,226)"
-          ><rect x="-36" y="-9" width="72" height="16" rx="3"></rect><text
+        <g transform="translate(844,226)"
+          ><rect x="-38" y="-9" width="76" height="16" rx="3"></rect><text
             text-anchor="middle"
             y="3">needs review</text
           ></g
@@ -133,9 +133,9 @@
       </g>
 
       <g class="ba-node skill">
-        <rect x="214" y="144" width="140" height="52" rx="6"></rect>
-        <text class="t" x="284" y="167" text-anchor="middle">Brand skill</text>
-        <text class="s" x="284" y="184" text-anchor="middle"
+        <rect x="214" y="144" width="152" height="52" rx="6"></rect>
+        <text class="t" x="290" y="167" text-anchor="middle">Brand skill</text>
+        <text class="s" x="290" y="184" text-anchor="middle"
           >progressive disclosure</text
         >
       </g>
@@ -206,6 +206,9 @@
 <style>
   .ba-fig {
     margin: 3rem 0;
+    width: min(1180px, 96vw);
+    margin-left: 50%;
+    transform: translateX(-50%);
     border-top: 1px solid rgb(var(--line));
     border-bottom: 1px solid rgb(var(--line));
     padding: 1.35rem 0 1.5rem;
@@ -216,7 +219,7 @@
   .ba-fig figcaption span {
     color: rgb(var(--accent));
     font:
-      600 10px 'Geist Mono',
+      600 11px 'Geist Mono',
       monospace;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -239,7 +242,7 @@
   .ba-boundary-label {
     fill: rgb(var(--muted-text));
     font:
-      600 10px 'Geist Mono',
+      600 11px 'Geist Mono',
       monospace;
     letter-spacing: 0.08em;
   }
@@ -252,17 +255,17 @@
   .ba-node .t {
     fill: rgb(var(--foreground));
     font:
-      600 12px 'Geist Mono',
+      600 13px 'Geist Mono',
       monospace;
   }
   .ba-node .s {
     fill: rgb(var(--muted-text));
     font:
-      500 10px 'Geist Mono',
+      500 11px 'Geist Mono',
       monospace;
   }
   .ba-node.rule .t {
-    font-size: 11px;
+    font-size: 12px;
   }
   .ba-node.skill rect,
   .ba-node.report rect {
@@ -296,14 +299,14 @@
   .ba-elabel text {
     fill: rgb(var(--muted-text));
     font:
-      500 9.5px 'Geist Mono',
+      500 10.5px 'Geist Mono',
       monospace;
   }
 
   .ba-legend text {
     fill: rgb(var(--muted-text));
     font:
-      500 10px 'Geist Mono',
+      500 11px 'Geist Mono',
       monospace;
   }
   .ba-legend line {

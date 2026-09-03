@@ -199,6 +199,9 @@
 <style>
   .oh-fig {
     margin: 3rem 0;
+    width: min(1180px, 96vw);
+    margin-left: 50%;
+    transform: translateX(-50%);
     border-top: 1px solid rgb(var(--line));
     border-bottom: 1px solid rgb(var(--line));
     padding: 1.35rem 0 1.5rem;
@@ -209,7 +212,7 @@
   .oh-fig figcaption span {
     color: rgb(var(--accent));
     font:
-      600 10px 'Geist Mono',
+      600 11px 'Geist Mono',
       monospace;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -232,7 +235,7 @@
   .oh-boundary-label {
     fill: rgb(var(--muted-text));
     font:
-      600 10px 'Geist Mono',
+      600 11px 'Geist Mono',
       monospace;
     letter-spacing: 0.08em;
   }
@@ -245,17 +248,17 @@
   .oh-node .t {
     fill: rgb(var(--foreground));
     font:
-      600 12px 'Geist Mono',
+      600 13px 'Geist Mono',
       monospace;
   }
   .oh-node .s {
     fill: rgb(var(--muted-text));
     font:
-      500 10px 'Geist Mono',
+      500 11px 'Geist Mono',
       monospace;
   }
   .oh-node.store .t {
-    font-size: 11px;
+    font-size: 12px;
   }
   .oh-node.agent rect {
     fill: rgb(var(--surface-raised));
@@ -288,14 +291,14 @@
   .oh-elabel text {
     fill: rgb(var(--muted-text));
     font:
-      500 9.5px 'Geist Mono',
+      500 10.5px 'Geist Mono',
       monospace;
   }
 
   .oh-legend text {
     fill: rgb(var(--muted-text));
     font:
-      500 10px 'Geist Mono',
+      500 11px 'Geist Mono',
       monospace;
   }
   .oh-legend line {

@@ -72,3 +72,23 @@ test('Playwright reliability insight is published with marketing-system examples
     /Articles, talks, and workshops on software quality, test automation, AI, and the systems behind trustworthy releases\./,
   );
 });
+
+test('output format insight explains each format with a sample', async () => {
+  const events = await readSource('src/data/insights.ts');
+
+  assert.match(events, /id: 'output-format-types'/);
+  assert.match(events, /JSON vs\. TOON vs\. JSONL vs\. Markdown vs\. YAML/);
+  assert.match(events, /heading: 'JSON'/);
+  assert.match(events, /heading: 'TOON'/);
+  assert.match(events, /heading: 'JSONL'/);
+  assert.match(events, /heading: 'Markdown'/);
+  assert.match(events, /heading: 'YAML'/);
+  assert.match(events, /codeLanguage: 'json'/);
+  assert.match(events, /codeLanguage: 'markdown'/);
+  assert.match(events, /codeLanguage: 'yaml'/);
+  assert.match(events, /checkout-regression-2026-09-03/);
+  assert.match(events, /testCases\[3\]\{id,area,priority,status,owner\}/);
+  assert.match(events, /"event":"test_result"/);
+  assert.match(events, /Release candidate: checkout/);
+  assert.match(events, /environment: staging/);
+});

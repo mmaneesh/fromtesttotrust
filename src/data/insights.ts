@@ -3,7 +3,7 @@ export interface InsightSection {
   paragraphs: string[];
   flow?: string[];
   code?: string;
-  codeLanguage?: 'ts';
+  codeLanguage?: 'ts' | 'json' | 'markdown' | 'yaml' | 'text';
 }
 
 export interface InsightEntry {
@@ -130,6 +130,127 @@ expect(contact.fieldValues).toMatchObject({
       'Eloqua',
       'CI/CD',
     ],
+  },
+  {
+    id: 'output-format-types',
+    title: 'JSON vs. TOON vs. JSONL vs. Markdown vs. YAML',
+    subtitle: 'Choosing a format for AI context, model output, and test data',
+    organization: 'Field Notes',
+    date: 'September 3, 2026',
+    format: 'Article',
+    kind: 'article',
+    abstract:
+      'The same data can be easy to read, cheap to send, simple to stream, or safe to validate. The format decides which trade-off we make.',
+    brief:
+      'We do not start by asking which format is best. We start with the job: are we giving a model context, collecting its output, processing many records, or writing something people need to edit? The same task data makes the differences clearer.',
+    keyTakeaways: [],
+    sections: [
+      {
+        heading: 'The same data, five formats',
+        paragraphs: [
+          'Imagine an assistant that helps a QA team prepare a checkout release. It needs the test run, the cases in scope, their owners, and the result of each run. Each format below represents a realistic part of that work, but they are not interchangeable. Some make strict integration contracts easier. Some suit long streams. Some work better when a human is going to read or edit the file.',
+        ],
+      },
+      {
+        heading: 'JSON',
+        paragraphs: [
+          'JSON is our default at system boundaries. APIs, tool calls, and application code already understand it, and nesting stays explicit. That makes it a good choice when the model output needs to become an object that another service can validate and use.',
+          'The trade-off is repetition. Field names, braces, quotes, and commas appear in every record. For a few objects, that cost is small. For a large prompt full of similar rows, it adds up.',
+        ],
+        code: `{
+  "run": {
+    "id": "checkout-regression-2026-09-03",
+    "environment": "staging",
+    "browser": "chromium"
+  },
+  "testCases": [
+    {
+      "id": "TC-101",
+      "title": "Guest checkout with a valid card",
+      "priority": "P0",
+      "owner": "Ava",
+      "status": "ready"
+    },
+    {
+      "id": "TC-102",
+      "title": "Order confirmation after payment retry",
+      "priority": "P1",
+      "owner": "Sam",
+      "status": "blocked"
+    }
+  ]
+}`,
+        codeLanguage: 'json',
+      },
+      {
+        heading: 'TOON',
+        paragraphs: [
+          'TOON, or Token-Oriented Object Notation, is built for structured input to language models. It removes repeated punctuation and declares the fields once, so a uniform list can take fewer tokens than the equivalent JSON. It is most useful when the prompt contains many rows with the same shape.',
+          'We would still keep JSON at the integration boundary. TOON is a newer working-draft format, so we should measure token savings with our own data and convert it back to JSON before handing the result to systems that expect a stable contract.',
+        ],
+        code: `testCases[3]{id,area,priority,status,owner}:
+  TC-101,checkout,P0,ready,Ava
+  TC-102,payment,P1,blocked,Sam
+  TC-103,confirmation,P1,ready,Ava`,
+        codeLanguage: 'text',
+      },
+      {
+        heading: 'JSONL',
+        paragraphs: [
+          'JSONL, also called newline-delimited JSON, puts one complete JSON value on each line. That small difference makes it practical for batches, logs, and evaluation data because a process can read or write one record at a time. A broken record is easier to isolate, and a large file does not have to be loaded as one array.',
+          'We reach for JSONL when the unit of work is a record, not a document. It is a poor fit when the records need to share a nested structure or when a person needs to scan the file as a single narrative.',
+        ],
+        code: `{"event":"test_result","runId":"checkout-regression-2026-09-03","testId":"TC-101","status":"passed","durationMs":1842}
+{"event":"test_result","runId":"checkout-regression-2026-09-03","testId":"TC-102","status":"failed","durationMs":3960,"error":"Payment retry button stayed disabled"}
+{"event":"test_result","runId":"checkout-regression-2026-09-03","testId":"TC-103","status":"passed","durationMs":1299}`,
+        codeLanguage: 'json',
+      },
+      {
+        heading: 'Markdown',
+        paragraphs: [
+          'Markdown is not a replacement for a data contract. It is a strong format for instructions, retrieved documentation, and examples because people can read and edit it without a special tool. Headings and lists also give a model useful structure without making the document difficult to maintain.',
+          'We use Markdown when meaning lives in the explanation around the data. If a downstream service needs to parse the result reliably, we pair that explanation with a structured output format instead of asking it to extract facts from prose.',
+        ],
+        code: `## Release candidate: checkout
+
+**Environment:** staging  
+**Run:** checkout-regression-2026-09-03
+
+### Current risks
+
+- **TC-102: payment retry** is blocked by the payment sandbox.
+- **TC-101: guest checkout** passed in Chromium and Safari.
+- Confirm the order confirmation email after the sandbox is available.`,
+        codeLanguage: 'markdown',
+      },
+      {
+        heading: 'YAML',
+        paragraphs: [
+          'YAML is often easier for people to write than JSON. It is common in configuration files and prompt templates because indentation makes simple structures compact and readable. If a team needs to maintain a small configuration by hand, YAML can feel less noisy than JSON.',
+          'That convenience needs care. Indentation is part of the syntax, and parsers can differ in how they handle ambiguous values. We avoid using YAML for model output that must pass a strict machine contract. JSON with a schema gives a cleaner boundary there.',
+        ],
+        code: `run:
+  id: checkout-regression-2026-09-03
+  environment: staging
+  browsers:
+    - chromium
+    - webkit
+  includeTags:
+    - checkout
+    - payment
+  notify:
+    channel: qa-release`,
+        codeLanguage: 'yaml',
+      },
+      {
+        heading: 'The format is only part of the contract',
+        paragraphs: [
+          'A valid JSON response can still be wrong. It may omit a required field, use an unexpected value, or return an array where the next system expects an object. For model output, we define the expected shape with JSON Schema or the equivalent tool schema, then test the result against it.',
+          'Our rule is straightforward: use JSON and a schema when a system needs reliable output; use JSONL for streams and batch records; use Markdown or YAML when people need to maintain context or configuration; and try TOON when large, regular prompt data makes token cost worth measuring.',
+        ],
+      },
+    ],
+    tags: ['AI', 'Structured Output', 'JSON', 'Test Data', 'LLM Context'],
   },
   {
     id: 'everyday-ai-coding',

@@ -1,5 +1,5 @@
 ---
-import { speakingEvents } from '../../data/speaking';
+import { insightEntries } from '../../data/insights';
 ---
 
 <section class="w-full py-8 sm:py-9">
@@ -8,14 +8,14 @@ import { speakingEvents } from '../../data/speaking';
       Insights
     </h1>
     <p class="mt-2 text-[13px] leading-[1.65] text-muted">
-      Practical sessions on AI evaluation, guardrails, and tools for quality
-      engineers.
+      Articles, talks, and workshops on software quality, test automation, AI,
+      and the systems behind trustworthy releases.
     </p>
   </header>
 
   <div class="divide-y divide-line border-y border-line">
     {
-      speakingEvents.map((event) => (
+      insightEntries.map((event) => (
         <article class="grid gap-4 py-7 first:pt-6 sm:grid-cols-[minmax(9rem,0.32fr)_minmax(0,1fr)] sm:gap-10">
           <p class="text-[10px] font-mono uppercase tracking-[0.08em] text-accent">
             {event.organization}
@@ -33,7 +33,9 @@ import { speakingEvents } from '../../data/speaking';
               href={`/insights/${event.id}`}
               class="mt-5 inline-flex text-xs font-mono font-semibold text-accent underline-offset-4 transition-colors hover:text-foreground hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
-              <span>View brief →</span>
+              <span>
+                {event.kind === 'article' ? 'Read article →' : 'View brief →'}
+              </span>
             </a>
           </div>
         </article>

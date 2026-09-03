@@ -14,19 +14,61 @@ test('insight cards contain only community, title, description, and brief link',
   assert.match(view, /event\.organization/);
   assert.match(view, /event\.title/);
   assert.match(view, /event\.abstract/);
-  assert.match(view, />\s*View brief\s*→\s*</);
+  assert.match(
+    view,
+    /event\.kind === 'article' \? 'Read article →' : 'View brief →'/,
+  );
   assert.doesNotMatch(view, /event\.format/);
   assert.doesNotMatch(view, /event\.subtitle/);
   assert.doesNotMatch(view, /event\.deckUrl/);
   assert.doesNotMatch(view, /Open Slides/);
 });
 
-test('Everyday AI Skills leads the insights list and Guardrails omits red-team datasets', async () => {
-  const events = await readSource('src/data/speaking.ts');
+test('Playwright reliability leads the insights list and Guardrails omits red-team datasets', async () => {
+  const events = await readSource('src/data/insights.ts');
 
   assert.match(
     events,
-    /export const speakingEvents: SpeakingEvent\[\] = \[\s*\{\s*id: 'everyday-ai-coding'/,
+    /export const insightEntries: InsightEntry\[\] = \[\s*\{\s*id: 'playwright-reliability'/,
   );
   assert.doesNotMatch(events, /build red-team datasets/);
+});
+
+test('Playwright reliability insight is published with marketing-system examples', async () => {
+  const events = await readSource('src/data/insights.ts');
+  const detailPage = await readSource('src/pages/insights/[id].astro');
+  const view = await readSource('src/components/views/SpeakingView.astro');
+  const insightsPage = await readSource('src/pages/insights/index.astro');
+
+  assert.match(events, /id: 'playwright-reliability'/);
+  assert.match(events, /The Habits That Make Our Tests More Reliable/);
+  assert.doesNotMatch(events, /title: 'The Playwright Habits/);
+  assert.match(events, /Map the journey before writing the test/);
+  assert.doesNotMatch(events, /CMS\/CMA campaign metadata\n        ↓/);
+  assert.match(events, /flow: \[/);
+  assert.match(events, /codeLanguage: 'ts'/);
+  assert.match(events, /Eloqua/);
+  assert.match(events, /Run the right tests at the right CI\/CD stage/);
+  assert.match(detailPage, /event\.sections/);
+  assert.match(detailPage, /codeToHtml/);
+  assert.match(detailPage, /one-dark-pro/);
+  assert.match(detailPage, /github-light/);
+  assert.match(detailPage, /--shiki-dark-bg/);
+  assert.match(detailPage, /replace\(\/background-color/);
+  assert.match(detailPage, /section\.flow/);
+  assert.match(detailPage, /set:html=\{section\.highlightedCode\}/);
+  assert.match(detailPage, /justify-items-center/);
+  assert.match(
+    detailPage,
+    /class="example-surface overflow-x-auto border border-line/,
+  );
+  assert.match(detailPage, /event\.deckUrl &&/);
+  assert.match(
+    view,
+    /event\.kind === 'article' \? 'Read article →' : 'View brief →'/,
+  );
+  assert.match(
+    insightsPage,
+    /Articles, talks, and workshops on software quality, test automation, AI, and the systems behind trustworthy releases\./,
+  );
 });

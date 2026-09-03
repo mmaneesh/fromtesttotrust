@@ -57,9 +57,9 @@ test('home navigation keeps the brand mark compact and Connect readable through 
   assert.match(dock, /import BrandMark from '\.\/BrandMark\.astro';/);
   assert.match(
     dock,
-    /<a\s+class="brand"\s+href="https:\/\/www\.fromtesttotrust\.com"\s+aria-label="From Test to Trust"\s*>\s*<span class="brand-mark"><BrandMark \/><\/span>\s*<\/a>/,
+    /<a class="brand" href="\/" aria-label="From Test to Trust">\s*<span class="brand-mark"><BrandMark \/><\/span>\s*<\/a>/,
   );
-  assert.match(header, /href="https:\/\/www\.fromtesttotrust\.com"/);
+  assert.match(header, /href="\/"/);
   assert.doesNotMatch(dock, /<span>From Test to Trust<\/span>/);
   assert.match(dock, /min-height: 64px;/);
   assert.match(dock, /width: 88px;/);

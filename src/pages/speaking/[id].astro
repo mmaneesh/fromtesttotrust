@@ -16,12 +16,61 @@ interface Props {
 }
 
 const { event } = Astro.props;
+
+const site =
+  Astro.site?.href.replace(/\/$/, '') ?? 'https://fromtesttotrust.com';
+const clamp = (s: string, n = 155) =>
+  s.length <= n ? s : `${s.slice(0, s.lastIndexOf(' ', n))}…`;
+const description = clamp(event.abstract);
+const pageUrl = `${site}/speaking/${event.id}`;
+const parsedDate = new Date(event.date);
+const publishedTime = Number.isNaN(parsedDate.valueOf())
+  ? undefined
+  : parsedDate.toISOString();
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: event.title,
+    description,
+    url: pageUrl,
+    image: `${site}/og.png`,
+    ...(publishedTime ? { datePublished: publishedTime } : {}),
+    author: { '@type': 'Person', name: 'Maneesh Maddala', url: `${site}/` },
+    publisher: { '@type': 'Person', name: 'Maneesh Maddala' },
+    about: `${event.format} — ${event.organization}`,
+    keywords: event.tags.join(', '),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Insights',
+        item: `${site}/#speaking`,
+      },
+      { '@type': 'ListItem', position: 2, name: event.title, item: pageUrl },
+    ],
+  },
+];
 ---
 
 <BaseLayout
-  title={`${event.title} - Keynote & Workshop | Maneesh Maddala`}
-  description={event.abstract}
+  title={`${event.title} — ${event.format} | Maneesh Maddala`}
+  description={description}
+  type="article"
+  publishedTime={publishedTime}
 >
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  </Fragment>
+
   <Header />
 
   <main

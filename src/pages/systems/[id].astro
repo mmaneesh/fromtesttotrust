@@ -152,12 +152,54 @@ const systemDetails: Record<
 };
 
 const details = systemDetails[system.id] || systemDetails['multi-agent-sdlc'];
+
+const site =
+  Astro.site?.href.replace(/\/$/, '') ?? 'https://fromtesttotrust.com';
+const clamp = (s: string, n = 155) =>
+  s.length <= n ? s : `${s.slice(0, s.lastIndexOf(' ', n))}…`;
+const description = clamp(system.summary);
+const pageUrl = `${site}/systems/${system.id}`;
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: system.title,
+    description,
+    url: pageUrl,
+    image: `${site}/og.png`,
+    author: { '@type': 'Person', name: 'Maneesh Maddala', url: `${site}/` },
+    publisher: { '@type': 'Person', name: 'Maneesh Maddala' },
+    keywords: system.technologies.join(', '),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'AI Systems',
+        item: `${site}/#ai-systems`,
+      },
+      { '@type': 'ListItem', position: 2, name: system.title, item: pageUrl },
+    ],
+  },
+];
 ---
 
 <BaseLayout
-  title={`${system.title} - From Test to Trust | Maneesh Maddala`}
-  description={system.summary}
+  title={`${system.title} — AI System Brief | Maneesh Maddala`}
+  description={description}
+  type="article"
 >
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  </Fragment>
+
   <Header />
 
   <main

@@ -1,9 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ViewSwitcherDock from '../components/ViewSwitcherDock.astro';
-import AISystemsView from '../components/views/AISystemsView.astro';
-import SpeakingView from '../components/views/SpeakingView.astro';
-import CareerImpactView from '../components/views/CareerImpactView.astro';
 import FieldNotesView from '../components/views/FieldNotesView.astro';
 import Footer from '../components/Footer.astro';
 import { siteConfig } from '../data/site-config';
@@ -47,6 +44,18 @@ const structuredData = [
       type="application/ld+json"
       set:html={JSON.stringify(structuredData)}
     />
+    <script is:inline>
+      // Redirect legacy hash links to the real section routes.
+      (() => {
+        const map = {
+          experience: '/experience',
+          'ai-systems': '/ai-systems',
+          speaking: '/speaking',
+        };
+        const dest = map[location.hash.slice(1)];
+        if (dest) location.replace(dest);
+      })();
+    </script>
   </Fragment>
 
   <ViewSwitcherDock />
@@ -57,9 +66,6 @@ const structuredData = [
   >
     <div class="mx-auto min-h-[500px] max-w-[1024px] pt-3 sm:pt-4">
       <FieldNotesView />
-      <CareerImpactView />
-      <AISystemsView />
-      <SpeakingView />
     </div>
   </main>
 

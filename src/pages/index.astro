@@ -1,17 +1,64 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ViewSwitcherDock from '../components/ViewSwitcherDock.astro';
-import AISystemsView from '../components/views/AISystemsView.astro';
-import SpeakingView from '../components/views/SpeakingView.astro';
-import CareerImpactView from '../components/views/CareerImpactView.astro';
 import FieldNotesView from '../components/views/FieldNotesView.astro';
 import Footer from '../components/Footer.astro';
+import { siteConfig } from '../data/site-config';
+import { siteOrigin } from '../lib/seo';
+
+const site = siteOrigin(Astro.site);
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: siteConfig.name,
+    url: `${site}/`,
+    image: `${site}/images/maneesh-portrait-2026.jpg`,
+    jobTitle: siteConfig.role,
+    worksFor: { '@type': 'Organization', name: siteConfig.employer },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Chicago',
+      addressRegion: 'IL',
+    },
+    sameAs: siteConfig.socials
+      .filter((s) => s.id === 'linkedin' || s.id === 'github')
+      .map((s) => s.url),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteConfig.brandName,
+    url: `${site}/`,
+  },
+];
 ---
 
 <BaseLayout
-  title="From Test to Trust - Maneesh Maddala | Principal SDET Engineer"
-  description="Personal portfolio of Maneesh Maddala, Principal SDET Engineer at Morningstar, Inc. Engineering quality, risk, and trust across modern AI systems, multi-agent SDLC, and enterprise test architecture."
+  title="Maneesh Maddala — Principal SDET Engineer | From Test to Trust"
+  description="Portfolio of Maneesh Maddala, Principal SDET Engineer at Morningstar, Inc. — engineering quality, risk, and trust across modern AI systems, multi-agent SDLC, and enterprise test architecture."
 >
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+    <script is:inline>
+      // Redirect legacy hash links to the real section routes.
+      (() => {
+        const map = {
+          experience: '/experience',
+          'ai-systems': '/ai-systems',
+          speaking: '/insights',
+          insights: '/insights',
+        };
+        const dest = map[location.hash.slice(1)];
+        if (dest) location.replace(dest);
+      })();
+    </script>
+  </Fragment>
+
   <ViewSwitcherDock />
 
   <main
@@ -20,9 +67,6 @@ import Footer from '../components/Footer.astro';
   >
     <div class="mx-auto min-h-[500px] max-w-[1024px] pt-3 sm:pt-4">
       <FieldNotesView />
-      <CareerImpactView />
-      <AISystemsView />
-      <SpeakingView />
     </div>
   </main>
 

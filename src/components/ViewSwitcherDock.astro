@@ -3,36 +3,31 @@ import BrandMark from './BrandMark.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { siteConfig } from '../data/site-config';
 const tabs = [
-  { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'ai-systems', label: 'AI Systems' },
-  { id: 'speaking', label: 'Insights' },
+  { id: 'about', label: 'About', href: '/' },
+  { id: 'experience', label: 'Experience', href: '/experience' },
+  { id: 'ai-systems', label: 'AI Systems', href: '/ai-systems' },
+  { id: 'insights', label: 'Insights', href: '/insights' },
 ];
+const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? current === '/' : current === href;
 ---
 
 <div class="view-switcher sticky top-0 z-30">
   <header class="topbar">
-    <a
-      class="brand"
-      href="https://www.fromtesttotrust.com"
-      aria-label="From Test to Trust"
-    >
+    <a class="brand" href="/" aria-label="From Test to Trust">
       <span class="brand-mark"><BrandMark /></span>
     </a>
-    <nav id="primary-nav" aria-label="Portfolio sections" role="tablist">
+    <nav id="primary-nav" aria-label="Portfolio sections">
       {
-        tabs.map((tab, index) => (
-          <button
-            id={`tab-${tab.id}`}
-            role="tab"
-            aria-selected={index === 0 ? 'true' : 'false'}
-            aria-controls={`view-${tab.id}`}
-            data-target={`view-${tab.id}`}
-            tabindex={index === 0 ? '0' : '-1'}
-            class:list={['nav-tab-btn', { active: index === 0 }]}
+        tabs.map((tab) => (
+          <a
+            href={tab.href}
+            aria-current={isActive(tab.href) ? 'page' : undefined}
+            class:list={['nav-tab-btn', { active: isActive(tab.href) }]}
           >
             {tab.label}
-          </button>
+          </a>
         ))
       }
     </nav>
@@ -94,6 +89,8 @@ const tabs = [
   }
   .nav-tab-btn {
     position: relative;
+    display: inline-flex;
+    align-items: center;
     border: 0;
     background: transparent;
     color: rgb(var(--foreground));
@@ -103,6 +100,7 @@ const tabs = [
       monospace;
     letter-spacing: 0.08em;
     padding: 12px 0;
+    text-decoration: none;
     text-transform: uppercase;
   }
   .nav-tab-btn.active,
@@ -246,8 +244,6 @@ const tabs = [
     const h = document.querySelector<HTMLElement>('.topbar');
     const m = document.querySelector<HTMLButtonElement>('.menu-toggle');
     const n = document.querySelector<HTMLElement>('#primary-nav');
-    const b = document.querySelectorAll<HTMLButtonElement>('.nav-tab-btn');
-    const v = document.querySelectorAll<HTMLElement>('.portfolio-view');
     const isCompact = () => window.matchMedia('(max-width: 720px)').matches;
     const setMenuOpen = (open: boolean) => {
       h?.classList.toggle('menu-open', open);
@@ -258,22 +254,6 @@ const tabs = [
     const closeMenu = () => {
       setMenuOpen(false);
     };
-    const a = (id: string, hash = true) => {
-      b.forEach((x) => {
-        const on = x.dataset.target === id;
-        x.classList.toggle('active', on);
-        x.setAttribute('aria-selected', String(on));
-      });
-      v.forEach((x) => x.classList.toggle('hidden', x.id !== id));
-      if (hash) history.replaceState(null, '', `#${id.replace('view-', '')}`);
-      closeMenu();
-    };
-    b.forEach((x) =>
-      x.addEventListener(
-        'click',
-        () => x.dataset.target && a(x.dataset.target),
-      ),
-    );
     m?.addEventListener('click', () => {
       const o = !h?.classList.contains('menu-open');
       setMenuOpen(o);
@@ -290,7 +270,5 @@ const tabs = [
     });
     window.addEventListener('resize', closeMenu);
     closeMenu();
-    const hash = location.hash.slice(1);
-    if (hash) a(`view-${hash}`, false);
   });
 </script>

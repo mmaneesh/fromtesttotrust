@@ -1,0 +1,27 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ViewSwitcherDock from '../components/ViewSwitcherDock.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <ViewSwitcherDock />
+
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-[1024px] flex-1 px-4 sm:px-7"
+  >
+    <div class="mx-auto min-h-[500px] max-w-[1024px] pt-3 sm:pt-4">
+      <slot />
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

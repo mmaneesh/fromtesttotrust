@@ -36,16 +36,39 @@ test('uses Morningstar, Inc. across the site', async () => {
   }
 });
 
-test('uses experience as the Experience tab URL identifier', async () => {
-  const [dock, view] = await Promise.all([
+test('primary navigation links to real section routes', async () => {
+  const [dock, home, experience, aiSystems, speaking] = await Promise.all([
     readSource('src/components/ViewSwitcherDock.astro'),
-    readSource('src/components/views/CareerImpactView.astro'),
+    readSource('src/pages/index.astro'),
+    readSource('src/pages/experience.astro'),
+    readSource('src/pages/ai-systems.astro'),
+    readSource('src/pages/insights/index.astro'),
   ]);
 
-  assert.match(dock, /\{ id: 'experience', label: 'Experience' \}/);
+  assert.match(
+    dock,
+    /\{ id: 'experience', label: 'Experience', href: '\/experience' \}/,
+  );
+  assert.match(
+    dock,
+    /\{ id: 'ai-systems', label: 'AI Systems', href: '\/ai-systems' \}/,
+  );
+  assert.match(
+    dock,
+    /\{ id: 'insights', label: 'Insights', href: '\/insights' \}/,
+  );
   assert.doesNotMatch(dock, /id: 'career'/);
-  assert.match(view, /id="view-experience"/);
-  assert.match(view, /aria-labelledby="tab-experience"/);
+  assert.doesNotMatch(dock, /role="tablist"/);
+  assert.match(
+    dock,
+    /aria-current=\{isActive\(tab\.href\) \? 'page' : undefined\}/,
+  );
+
+  // Home renders only the About view; the others live on their own routes.
+  assert.doesNotMatch(home, /CareerImpactView/);
+  assert.match(experience, /CareerImpactView/);
+  assert.match(aiSystems, /AISystemsView/);
+  assert.match(speaking, /SpeakingView/);
 });
 
 test('home navigation keeps the brand mark compact and Connect readable through theme changes', async () => {
@@ -57,9 +80,9 @@ test('home navigation keeps the brand mark compact and Connect readable through 
   assert.match(dock, /import BrandMark from '\.\/BrandMark\.astro';/);
   assert.match(
     dock,
-    /<a\s+class="brand"\s+href="https:\/\/www\.fromtesttotrust\.com"\s+aria-label="From Test to Trust"\s*>\s*<span class="brand-mark"><BrandMark \/><\/span>\s*<\/a>/,
+    /<a class="brand" href="\/" aria-label="From Test to Trust">\s*<span class="brand-mark"><BrandMark \/><\/span>\s*<\/a>/,
   );
-  assert.match(header, /href="https:\/\/www\.fromtesttotrust\.com"/);
+  assert.match(header, /href="\/"/);
   assert.doesNotMatch(dock, /<span>From Test to Trust<\/span>/);
   assert.match(dock, /min-height: 64px;/);
   assert.match(dock, /width: 88px;/);

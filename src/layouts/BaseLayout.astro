@@ -1,15 +1,27 @@
 ---
 import '../styles/global.css';
+import { siteOrigin } from '../lib/seo';
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
 }
 
 const {
-  title = 'From Test to Trust - Maneesh Maddala',
-  description = 'Principal SDET Engineer at Morningstar, Inc., engineering quality, risk, and trust across modern AI, multi-agent SDLC, and enterprise test architecture.',
+  title = 'Maneesh Maddala — Principal SDET Engineer | From Test to Trust',
+  description = 'Portfolio of Maneesh Maddala, Principal SDET Engineer at Morningstar, Inc. — engineering quality, risk, and trust across modern AI systems, multi-agent SDLC, and enterprise test architecture.',
+  image = '/og.png',
+  type = 'website',
+  publishedTime,
 } = Astro.props;
+
+const origin = siteOrigin(Astro.site);
+const path = Astro.url.pathname.replace(/\/+$/, '');
+const canonical = `${origin}${path}`;
+const ogImage = new URL(image, `${origin}/`).href;
 ---
 
 <!doctype html>
@@ -30,20 +42,31 @@ const {
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
-    <meta name="title" content={title} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fromtesttotrust.com/" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="From Test to Trust" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    {
+      type === 'article' && publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )
+    }
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://fromtesttotrust.com/" />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <slot name="head" />
 
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.fromtesttotrust.com" }],
+      "destination": "https://fromtesttotrust.com/:path*",
+      "permanent": true
+    },
+    { "source": "/speaking", "destination": "/insights", "permanent": true },
+    {
+      "source": "/speaking/:id",
+      "destination": "/insights/:id",
+      "permanent": true
+    }
+  ]
+}

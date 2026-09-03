@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { speakingEvents, type SpeakingEvent } from '../../data/speaking';
+import { siteOrigin, clampText } from '../../lib/seo';
 
 export function getStaticPaths() {
   return speakingEvents.map((event) => ({
@@ -16,12 +17,58 @@ interface Props {
 }
 
 const { event } = Astro.props;
+
+const site = siteOrigin(Astro.site);
+const description = clampText(event.abstract);
+const pageUrl = `${site}/insights/${event.id}`;
+const parsedDate = new Date(event.date);
+const publishedTime = Number.isNaN(parsedDate.valueOf())
+  ? undefined
+  : parsedDate.toISOString();
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: event.title,
+    description,
+    url: pageUrl,
+    image: `${site}/og.png`,
+    ...(publishedTime ? { datePublished: publishedTime } : {}),
+    author: { '@type': 'Person', name: 'Maneesh Maddala', url: `${site}/` },
+    publisher: { '@type': 'Person', name: 'Maneesh Maddala' },
+    about: `${event.format} — ${event.organization}`,
+    keywords: event.tags.join(', '),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Insights',
+        item: `${site}/insights`,
+      },
+      { '@type': 'ListItem', position: 2, name: event.title, item: pageUrl },
+    ],
+  },
+];
 ---
 
 <BaseLayout
-  title={`${event.title} - Keynote & Workshop | Maneesh Maddala`}
-  description={event.abstract}
+  title={`${event.title} — ${event.format} | Maneesh Maddala`}
+  description={description}
+  type="article"
+  publishedTime={publishedTime}
 >
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  </Fragment>
+
   <Header />
 
   <main
@@ -29,7 +76,7 @@ const { event } = Astro.props;
   >
     <div class="mb-10">
       <a
-        href="/#speaking"
+        href="/insights"
         class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-foreground transition-colors"
       >
         <span>← Back to Insights</span>

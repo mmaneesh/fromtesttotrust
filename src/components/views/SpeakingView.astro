@@ -21,7 +21,7 @@ import { speakingEvents } from '../../data/speaking';
             {event.organization}
           </p>
           <div>
-            <a href={`/speaking/${event.id}`} class="group/title block">
+            <a href={`/insights/${event.id}`} class="group/title block">
               <h3 class="font-editorial text-xl font-medium leading-snug text-foreground transition-colors group-hover/title:text-accent">
                 {event.title}
               </h3>
@@ -30,7 +30,7 @@ import { speakingEvents } from '../../data/speaking';
               {event.abstract}
             </p>
             <a
-              href={`/speaking/${event.id}`}
+              href={`/insights/${event.id}`}
               class="mt-5 inline-flex text-xs font-mono font-semibold text-accent underline-offset-4 transition-colors hover:text-foreground hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <span>View brief →</span>

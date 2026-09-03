@@ -22,7 +22,7 @@ const site =
 const clamp = (s: string, n = 155) =>
   s.length <= n ? s : `${s.slice(0, s.lastIndexOf(' ', n))}…`;
 const description = clamp(event.abstract);
-const pageUrl = `${site}/speaking/${event.id}`;
+const pageUrl = `${site}/insights/${event.id}`;
 const parsedDate = new Date(event.date);
 const publishedTime = Number.isNaN(parsedDate.valueOf())
   ? undefined
@@ -50,7 +50,7 @@ const structuredData = [
         '@type': 'ListItem',
         position: 1,
         name: 'Insights',
-        item: `${site}/speaking`,
+        item: `${site}/insights`,
       },
       { '@type': 'ListItem', position: 2, name: event.title, item: pageUrl },
     ],
@@ -78,7 +78,7 @@ const structuredData = [
   >
     <div class="mb-10">
       <a
-        href="/speaking"
+        href="/insights"
         class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-foreground transition-colors"
       >
         <span>← Back to Insights</span>

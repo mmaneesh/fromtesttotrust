@@ -164,7 +164,7 @@ test('the office hours brief converts recordings and answers across sessions', a
 test('brief pages use a continuous article layout instead of card surfaces', async () => {
   const [systemBrief, speakingBrief] = await Promise.all([
     readSource('src/pages/systems/[id].astro'),
-    readSource('src/pages/speaking/[id].astro'),
+    readSource('src/pages/insights/[id].astro'),
   ]);
 
   for (const brief of [systemBrief, speakingBrief]) {

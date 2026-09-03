@@ -42,7 +42,7 @@ test('primary navigation links to real section routes', async () => {
     readSource('src/pages/index.astro'),
     readSource('src/pages/experience.astro'),
     readSource('src/pages/ai-systems.astro'),
-    readSource('src/pages/speaking/index.astro'),
+    readSource('src/pages/insights/index.astro'),
   ]);
 
   assert.match(
@@ -55,7 +55,7 @@ test('primary navigation links to real section routes', async () => {
   );
   assert.match(
     dock,
-    /\{ id: 'speaking', label: 'Insights', href: '\/speaking' \}/,
+    /\{ id: 'insights', label: 'Insights', href: '\/insights' \}/,
   );
   assert.doesNotMatch(dock, /id: 'career'/);
   assert.doesNotMatch(dock, /role="tablist"/);

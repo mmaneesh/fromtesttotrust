@@ -253,6 +253,88 @@ expect(contact.fieldValues).toMatchObject({
     tags: ['AI', 'Structured Output', 'JSON', 'Test Data', 'LLM Context'],
   },
   {
+    id: 'api-testing-earlier-problems',
+    title: 'What API Testing Taught Us About Finding Problems Earlier',
+    subtitle:
+      'Finding broken marketing-data contracts before they reach the browser',
+    organization: 'Field Notes',
+    date: 'September 3, 2026',
+    format: 'Article',
+    kind: 'article',
+    abstract:
+      'A practical API-testing approach for catching missing campaign data, consent errors, and delayed contact processing before a release.',
+    brief:
+      'We learned to test the marketing-data path before the browser path. A landing page can show a success message while campaign attribution or consent data is already missing downstream.',
+    keyTakeaways: [],
+    sections: [
+      {
+        heading: 'The browser told us too late',
+        paragraphs: [
+          'Our gated-content flow starts with campaign metadata, accepts a form submission, creates or updates a contact, and sends the record to Eloqua. When we tested only through the UI, a problem in that chain appeared after a slow browser run and left us with too many possible causes.',
+          'API checks gave us a smaller failure surface. We could submit the same payload, inspect the immediate response, then verify the contact record that the marketing platform received.',
+        ],
+      },
+      {
+        heading: 'Gated-content form submissions',
+        paragraphs: [
+          'We test the fields that affect attribution and permission, not only whether a contact exists. The test creates its own email and correlation ID, so the resulting record belongs to that run.',
+        ],
+        code: `import { test, expect, type APIRequestContext } from '@playwright/test';
+
+async function findContact(request: APIRequestContext, email: string) {
+  const response = await request.get('/api/contacts', { params: { email } });
+  expect(response.ok()).toBeTruthy();
+  return response.json();
+}
+
+test('stores campaign attribution and consent for a gated asset', async ({ request }) => {
+  const runId = crypto.randomUUID();
+  const email = \`api-test+\${runId}@example.com\`;
+  const response = await request.post('/api/forms/gated-content', {
+    data: { email, firstName: 'Ava', assetId: '2026-api-guide', campaignSource: 'linkedin-paid', consent: true, correlationId: runId },
+  });
+  expect(response.status()).toBe(202);
+  await expect.poll(async () => (await findContact(request, email)).status).toBe('processed');
+  const contact = await findContact(request, email);
+  expect(contact).toMatchObject({ emailAddress: email, campaignSource: 'linkedin-paid', consent: true, correlationId: runId });
+});`,
+        codeLanguage: 'ts',
+      },
+      {
+        heading: 'Reject bad data at the boundary',
+        paragraphs: [
+          'A quiet fallback is worse than a clear 400. We make invalid campaign data fail at the API boundary, where the team changing the mapping can fix it.',
+        ],
+        code: `import { test, expect } from '@playwright/test';
+
+test('rejects a gated-content submission without campaign source', async ({ request }) => {
+  const response = await request.post('/api/forms/gated-content', {
+    data: { email: 'missing-source@example.com', firstName: 'Sam', assetId: '2026-api-guide', consent: true },
+  });
+  expect(response.status()).toBe(400);
+  await expect(response.json()).resolves.toEqual({
+    error: 'VALIDATION_ERROR',
+    fields: { campaignSource: 'campaignSource is required' },
+  });
+});`,
+        codeLanguage: 'ts',
+      },
+      {
+        heading: 'Put the fast checks where they change decisions',
+        paragraphs: [
+          'We run contract and API checks on every pull request. The browser smoke test still protects the visible journey, but the API suite tells us quickly whether a CMS or form change broke the data that marketing needs to segment, report, and follow up.',
+        ],
+      },
+    ],
+    tags: [
+      'API Testing',
+      'Test Automation',
+      'Marketing Technology',
+      'Eloqua',
+      'CI/CD',
+    ],
+  },
+  {
     id: 'everyday-ai-coding',
     title: 'Everyday AI Coding: Skills & Plugins for Testers',
     subtitle: 'Practical skills and plugins for quality engineering work',

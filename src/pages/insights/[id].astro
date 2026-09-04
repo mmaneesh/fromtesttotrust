@@ -213,6 +213,11 @@ const structuredData = [
     background: rgb(var(--surface-raised));
   }
 
+  .example-surface :global(.shiki) {
+    min-width: max-content;
+    background: inherit;
+  }
+
   :global(:root[data-theme='light']) .example-surface {
     background: rgb(230 221 210);
   }

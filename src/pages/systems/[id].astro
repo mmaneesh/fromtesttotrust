@@ -8,6 +8,7 @@ import SupportIntakeDiagram from '../../components/SupportIntakeDiagram.astro';
 import BrandAuditDiagram from '../../components/BrandAuditDiagram.astro';
 import SkillsRepoDiagram from '../../components/SkillsRepoDiagram.astro';
 import OfficeHoursDiagram from '../../components/OfficeHoursDiagram.astro';
+import DefectTriageDiagram from '../../components/DefectTriageDiagram.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 import { siteOrigin, clampText } from '../../lib/seo';
 
@@ -131,6 +132,25 @@ const systemDetails: Record<
       },
     ],
   },
+  'defect-triaging-agent': {
+    riskAnalysis: [
+      {
+        risk: 'Sending dozens of full monocart-html reports to the model would waste context and make the analysis less reliable.',
+        mitigation:
+          'We parse each artifact first and pass the model only the compact, aggregated spec-level evidence it needs: attempt outcomes, final outcome, duration, timestamp, and sanitized error data.',
+      },
+      {
+        risk: 'A test that passes after retry can look healthy in a final-result-only view even when it is unstable.',
+        mitigation:
+          'We retain the initial attempt and both retries, so the report separates flaky specs from specs that still fail after all retry attempts.',
+      },
+      {
+        risk: 'Complex tests can take longer than the rest of the suite and should not automatically become defects.',
+        mitigation:
+          'We compare each spec with the suite baseline and its own daily history, then prioritize material slowdowns while keeping stable long-running specs as context.',
+      },
+    ],
+  },
   'brand-unification-skill': {
     riskAnalysis: [
       {
@@ -250,6 +270,7 @@ const structuredData = [
       {system.id === 'brand-unification-skill' && <BrandAuditDiagram />}
       {system.id === 'shared-skills-platform' && <SkillsRepoDiagram />}
       {system.id === 'office-hours-agent' && <OfficeHoursDiagram />}
+      {system.id === 'defect-triaging-agent' && <DefectTriageDiagram />}
       <div class="mt-7 text-base text-body leading-8 space-y-7">
         {
           details.riskAnalysis.map((item) => (

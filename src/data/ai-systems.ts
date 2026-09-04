@@ -2,6 +2,7 @@ export type AISystemId =
   | 'litellm-gateway'
   | 'shared-skills-platform'
   | 'multi-agent-sdlc'
+  | 'defect-triaging-agent'
   | 'support-intake-agent'
   | 'office-hours-agent'
   | 'brand-unification-skill';
@@ -332,6 +333,38 @@ export const aiSystems: AISystem[] = [
       reviewLabel: 'Human Review',
       futureDirection: 'Future: evidence-gated autonomy',
     },
+  },
+  {
+    id: 'defect-triaging-agent',
+    title: 'Defect Triaging Agent',
+    subtitle:
+      'We pull recent monocart-html reports from S3 and turn them into a reliability report for the Playwright suite, on demand.',
+    blurb:
+      'We analyze the latest 1-50 monocart-html reports from S3 and show which specs are flaky, still failing after retries, or getting slower.',
+    category: 'Test Architecture',
+    summary:
+      'We built this agent to turn that report history into a clear reliability picture. Instead of comparing runs by hand, we can ask for the last 30 reports and see the patterns across the suite in one place.',
+    problem:
+      'Teams struggle to see what automation reports are telling them over time. Most teams open the latest execution report and fix whatever failed. That gives us a view of the last run, but it does not show whether a spec has been flaky for weeks, keeps failing after retries, or is getting slower. We need more reports to find those patterns and make good decisions.',
+    architecture: [
+      'We choose a window of 1 to 50 monocart-html reports from S3. If a report is incomplete or unreadable, we leave it out and tell the team how many runs we could use.',
+      'We parse the usable reports before involving the model. For every spec, we keep its attempt history, final outcome, duration, timestamp, and sanitized error details. The raw HTML stays out of the model context.',
+      'We group that evidence by spec and by day. The report separates final failures from retry-hidden flakiness, groups recurring errors, tracks duration changes, and ranks the tests that need attention.',
+    ],
+    impact: [
+      'A flaky spec fails on its first attempt and then passes on retry. A regularly failing spec still fails after both retries.',
+      'We can see how failures and durations change day by day, along with each spec’s average execution time. A complex test can stay slow without being treated as a defect; it rises in the queue when it gets slower.',
+      'We group similar errors with the affected specs and one sanitized example, so we can investigate the shared cause instead of reading the same failure message repeatedly.',
+    ],
+    technologies: [
+      'Playwright',
+      'monocart-html',
+      'AWS S3',
+      'TypeScript',
+      'LLM Analysis',
+      'Test Reliability',
+    ],
+    featured: true,
   },
   {
     id: 'support-intake-agent',

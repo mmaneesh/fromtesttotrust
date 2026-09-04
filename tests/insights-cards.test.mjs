@@ -73,6 +73,31 @@ test('Playwright reliability insight is published with marketing-system examples
   );
 });
 
+test('API testing insight uses a marketing-data flow and complete API examples', async () => {
+  const events = await readSource('src/data/insights.ts');
+
+  assert.match(events, /id: 'api-testing-earlier-problems'/);
+  assert.match(
+    events,
+    /What API Testing Taught Us About Finding Problems Earlier/,
+  );
+  assert.match(events, /Gated-content form submissions/);
+  assert.match(events, /campaignSource/);
+  assert.match(events, /APIRequestContext/);
+  assert.match(events, /await expect\.poll/);
+  assert.match(events, /Reject bad data at the boundary/);
+});
+
+test('scrollable insight examples keep their background across the full code width', async () => {
+  const detailPage = await readSource('src/pages/insights/[id].astro');
+
+  assert.match(
+    detailPage,
+    /\.example-surface :global\(\.shiki\) \{\s*min-width: max-content;/,
+  );
+  assert.match(detailPage, /background: inherit;/);
+});
+
 test('output format insight explains each format with a sample', async () => {
   const events = await readSource('src/data/insights.ts');
 

@@ -42,7 +42,7 @@ test('AI system cards show a plain blurb, not the first-person brief summary', a
   const blurbs = [...systems.matchAll(/\n {4}blurb:\n {6}'([^']+)'/g)].map(
     ([, b]) => b,
   );
-  assert.equal(blurbs.length, 6, 'every system needs a blurb');
+  assert.equal(blurbs.length, 7, 'every system needs a blurb');
   for (const blurb of blurbs) {
     assert.doesNotMatch(blurb, /^(Built|To address it|I built|My team built)/);
     assert.ok(
@@ -50,6 +50,77 @@ test('AI system cards show a plain blurb, not the first-person brief summary', a
       `blurb too long to fit 3 card lines: ${blurb}`,
     );
   }
+});
+
+test('the defect triaging agent summarizes parsed Playwright evidence instead of raw reports', async () => {
+  const [systems, illustration, brief] = await Promise.all([
+    readSource('src/data/ai-systems.ts'),
+    readSource('src/components/SystemIllustration.astro'),
+    readSource('src/pages/systems/[id].astro'),
+  ]);
+
+  assert.match(systems, /id: 'defect-triaging-agent'/);
+  assert.match(systems, /latest 1-50 monocart-html reports/);
+  assert.match(
+    systems,
+    /Teams struggle to see what automation reports are telling them over time/,
+  );
+  assert.match(systems, /latest execution report and fix whatever failed/);
+  assert.match(
+    systems,
+    /A flaky spec fails on its first attempt and then passes on retry/,
+  );
+  assert.match(systems, /raw HTML stays out of the model context/);
+  assert.match(systems, /fails on its first attempt and then passes on retry/);
+  assert.match(systems, /fails after both retries/);
+  assert.match(systems, /getting slower/);
+  assert.match(systems, /how failures and durations change day by day/);
+  assert.match(illustration, /systemId === 'defect-triaging-agent'/);
+  assert.match(brief, /'defect-triaging-agent': \{\s*riskAnalysis:/);
+});
+
+test('the defect triaging brief renders its report-analysis architecture', async () => {
+  const [brief, diagram, illustration] = await Promise.all([
+    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/DefectTriageDiagram.astro'),
+    readSource('src/components/SystemIllustration.astro'),
+  ]);
+
+  assert.match(brief, /<DefectTriageDiagram \/>/);
+  assert.match(diagram, /S3 reports/);
+  assert.match(diagram, /Parser/);
+  assert.match(diagram, /Compact evidence/);
+  assert.match(diagram, /class="node report"/);
+  assert.match(diagram, /Raw HTML stays here/);
+  assert.match(diagram, /class="raw-callout"/);
+  assert.match(diagram, /Report manifest/);
+  assert.doesNotMatch(diagram, />Request</);
+  assert.match(diagram, /Usable-report check/);
+  assert.match(diagram, /Retry classification/);
+  assert.match(diagram, /Duration regression/);
+  assert.match(diagram, /Error clustering/);
+  assert.match(diagram, /Prioritized queue/);
+  assert.match(diagram, /API Gateway/);
+  assert.match(diagram, /Lambda/);
+  assert.match(diagram, /routes request/);
+  assert.doesNotMatch(diagram, /request orchestration/);
+  assert.match(diagram, /DynamoDB/);
+  assert.match(diagram, /Amazon Bedrock/);
+  assert.match(diagram, /CloudWatch/);
+  assert.doesNotMatch(diagram, /runs \+ cached evidence/);
+  assert.match(diagram, /run state/);
+  assert.match(diagram, /attempt history/);
+  assert.match(diagram, /sanitized errors/);
+  assert.match(diagram, /x="170" y="22" width="1030"/);
+  assert.match(diagram, /font-size: 12px/);
+  assert.match(diagram, /\.title \{[\s\S]*text-anchor: middle/);
+  assert.match(diagram, /\.sub \{[\s\S]*text-anchor: middle/);
+  assert.match(diagram, /dominant-baseline: middle/);
+  assert.match(diagram, /x="1090"\s+y="378"/);
+  assert.match(diagram, /x="1000" y="56" width="180"/);
+  assert.match(illustration, /RETRY EVENT/);
+  assert.match(illustration, /ERROR CLUSTER/);
+  assert.match(illustration, /SLOWDOWN/);
 });
 
 test('AI system illustrations do not render a background grid', async () => {

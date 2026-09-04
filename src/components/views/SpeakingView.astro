@@ -1,5 +1,9 @@
 ---
 import { insightEntries } from '../../data/insights';
+
+const visibleInsights = insightEntries.filter(
+  (entry) => entry.published !== false,
+);
 ---
 
 <section class="w-full py-8 sm:py-9">
@@ -8,14 +12,14 @@ import { insightEntries } from '../../data/insights';
       Insights
     </h1>
     <p class="mt-2 text-[13px] leading-[1.65] text-muted">
-      Articles, talks, and workshops on software quality, test automation, AI,
-      and the systems behind trustworthy releases.
+      Notes from the work: how we test, build AI systems, and make release
+      decisions with evidence we can trust.
     </p>
   </header>
 
   <div class="divide-y divide-line border-y border-line">
     {
-      insightEntries.map((event) => (
+      visibleInsights.map((event) => (
         <article class="grid gap-4 py-7 first:pt-6 sm:grid-cols-[minmax(9rem,0.32fr)_minmax(0,1fr)] sm:gap-10">
           <p class="text-[10px] font-mono uppercase tracking-[0.08em] text-accent">
             {event.organization}

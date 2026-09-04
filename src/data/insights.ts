@@ -12,6 +12,8 @@ export interface InsightEntry {
   subtitle: string;
   organization: string;
   date: string;
+  /** Keep an entry available while holding its card back from the Insights list. */
+  published?: boolean;
   format: 'Article' | 'Keynote' | 'Technical Workshop' | 'Conference Talk';
   kind: 'article' | 'speaking';
   abstract: string;
@@ -30,7 +32,7 @@ export const insightEntries: InsightEntry[] = [
     subtitle:
       'Reliable testing starts with risk, data, and the full journey behind a user action.',
     organization: 'Field Notes',
-    date: 'September 3, 2026',
+    date: 'August 27, 2026',
     format: 'Article',
     kind: 'article',
     abstract:
@@ -136,7 +138,7 @@ expect(contact.fieldValues).toMatchObject({
     title: 'JSON vs. TOON vs. JSONL vs. Markdown vs. YAML',
     subtitle: 'Choosing a format for AI context, model output, and test data',
     organization: 'Field Notes',
-    date: 'September 3, 2026',
+    date: 'August 11, 2026',
     format: 'Article',
     kind: 'article',
     abstract:
@@ -258,7 +260,7 @@ expect(contact.fieldValues).toMatchObject({
     subtitle:
       'Finding broken marketing-data contracts before they reach the browser',
     organization: 'Field Notes',
-    date: 'September 3, 2026',
+    date: 'July 8, 2026',
     format: 'Article',
     kind: 'article',
     abstract:
@@ -366,6 +368,7 @@ test('rejects a gated-content submission without campaign source', async ({ requ
     subtitle: 'How to test whether constraints hold under pressure',
     organization: 'Ministry of Testing',
     date: 'September 23, 2026',
+    published: false,
     format: 'Technical Workshop',
     kind: 'speaking',
     abstract:

@@ -1,0 +1,282 @@
+<figure class="triage-figure">
+  <figcaption>Architecture diagram</figcaption>
+  <div class="triage-scroll">
+    <svg
+      viewBox="0 0 1220 470"
+      role="img"
+      aria-labelledby="triage-title triage-desc"
+    >
+      <title id="triage-title">Defect triaging agent architecture</title>
+      <desc id="triage-desc"
+        >A user selects one to fifty reports. The agent resolves a report
+        manifest in S3, excludes unreadable artifacts, parses usable Monocart
+        HTML into compact evidence, then creates retry, duration, and error
+        analyses for a prioritized triage report.</desc
+      >
+      <defs>
+        <marker
+          id="triage-arrow"
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+          ><path class="arrow" d="M0 0 L9 4.5 L0 9 Z"></path></marker
+        >
+      </defs>
+      <rect class="boundary" x="170" y="22" width="1030" height="418" rx="6"
+      ></rect>
+      <text class="boundary-label" x="190" y="45"
+        >DEFECT TRIAGING AGENT · DETERMINISTIC EVIDENCE FIRST</text
+      >
+      <g class="edges">
+        <path d="M156 150H190" marker-end="url(#triage-arrow)"></path><path
+          d="M312 150H350"
+          marker-end="url(#triage-arrow)"></path><path
+          d="M510 150H548"
+          marker-end="url(#triage-arrow)"></path><path
+          d="M708 150H746"
+          marker-end="url(#triage-arrow)"></path><path
+          d="M916 150H978V92H1000"
+          marker-end="url(#triage-arrow)"></path>
+        <path d="M916 150H978V188H1000" marker-end="url(#triage-arrow)"
+        ></path><path d="M916 150H978V284H1000" marker-end="url(#triage-arrow)"
+        ></path>
+        <path d="M1090 128V356" marker-end="url(#triage-arrow)"></path><path
+          d="M1090 224V356"
+          marker-end="url(#triage-arrow)"></path><path
+          d="M1090 320V356"
+          marker-end="url(#triage-arrow)"></path><path
+          class="raw-stop"
+          d="M628 196V210"></path>
+        <path d="M251 196V270" marker-end="url(#triage-arrow)"></path>
+        <path d="M548 196V250H500V270" marker-end="url(#triage-arrow)"></path>
+        <path d="M831 196V270" marker-end="url(#triage-arrow)"></path>
+        <path d="M916 302H960V388H1000" marker-end="url(#triage-arrow)"></path>
+      </g>
+      <rect class="raw-callout" x="552" y="210" width="152" height="34" rx="4"
+      ></rect>
+      <g class="node manifest"
+        ><rect x="14" y="116" width="142" height="68" rx="6"></rect><text
+          class="title"
+          x="85"
+          y="138"
+          text-anchor="middle">API Gateway</text
+        ><text class="sub" x="85" y="158" text-anchor="middle"
+          >request · 1–50 reports</text
+        ></g
+      >
+      <g class="node s3"
+        ><rect x="190" y="116" width="122" height="68" rx="6"></rect><text
+          class="title"
+          x="251"
+          y="143"
+          text-anchor="middle">Lambda</text
+        ><text class="sub" x="251" y="163" text-anchor="middle"
+          >routes request</text
+        ></g
+      >
+      <g class="node quality"
+        ><rect x="350" y="104" width="160" height="92" rx="6"></rect><text
+          class="title"
+          x="430"
+          y="133"
+          text-anchor="middle">S3 reports</text
+        ><text class="sub" x="430" y="153" text-anchor="middle"
+          >Report manifest</text
+        ><text class="sub" x="430" y="171" text-anchor="middle"
+          >monocart-html artifacts</text
+        ></g
+      >
+      <g class="node parser"
+        ><rect x="548" y="104" width="160" height="92" rx="6"></rect><text
+          class="title"
+          x="628"
+          y="127"
+          text-anchor="middle">Parser</text
+        ><text class="sub" x="628" y="146" text-anchor="middle"
+          >Usable-report check</text
+        ><text class="sub" x="628" y="162" text-anchor="middle"
+          >attempt history · duration</text
+        ><text class="sub" x="628" y="178" text-anchor="middle"
+          >sanitized errors</text
+        ></g
+      >
+      <text class="stop-label" x="628" y="228" text-anchor="middle"
+        >Raw HTML stays here</text
+      >
+      <g class="node evidence"
+        ><rect x="746" y="104" width="170" height="92" rx="6"></rect><text
+          class="title"
+          x="831"
+          y="133"
+          text-anchor="middle">Compact evidence</text
+        ><text class="sub" x="831" y="153" text-anchor="middle"
+          >one record per spec/run</text
+        ><text class="sub" x="831" y="171" text-anchor="middle"
+          >only model input</text
+        ></g
+      >
+      <g class="node analysis"
+        ><rect x="1000" y="56" width="180" height="72" rx="6"></rect><text
+          class="title"
+          x="1090"
+          y="82"
+          text-anchor="middle">Retry classification</text
+        ><text class="sub" x="1090" y="102" text-anchor="middle"
+          >flaky vs. final fail</text
+        ></g
+      >
+      <g class="node analysis"
+        ><rect x="1000" y="152" width="180" height="72" rx="6"></rect><text
+          class="title"
+          x="1090"
+          y="178"
+          text-anchor="middle">Duration regression</text
+        ><text class="sub" x="1090" y="198" text-anchor="middle"
+          >daily trend + baseline</text
+        ></g
+      >
+      <g class="node analysis"
+        ><rect x="1000" y="248" width="180" height="72" rx="6"></rect><text
+          class="title"
+          x="1090"
+          y="274"
+          text-anchor="middle">Error clustering</text
+        ><text class="sub" x="1090" y="294" text-anchor="middle"
+          >normalized message groups</text
+        ></g
+      >
+      <g class="node report"
+        ><rect x="1000" y="356" width="180" height="64" rx="6"></rect><text
+          class="title"
+          x="1090"
+          y="378"
+          text-anchor="middle">Triage report</text
+        ><text class="sub" x="1090" y="398" text-anchor="middle"
+          >Prioritized queue</text
+        ></g
+      >
+      <g class="node service"
+        ><rect x="190" y="270" width="122" height="64" rx="6"></rect><text
+          class="title"
+          x="251"
+          y="294"
+          text-anchor="middle">DynamoDB</text
+        ><text class="sub" x="251" y="314" text-anchor="middle">run state</text
+        ></g
+      >
+      <g class="node service"
+        ><rect x="420" y="270" width="160" height="64" rx="6"></rect><text
+          class="title"
+          x="500"
+          y="294"
+          text-anchor="middle">CloudWatch</text
+        ><text class="sub" x="500" y="314" text-anchor="middle"
+          >logs · metrics · alarms</text
+        ></g
+      >
+      <g class="node service"
+        ><rect x="746" y="270" width="170" height="64" rx="6"></rect><text
+          class="title"
+          x="831"
+          y="294"
+          text-anchor="middle">Amazon Bedrock</text
+        ><text class="sub" x="831" y="314" text-anchor="middle"
+          >report synthesis</text
+        ></g
+      >
+    </svg>
+  </div>
+</figure>
+<style>
+  .triage-figure {
+    width: min(1280px, 96vw);
+    margin: 3rem 0 3rem 50%;
+    transform: translateX(-50%);
+    padding: 1.35rem 0 1.5rem;
+    border-top: 1px solid rgb(var(--line));
+    border-bottom: 1px solid rgb(var(--line));
+  }
+  figcaption,
+  .boundary-label,
+  .title,
+  .sub,
+  .stop-label {
+    font-family: 'Geist Mono', monospace;
+  }
+  figcaption {
+    margin-bottom: 1.2rem;
+    color: rgb(var(--accent));
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .triage-scroll {
+    overflow-x: auto;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    min-width: 900px;
+    height: auto;
+  }
+  .boundary {
+    fill: rgb(var(--surface) / 0.28);
+    stroke: rgb(var(--line));
+  }
+  .boundary-label {
+    fill: rgb(var(--muted-text));
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .edges path {
+    fill: none;
+    stroke: rgb(var(--muted-text));
+    stroke-width: 1.4;
+  }
+  .arrow {
+    fill: rgb(var(--muted-text));
+  }
+  .edges .raw-stop {
+    stroke: rgb(var(--accent));
+    stroke-dasharray: 4 4;
+  }
+  .raw-callout {
+    fill: rgb(var(--surface));
+    stroke: rgb(var(--accent));
+    stroke-dasharray: 3 3;
+  }
+  .node rect {
+    fill: rgb(var(--surface));
+    stroke: rgb(var(--line));
+    stroke-width: 1.2;
+  }
+  .node.quality rect,
+  .node.parser rect,
+  .node.evidence rect,
+  .node.analysis rect,
+  .node.report rect,
+  .node.service rect {
+    stroke: rgb(var(--accent));
+  }
+  .title {
+    fill: rgb(var(--foreground));
+    font-size: 12px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+  .sub {
+    fill: rgb(var(--muted-text));
+    font-size: 10px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+  .stop-label {
+    fill: rgb(var(--accent));
+    font-size: 10px;
+  }
+</style>

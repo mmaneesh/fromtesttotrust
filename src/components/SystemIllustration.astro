@@ -182,6 +182,38 @@ const { systemId } = Astro.props;
     )
   }
   {
+    systemId === 'defect-triaging-agent' && (
+      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+        <rect class="outline" x="28" y="42" width="94" height="72" rx="2" />
+        <rect class="outline" x="36" y="33" width="94" height="72" rx="2" />
+        <rect class="outline" x="44" y="24" width="94" height="72" rx="2" />
+        <path class="muted" d="M58 45H118M58 57H110M58 69H120" />
+        <circle class="dot" cx="66" cy="87" r="4" />
+        <path class="accent" d="M78 87H112" />
+        <circle class="dot" cx="191" cy="48" r="5" />
+        <circle class="dot" cx="215" cy="48" r="5" />
+        <circle class="dot" cx="239" cy="48" r="5" />
+        <path class="line" d="M257 48H320" />
+        <path
+          class="accent"
+          d="M172 111L196 96L216 104L238 80L262 88L286 61L320 70"
+        />
+        <text class="label" x="44" y="17">
+          REPORT HISTORY
+        </text>
+        <text class="label" x="172" y="33">
+          ERROR CLUSTER
+        </text>
+        <text class="label" x="44" y="137">
+          RETRY EVENT
+        </text>
+        <text class="label" x="250" y="137">
+          SLOWDOWN
+        </text>
+      </svg>
+    )
+  }
+  {
     systemId === 'brand-unification-skill' && (
       <svg viewBox="0 0 360 156" preserveAspectRatio="none">
         <rect class="outline" x="34" y="32" width="86" height="64" rx="2" />

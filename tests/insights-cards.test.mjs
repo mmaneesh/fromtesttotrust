@@ -24,14 +24,42 @@ test('insight cards contain only community, title, description, and brief link',
   assert.doesNotMatch(view, /Open Slides/);
 });
 
-test('Playwright reliability leads the insights list and Guardrails omits red-team datasets', async () => {
+test('Playwright reliability leads the insights list and future Guardrails stays off the listing', async () => {
   const events = await readSource('src/data/insights.ts');
+  const view = await readSource('src/components/views/SpeakingView.astro');
 
   assert.match(
     events,
     /export const insightEntries: InsightEntry\[\] = \[\s*\{\s*id: 'playwright-reliability'/,
   );
   assert.doesNotMatch(events, /build red-team datasets/);
+  assert.match(events, /id: 'guardrails-and-evals'[\s\S]*?published: false/);
+  assert.match(
+    view,
+    /insightEntries\.filter\(\(entry\) => entry\.published !== false\)/,
+  );
+});
+
+test('insight dates vary across the last three months without changing Ministry of Testing dates', async () => {
+  const events = await readSource('src/data/insights.ts');
+
+  assert.match(
+    events,
+    /id: 'playwright-reliability'[\s\S]*?date: 'August 27, 2026'/,
+  );
+  assert.match(
+    events,
+    /id: 'output-format-types'[\s\S]*?date: 'August 11, 2026'/,
+  );
+  assert.match(
+    events,
+    /id: 'api-testing-earlier-problems'[\s\S]*?date: 'July 8, 2026'/,
+  );
+  assert.match(events, /id: 'everyday-ai-coding'[\s\S]*?date: 'July 30, 2026'/);
+  assert.match(
+    events,
+    /id: 'guardrails-and-evals'[\s\S]*?date: 'September 23, 2026'/,
+  );
 });
 
 test('Playwright reliability insight is published with marketing-system examples', async () => {
@@ -69,7 +97,7 @@ test('Playwright reliability insight is published with marketing-system examples
   );
   assert.match(
     insightsPage,
-    /Articles, talks, and workshops on software quality, test automation, AI, and the systems behind trustworthy releases\./,
+    /Notes from the work: how we test, build AI systems, and make release\s+decisions with evidence we can trust\./,
   );
 });
 

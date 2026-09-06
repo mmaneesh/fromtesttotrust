@@ -27,7 +27,7 @@ test('uses Morningstar, Inc. across the site', async () => {
       'src/components/Footer.astro',
       'src/layouts/BaseLayout.astro',
       'src/pages/index.astro',
-      'src/pages/systems/[id].astro',
+      'src/components/SystemBrief.astro',
     ].map(readSource),
   );
 

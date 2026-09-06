@@ -56,7 +56,7 @@ test('the defect triaging agent summarizes parsed Playwright evidence instead of
   const [systems, illustration, brief] = await Promise.all([
     readSource('src/data/ai-systems.ts'),
     readSource('src/components/SystemIllustration.astro'),
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
   ]);
 
   assert.match(systems, /id: 'defect-triaging-agent'/);
@@ -81,7 +81,7 @@ test('the defect triaging agent summarizes parsed Playwright evidence instead of
 
 test('the defect triaging brief renders its report-analysis architecture', async () => {
   const [brief, diagram, illustration] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/components/DefectTriageDiagram.astro'),
     readSource('src/components/SystemIllustration.astro'),
   ]);
@@ -135,7 +135,7 @@ test('AI system illustrations do not render a background grid', async () => {
 
 test('the LiteLLM brief uses the confirmed gateway stack and default-provider fallback', async () => {
   const [systemBrief, diagrams, systems] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/components/GatewayDiagrams.astro'),
     readSource('src/data/ai-systems.ts'),
   ]);
@@ -158,7 +158,7 @@ test('the LiteLLM brief uses the confirmed gateway stack and default-provider fa
 
 test('the support intake brief funnels every channel into one Teams queue and a routed Asana task', async () => {
   const [systemBrief, diagram, systems] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/components/SupportIntakeDiagram.astro'),
     readSource('src/data/ai-systems.ts'),
   ]);
@@ -179,7 +179,7 @@ test('the support intake brief funnels every channel into one Teams queue and a 
 
 test('the brand unification brief scores a URL through rule sets and routes escalation', async () => {
   const [systemBrief, diagram, systems] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/components/BrandAuditDiagram.astro'),
     readSource('src/data/ai-systems.ts'),
   ]);
@@ -200,7 +200,7 @@ test('the brand unification brief scores a URL through rule sets and routes esca
 
 test('the shared skills brief routes both author types to one GitHub repository', async () => {
   const [systemBrief, diagram, systems] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/components/SkillsRepoDiagram.astro'),
     readSource('src/data/ai-systems.ts'),
   ]);
@@ -218,7 +218,7 @@ test('the shared skills brief routes both author types to one GitHub repository'
 
 test('architecture diagrams get a shared hover flow enhancer without rewriting their SVGs', async () => {
   const [systemBrief, enhancer] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/components/DiagramFlowHover.astro'),
   ]);
 
@@ -234,9 +234,23 @@ test('architecture diagrams get a shared hover flow enhancer without rewriting t
   assert.match(enhancer, /prefers-reduced-motion/);
 });
 
+test('AI system briefs use the ai-systems URL namespace and retain legacy redirects', async () => {
+  const [cards, canonicalRoute, legacyRoute, brief] = await Promise.all([
+    readSource('src/components/views/AISystemsView.astro'),
+    readSource('src/pages/ai-systems/[id].astro'),
+    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
+  ]);
+
+  assert.match(cards, /`\/ai-systems\/\$\{system\.id\}`/);
+  assert.match(canonicalRoute, /SystemBrief/);
+  assert.match(legacyRoute, /Astro\.redirect\(`\/ai-systems\/\$\{system\.id\}`, 301\)/);
+  assert.match(brief, /\$\{site\}\/ai-systems\/\$\{system\.id\}/);
+});
+
 test('the office hours brief converts recordings and answers across sessions', async () => {
   const [systemBrief, diagram, systems] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/components/OfficeHoursDiagram.astro'),
     readSource('src/data/ai-systems.ts'),
   ]);
@@ -258,7 +272,7 @@ test('the office hours brief converts recordings and answers across sessions', a
 
 test('brief pages use a continuous article layout instead of card surfaces', async () => {
   const [systemBrief, speakingBrief] = await Promise.all([
-    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/SystemBrief.astro'),
     readSource('src/pages/insights/[id].astro'),
   ]);
 

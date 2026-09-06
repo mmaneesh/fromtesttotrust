@@ -1,4 +1,5 @@
 ---
+import SystemBrief from '../../components/SystemBrief.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 
 export function getStaticPaths() {
@@ -13,5 +14,6 @@ interface Props {
 }
 
 const { system } = Astro.props;
-return Astro.redirect(`/ai-systems/${system.id}`, 301);
 ---
+
+<SystemBrief system={system} />

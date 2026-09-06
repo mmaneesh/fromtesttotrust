@@ -9,6 +9,7 @@ import BrandAuditDiagram from '../../components/BrandAuditDiagram.astro';
 import SkillsRepoDiagram from '../../components/SkillsRepoDiagram.astro';
 import OfficeHoursDiagram from '../../components/OfficeHoursDiagram.astro';
 import DefectTriageDiagram from '../../components/DefectTriageDiagram.astro';
+import DiagramFlowHover from '../../components/DiagramFlowHover.astro';
 import { aiSystems, type AISystem } from '../../data/ai-systems';
 import { siteOrigin, clampText } from '../../lib/seo';
 
@@ -271,6 +272,7 @@ const structuredData = [
       {system.id === 'shared-skills-platform' && <SkillsRepoDiagram />}
       {system.id === 'office-hours-agent' && <OfficeHoursDiagram />}
       {system.id === 'defect-triaging-agent' && <DefectTriageDiagram />}
+      <DiagramFlowHover />
       <div class="mt-7 text-base text-body leading-8 space-y-7">
         {
           details.riskAnalysis.map((item) => (

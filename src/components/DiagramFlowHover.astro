@@ -1,0 +1,196 @@
+<style is:global>
+  svg[data-flow-hover] [class*='node'] {
+    cursor: pointer;
+    transition:
+      opacity 160ms ease,
+      filter 160ms ease;
+  }
+
+  svg[data-flow-hover] path[class*='edge'],
+  svg[data-flow-hover] g[class*='edge'] path {
+    transition:
+      opacity 160ms ease,
+      stroke-width 160ms ease;
+  }
+
+  svg[data-flow-hover].flow-focus path[class*='edge'],
+  svg[data-flow-hover].flow-focus g[class*='edge'] path {
+    opacity: 0.16;
+  }
+
+  svg[data-flow-hover].flow-focus .flow-active {
+    opacity: 1;
+    stroke: rgb(var(--accent));
+    stroke-width: 1.5;
+  }
+
+  svg[data-flow-hover] .flow-arrow-overlays {
+    pointer-events: none;
+  }
+
+  svg[data-flow-hover] .flow-arrow-overlay {
+    fill: none;
+    stroke: rgb(var(--accent));
+    stroke-width: 1.5;
+    stroke-dasharray: 8 10;
+    animation: diagram-flow 800ms linear infinite;
+  }
+
+  svg[data-flow-hover].flow-focus [class*='node']:not(.flow-related) {
+    opacity: 0.38;
+  }
+
+  svg[data-flow-hover].flow-focus .flow-related {
+    filter: drop-shadow(0 0 5px rgb(var(--accent) / 0.32));
+  }
+
+  @keyframes diagram-flow {
+    to {
+      stroke-dashoffset: -18;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    svg[data-flow-hover].flow-focus .flow-active {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const distanceToRect = (point: DOMPoint, rect: DOMRect) => {
+    const x = Math.max(rect.x, Math.min(point.x, rect.x + rect.width));
+    const y = Math.max(rect.y, Math.min(point.y, rect.y + rect.height));
+    return Math.hypot(point.x - x, point.y - y);
+  };
+
+  const connectedNodes = (path: SVGPathElement, nodes: SVGGElement[]) => {
+    const length = path.getTotalLength();
+    const endpoints = [path.getPointAtLength(0), path.getPointAtLength(length)];
+    return nodes.filter((node) => {
+      const rect = node.querySelector('rect')?.getBBox();
+      return (
+        rect && endpoints.some((point) => distanceToRect(point, rect) <= 10)
+      );
+    });
+  };
+
+  let overlayMarkerCount = 0;
+
+  const markerFor = (svg: SVGSVGElement, edge: SVGPathElement) => {
+    const marker = edge
+      .getAttribute('marker-end')
+      ?.match(/url\(#([^)]+)\)/)?.[1];
+    return marker
+      ? svg.querySelector<SVGMarkerElement>(`marker#${marker}`)
+      : null;
+  };
+
+  const createOverlayMarker = (svg: SVGSVGElement, edge: SVGPathElement) => {
+    const marker = markerFor(svg, edge);
+    if (!marker) return null;
+
+    const clone = marker.cloneNode(true) as SVGMarkerElement;
+    const id = `flow-arrow-marker-${overlayMarkerCount++}`;
+    clone.setAttribute('id', id);
+    clone.classList.add('flow-arrow-marker');
+    clone.querySelectorAll<SVGPathElement>('path').forEach((path) => {
+      path.setAttribute('fill', 'rgb(var(--accent))');
+      path.setAttribute('stroke', 'rgb(var(--accent))');
+    });
+    const defs = svg.querySelector('defs');
+    if (defs) defs.append(clone);
+    else svg.prepend(clone);
+    return `url(#${id})`;
+  };
+
+  const addArrowOverlay = (svg: SVGSVGElement, edge: SVGPathElement) => {
+    const markerEnd = createOverlayMarker(svg, edge);
+    const d = edge.getAttribute('d');
+    if (!markerEnd || !d) return;
+
+    let overlays = svg.querySelector<SVGGElement>('.flow-arrow-overlays');
+    if (!overlays) {
+      overlays = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      overlays.classList.add('flow-arrow-overlays');
+      overlays.setAttribute('aria-hidden', 'true');
+      svg.append(overlays);
+    }
+
+    const overlay = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'path',
+    );
+    overlay.classList.add('flow-arrow-overlay');
+    overlay.setAttribute('d', d);
+    overlay.setAttribute('fill', 'none');
+    overlay.setAttribute('stroke', 'rgb(var(--accent))');
+    overlay.setAttribute('stroke-width', '1.5');
+    overlay.setAttribute('stroke-dasharray', '8 10');
+    overlay.setAttribute('marker-end', markerEnd);
+    overlays.append(overlay);
+  };
+
+  const initialiseFlowHover = () => {
+    document.querySelectorAll<SVGSVGElement>('svg').forEach((svg) => {
+      const nodes = Array.from(
+        svg.querySelectorAll<SVGGElement>("[class*='node']"),
+      );
+      const edges = Array.from(
+        svg.querySelectorAll<SVGPathElement>(
+          "path[class*='edge'], g[class*='edge'] path",
+        ),
+      );
+      if (!nodes.length || !edges.length) return;
+
+      svg.dataset.flowHover = 'true';
+      const relations = new Map<SVGGElement, SVGPathElement[]>();
+      nodes.forEach((node) => relations.set(node, []));
+      edges.forEach((edge) => {
+        connectedNodes(edge, nodes).forEach((node) =>
+          relations.get(node)?.push(edge),
+        );
+      });
+
+      const clear = () => {
+        svg.classList.remove('flow-focus');
+        edges.forEach((edge) => edge.classList.remove('flow-active'));
+        svg
+          .querySelectorAll<SVGMarkerElement>('marker.flow-arrow-marker')
+          .forEach((marker) => marker.remove());
+        svg.querySelector('.flow-arrow-overlays')?.remove();
+        nodes.forEach((node) => node.classList.remove('flow-related'));
+      };
+
+      nodes.forEach((node) => {
+        const label = node.textContent?.replace(/\s+/g, ' ').trim();
+        node.setAttribute('tabindex', '0');
+        node.setAttribute('aria-label', label || 'Architecture node');
+        const activate = () => {
+          clear();
+          svg.classList.add('flow-focus');
+          node.classList.add('flow-related');
+          relations.get(node)?.forEach((edge) => {
+            edge.classList.add('flow-active');
+            addArrowOverlay(svg, edge);
+            connectedNodes(edge, nodes).forEach((related) =>
+              related.classList.add('flow-related'),
+            );
+          });
+        };
+        node.addEventListener('pointerenter', activate);
+        node.addEventListener('focus', activate);
+        node.addEventListener('pointerleave', clear);
+        node.addEventListener('blur', clear);
+      });
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialiseFlowHover, {
+      once: true,
+    });
+  } else {
+    initialiseFlowHover();
+  }
+</script>

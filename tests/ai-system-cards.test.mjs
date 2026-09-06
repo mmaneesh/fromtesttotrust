@@ -170,6 +170,8 @@ test('the support intake brief funnels every channel into one Teams queue and a 
   assert.match(diagram, /Microsoft Teams/);
   assert.match(diagram, /Power Automate/);
   assert.match(diagram, /Asana/);
+  assert.match(diagram, /translate\(879,222\)/);
+  assert.match(diagram, /x="-39" y="-9" width="78" height="16" rx="3"/);
   assert.match(systems, /one Microsoft Teams channel/);
   assert.match(systems, /Support Intake Agent action/);
   assert.match(systems, /assigns the task to that team’s project/);
@@ -214,6 +216,24 @@ test('the shared skills brief routes both author types to one GitHub repository'
   assert.match(systems, /with the author’s username attached/);
 });
 
+test('architecture diagrams get a shared hover flow enhancer without rewriting their SVGs', async () => {
+  const [systemBrief, enhancer] = await Promise.all([
+    readSource('src/pages/systems/[id].astro'),
+    readSource('src/components/DiagramFlowHover.astro'),
+  ]);
+
+  assert.match(systemBrief, /<DiagramFlowHover \/>/);
+  assert.match(enhancer, /\[class\*=['"]node['"]\]/);
+  assert.match(enhancer, /\[class\*=['"]edge['"]\]/);
+  assert.match(enhancer, /flow-active/);
+  assert.match(enhancer, /flow-arrow-overlays/);
+  assert.match(enhancer, /classList\.add\('flow-arrow-overlay'\)/);
+  assert.match(enhancer, /cloneNode\(true\)/);
+  assert.doesNotMatch(enhancer, /flow-marker-active/);
+  assert.match(enhancer, /setAttribute\('stroke-width', '1\.5'\)/);
+  assert.match(enhancer, /prefers-reduced-motion/);
+});
+
 test('the office hours brief converts recordings and answers across sessions', async () => {
   const [systemBrief, diagram, systems] = await Promise.all([
     readSource('src/pages/systems/[id].astro'),
@@ -224,6 +244,10 @@ test('the office hours brief converts recordings and answers across sessions', a
   assert.match(systemBrief, /<OfficeHoursDiagram \/>/);
   assert.match(systemBrief, /'office-hours-agent': \{\s*riskAnalysis:/);
   assert.match(diagram, /<svg/);
+  assert.match(diagram, /viewBox="0 0 1080 400"/);
+  assert.match(diagram, /translate\(187,124\)/);
+  assert.match(diagram, /translate\(381,124\)/);
+  assert.match(diagram, /translate\(609,124\)/);
   assert.match(diagram, /marker-end="url\(#oh-arrow\)"/);
   assert.match(diagram, /Webhook/);
   assert.match(diagram, /Semantic index/);

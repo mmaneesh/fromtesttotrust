@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 import { siteOrigin } from '../lib/seo';
 
 interface Props {
@@ -31,6 +32,7 @@ const ogImage = new URL(image, `${origin}/`).href;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <Analytics />
     <script is:inline>
       (() => {
         // Dark is the default; only an explicit saved choice can switch to light.

@@ -25,7 +25,7 @@ test('insight cards contain only community, title, description, and brief link',
   assert.doesNotMatch(view, /Open Slides/);
 });
 
-test('Playwright reliability leads the insights list and future Guardrails stays off the listing', async () => {
+test('Playwright reliability leads the insights list and Guardrails is published', async () => {
   const events = await readSource('src/data/insights.ts');
   const view = await readSource('src/components/views/SpeakingView.astro');
 
@@ -34,7 +34,7 @@ test('Playwright reliability leads the insights list and future Guardrails stays
     /export const insightEntries: InsightEntry\[\] = \[\s*\{\s*id: 'playwright-reliability'/,
   );
   assert.doesNotMatch(events, /build red-team datasets/);
-  assert.match(events, /id: 'guardrails-and-evals'[\s\S]*?published: false/);
+  assert.match(events, /id: 'guardrails-and-evals'[\s\S]*?published: true/);
   assert.match(
     view,
     /insightEntries\.filter\(\s*\(entry\) => entry\.published !== false,?\s*\)/,

@@ -368,7 +368,7 @@ test('rejects a gated-content submission without campaign source', async ({ requ
     subtitle: 'How to test whether constraints hold under pressure',
     organization: 'Ministry of Testing',
     date: 'September 23, 2026',
-    published: false,
+    published: true,
     format: 'Technical Workshop',
     kind: 'speaking',
     abstract:

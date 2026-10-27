@@ -10,18 +10,19 @@ import { siteConfig } from '../data/site-config';
       class="flex flex-col items-center sm:items-start text-center sm:text-left"
     >
       <div class="flex items-center gap-2">
-        <span class="font-display font-bold text-white text-sm tracking-tight"
+        <span
+          class="font-display font-bold text-foreground text-sm tracking-tight"
           >{siteConfig.brandName}</span
         >
-        <span class="text-slate-500 text-xs">/</span>
+        <span class="text-faint text-xs">/</span>
         <span class="text-xs font-mono text-accent">{siteConfig.name}</span>
       </div>
-      <p class="text-xs text-slate-400 mt-1 font-mono">
+      <p class="text-xs text-muted mt-1 font-mono">
         {siteConfig.role} · {siteConfig.employer}
       </p>
     </div>
 
-    <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
+    <div class="flex items-center gap-4 text-xs font-mono text-muted">
       <a
         href="https://www.linkedin.com/in/maneesh-maddala/"
         target="_blank"

@@ -20,13 +20,13 @@ import { careerTimeline, education } from '../../data/career';
           <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
             <div class="flex items-center gap-3">
               <div
-                class={`h-2.5 w-2.5 rounded-full ${company.isCurrent ? 'bg-accent' : 'bg-slate-500'}`}
+                class={`h-2.5 w-2.5 rounded-full ${company.isCurrent ? 'bg-accent' : 'bg-line'}`}
               />
               <div>
                 <h3 class="font-editorial text-xl font-medium text-foreground">
                   {company.company}
                 </h3>
-                <p class="text-xs font-mono text-slate-400 mt-0.5">
+                <p class="text-xs font-mono text-muted mt-0.5">
                   {company.location}
                 </p>
               </div>
@@ -42,7 +42,7 @@ import { careerTimeline, education } from '../../data/career';
                   <h4 class="text-sm font-semibold text-foreground sm:text-[15px]">
                     {role.title}
                   </h4>
-                  <span class="text-xs font-mono text-slate-400 font-medium">
+                  <span class="text-xs font-mono text-muted font-medium">
                     {role.period}
                   </span>
                 </div>
@@ -82,10 +82,10 @@ import { careerTimeline, education } from '../../data/career';
           >
             Degree
           </div>
-          <div class="text-sm font-semibold text-white mb-0.5">
+          <div class="text-sm font-semibold text-foreground mb-0.5">
             {education.degree}
           </div>
-          <div class="text-xs font-mono text-slate-400">
+          <div class="text-xs font-mono text-muted">
             {education.institution} · {education.period}
           </div>
         </div>

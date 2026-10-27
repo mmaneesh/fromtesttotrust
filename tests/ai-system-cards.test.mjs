@@ -244,7 +244,10 @@ test('AI system briefs use the ai-systems URL namespace and retain legacy redire
 
   assert.match(cards, /`\/ai-systems\/\$\{system\.id\}`/);
   assert.match(canonicalRoute, /SystemBrief/);
-  assert.match(legacyRoute, /Astro\.redirect\(`\/ai-systems\/\$\{system\.id\}`, 301\)/);
+  assert.match(
+    legacyRoute,
+    /Astro\.redirect\(`\/ai-systems\/\$\{system\.id\}`, 301\)/,
+  );
   assert.match(brief, /\$\{site\}\/ai-systems\/\$\{system\.id\}/);
 });
 

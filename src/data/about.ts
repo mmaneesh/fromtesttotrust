@@ -1,18 +1,8 @@
-export interface EvolutionStage {
-  stageNumber: string;
-  era: string;
-  title: string;
-  subtitle: string;
-  narrative: string;
-  keyPoints: { label: string; text: string }[];
-}
-
 export const aboutData = {
   introduction:
     'Over 15+ years, my work has evolved from hands-on testing to automation architecture and building trustworthy AI systems. Today, as a Principal SDET Engineer, I build evaluation harnesses, guardrails, and human-guided agent workflows that turn quality from a final checkpoint into evidence that systems deliver real value. Across fintech, insurance, and enterprise platforms, I uncover hidden risk, challenge assumptions early, and engineer trust into how software is designed and delivered.',
   evolutionStages: [
     {
-      stageNumber: '01',
       era: 'Exploratory & Manual Testing',
       title: 'Exploration',
       subtitle: 'Learning how software actually breaks in the real world.',
@@ -34,7 +24,6 @@ export const aboutData = {
       ],
     },
     {
-      stageNumber: '02',
       era: 'Test Automation & Architecture',
       title: 'Automation',
       subtitle: 'Keep it simple. Zero clever code or unwanted abstractions.',
@@ -56,7 +45,6 @@ export const aboutData = {
       ],
     },
     {
-      stageNumber: '03',
       era: 'AI Systems & Governance',
       title: 'Trustworthy AI',
       subtitle: 'Guardrails, evals, and trust baked into the architecture.',

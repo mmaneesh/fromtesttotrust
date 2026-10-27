@@ -104,14 +104,6 @@
 }
 
 @layer components {
-  .type-display {
-    font-family: var(--font-editorial);
-    font-size: var(--text-display);
-    font-weight: 500;
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
-  }
-
   .type-page-title {
     font-family: var(--font-editorial);
     font-size: var(--text-page-title);
@@ -156,13 +148,6 @@
     font-size: var(--text-body);
     font-weight: 400;
     line-height: var(--leading-body);
-  }
-
-  .type-secondary {
-    font-family: var(--font-sans);
-    font-size: var(--text-secondary);
-    font-weight: 400;
-    line-height: var(--leading-snug);
   }
 
   .type-label {

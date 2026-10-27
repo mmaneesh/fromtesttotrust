@@ -6,7 +6,7 @@ interface Props {
   diagramsOnly?: boolean;
 }
 
-const { workflow, diagramsOnly = false } = Astro.props;
+const { workflow } = Astro.props;
 const lanes = workflow.roles.map((role) => role.name);
 const handoffs = workflow.handoffs.map((handoff) => {
   const from = lanes.indexOf(handoff.from) + 1;

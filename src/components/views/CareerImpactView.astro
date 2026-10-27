@@ -44,20 +44,11 @@ import { careerTimeline, education } from '../../data/career';
                 </div>
 
                 <ul class="space-y-2.5 pl-5">
-                  {role.highlights
-                    .slice(
-                      0,
-                      company.isCurrent && rIndex === 0
-                        ? 4
-                        : company.company === 'CSG'
-                          ? 3
-                          : 2,
-                    )
-                    .map((highlight) => (
-                      <li class="type-body list-disc text-body marker:text-accent">
-                        {highlight}
-                      </li>
-                    ))}
+                  {role.highlights.map((highlight) => (
+                    <li class="type-body list-disc text-body marker:text-accent">
+                      {highlight}
+                    </li>
+                  ))}
                 </ul>
               </div>
             ))}

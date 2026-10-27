@@ -17,12 +17,14 @@ The site is organized across dedicated routes:
 
 ## What we built
 
-- A responsive, editorial portfolio with light and dark themes.
+- A responsive `1440px` editorial portfolio with light and dark themes and a unified 3-font type system (`Newsreader` headings, `Inter` body copy, `Geist Mono` labels).
 - Dedicated routes for About, Experience, AI Systems, and Insights with legacy hash redirects from `/`.
+- An in-app **Connect Modal** (`<dialog>`) for sending messages directly without launching external mail clients, paired with one-click email copy.
 - Data-driven content models for profile information, career history, AI systems, and insights.
-- Static detail pages for each AI system and insight entry with custom SVG architecture diagrams and Shiki code highlighting.
+- Static detail pages for each AI system and insight entry with custom SVG architecture diagrams and dual-theme Shiki code highlighting.
 - Distinct inline SVG field-note illustrations for each AI System card. Artwork intentionally swaps contrast by theme: light art on dark cards and dark art on light cards.
-- Regression tests that protect the AI System cards, Experience content, company naming, Insights, and navigation routes.
+- Full **SEO, GEO, and Analytics** coverage: canonical metadata, `JSON-LD` structured data on every indexable route, `sitemap-index.xml`, `/llms.txt` for AI search engines, and Vercel Web Analytics.
+- Regression tests that protect the AI System cards, Experience content, company naming, Insights, SEO helpers, Analytics, and navigation routes.
 
 ## Tech stack
 
@@ -30,22 +32,27 @@ The site is organized across dedicated routes:
 | ---------------- | -------------------------------------------------------------------- |
 | Framework        | [Astro](https://astro.build/) 4 with TypeScript                      |
 | Styling          | [Tailwind CSS](https://tailwindcss.com/) 3 and CSS custom properties |
-| Typography       | Inter, Newsreader, and Geist Mono fallbacks                          |
+| Typography       | Newsreader, Inter, and Geist Mono                                    |
+| Code blocks      | [Shiki](https://shiki.style/) (`one-dark-pro` / `github-light`)      |
 | Content          | Typed local data modules in `src/data/`                              |
+| SEO & GEO        | `@astrojs/sitemap`, `JSON-LD` structured data, and `/llms.txt`       |
+| Analytics        | `@vercel/analytics`                                                  |
 | Testing          | Node.js built-in test runner                                         |
 | Code quality     | ESLint, Prettier, Husky, and lint-staged                             |
-| Deployment model | Static site generation                                               |
+| Deployment model | Static site generation on Vercel                                     |
 
 ## Project structure
 
 ```text
+public/               Static assets (portrait, favicon, og.png, robots.txt, llms.txt)
 src/
-├── components/       Reusable UI, navigation, illustrations, and view modules
+├── components/       Reusable UI, navigation, modal, illustrations, and view modules
 ├── data/             Typed portfolio content
 ├── layouts/          Shared page shell and metadata
-├── pages/            Homepage plus generated system and speaking pages
-└── styles/           Global theme tokens and base styles
-tests/                Source-contract regression tests
+├── lib/              SEO and canonical URL utilities
+├── pages/            Section routes plus generated AI system and insight pages
+└── styles/           Global theme tokens, type scale, and base styles
+tests/                Source-contract and integration regression tests
 ```
 
 To update portfolio content, start in `src/data/`. Presentation changes generally belong in `src/components/` or `src/styles/global.css`.

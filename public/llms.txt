@@ -1,0 +1,29 @@
+# From Test to Trust — Maneesh Maddala
+
+> Personal engineering portfolio and architectural field notes of Maneesh Maddala, Principal SDET Engineer at Morningstar, Inc. (Chicago, IL), with 15+ years of experience across repeatable quality engineering, enterprise test automation, and trustworthy AI systems.
+
+## Primary Sections
+
+- [About — Three Chapters of Quality Engineering](https://fromtesttotrust.com/): Evolution from exploratory domain testing to direct Playwright/Cypress engineering and production AI evaluation & guardrails.
+- [Experience](https://fromtesttotrust.com/experience): 15+ years of engineering leadership at Morningstar, Inc., CSG International, Creospan Inc., and Tata Consultancy Services.
+- [AI Systems](https://fromtesttotrust.com/ai-systems): Production AI architectures for multi-agent SDLC workflows, governed model routing, continuous evaluation, and automated defect triage.
+- [Insights](https://fromtesttotrust.com/insights): Conference talks, webinars, and technical articles on Playwright reliability, AI guardrails, API testing, and structured output formats.
+
+## AI System Architecture Briefs
+
+- [Multi-Agent SDLC Workflow](https://fromtesttotrust.com/ai-systems/multi-agent-sdlc): Carries a Jira ticket through scenario planning, TestRail coverage analysis, and Playwright test generation with human review gates.
+- [LiteLLM Gateway & Agent Sandbox](https://fromtesttotrust.com/ai-systems/litellm-gateway): Centralized model routing, Okta identity governance, AWS Bedrock/OpenRouter failover, and ephemeral ECS Fargate agent sandboxes.
+- [Defect Triaging Agent](https://fromtesttotrust.com/ai-systems/defect-triaging-agent): Parses 1–50 Monocart Playwright HTML reports into compact evidence to classify flaky tests, hard failures, and duration regressions.
+- [Support Intake & Triage Agent](https://fromtesttotrust.com/ai-systems/support-intake-agent): Unifies multi-channel support requests into a single Microsoft Teams queue and routes structured tasks into Asana.
+- [Brand Unification & Compliance Skill](https://fromtesttotrust.com/ai-systems/brand-unification-skill): Evaluates live web properties against typography, color, accessibility, and brand rule sets with automated scoring.
+- [Shared Agent Skills Platform](https://fromtesttotrust.com/ai-systems/shared-skills-platform): Central GitHub repository and validation pipeline for reusable engineering and domain agent skills.
+- [Office Hours Knowledge Agent](https://fromtesttotrust.com/ai-systems/office-hours-agent): Converts recorded `.vtt` session transcripts into clean Markdown indexed semantically for cited Q&A.
+
+## Published Insights & Talks
+
+- [Repeatable Quality Engineering (BrowserStack Stack Connect)](https://fromtesttotrust.com/insights/repeatable-quality-engineering)
+- [Guardrails and Evals for Trustworthy AI Systems](https://fromtesttotrust.com/insights/guardrails-and-evals)
+- [The Habits That Make Our Tests More Reliable](https://fromtesttotrust.com/insights/playwright-reliability)
+- [JSON vs. TOON vs. JSONL vs. Markdown vs. YAML](https://fromtesttotrust.com/insights/output-format-types)
+- [Everyday AI Coding Habits](https://fromtesttotrust.com/insights/everyday-ai-coding)
+- [What API Testing Taught Us About Finding Problems Earlier](https://fromtesttotrust.com/insights/api-testing-earlier-problems)

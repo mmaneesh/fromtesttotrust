@@ -222,33 +222,34 @@ const structuredData = [
   <Header />
 
   <main
-    class="flex-1 w-full max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16"
+    id="main-content"
+    class="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-14"
   >
-    <div class="mb-10">
+    <div class="mb-8">
       <a
         href="/ai-systems"
-        class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-foreground transition-colors"
+        class="inline-flex items-center gap-2 text-xs font-mono font-medium text-accent hover:text-foreground transition-colors"
       >
         <span>← Back to AI Systems</span>
       </a>
     </div>
 
-    <article class="pb-16">
-      <header class="mb-12">
+    <article class="pb-14">
+      <header class="mb-10 pb-8 border-b border-line">
         <h1
-          class="text-[34px] sm:text-[42px] font-display font-bold text-foreground leading-[1.05] tracking-tight mb-5"
+          class="text-[34px] sm:text-[42px] font-editorial font-medium text-foreground leading-[1.08] tracking-[-0.028em] mb-4"
         >
           {system.title}
         </h1>
-        <p class="text-base sm:text-lg text-body leading-relaxed mb-7">
+        <p class="type-lead text-body mb-5">
           {system.subtitle}
         </p>
-        <p class="font-mono text-[11px] leading-6 text-muted">
+        <p class="font-mono text-xs leading-6 text-muted">
           {system.technologies.join(' · ')}
         </p>
       </header>
 
-      <div class="text-base text-body leading-8 space-y-7">
+      <div class="type-prose text-body space-y-6">
         <p>{system.problem}</p>
         <p>{system.summary}</p>
         {system.architecture.map((arch) => <p>{arch}</p>)}
@@ -273,7 +274,7 @@ const structuredData = [
       {system.id === 'office-hours-agent' && <OfficeHoursDiagram />}
       {system.id === 'defect-triaging-agent' && <DefectTriageDiagram />}
       <DiagramFlowHover />
-      <div class="mt-7 text-base text-body leading-8 space-y-7">
+      <div class="mt-8 type-prose text-body space-y-6">
         {
           details.riskAnalysis.map((item) => (
             <p>

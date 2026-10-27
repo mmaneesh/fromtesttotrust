@@ -2,52 +2,48 @@
 import { careerTimeline, education } from '../../data/career';
 ---
 
-<section class="w-full py-8 sm:py-9">
-  <header class="mb-7 max-w-[640px]">
-    <h1 class="font-editorial text-[28px] font-medium text-foreground">
-      Experience
-    </h1>
-    <p class="mt-2 text-[13px] leading-[1.65] text-muted">
+<section class="w-full py-8 sm:py-10">
+  <header class="mb-8">
+    <h1 class="type-page-title text-foreground">Experience</h1>
+    <p class="type-lead mt-3">
       More than 15 years in quality engineering and technical leadership across
       fintech, insurance, and enterprise platforms.
     </p>
   </header>
 
-  <div>
+  <div class="space-y-6">
     {
       careerTimeline.map((company) => (
-        <article class="border-t-2 border-foreground py-6 first:border-t-0">
-          <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-            <div class="flex items-center gap-3">
+        <article class="rounded-xl border border-line bg-surface p-7 sm:p-8">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-line">
+            <div class="flex items-center gap-3.5">
               <div
                 class={`h-2.5 w-2.5 rounded-full ${company.isCurrent ? 'bg-accent' : 'bg-line'}`}
               />
               <div>
-                <h3 class="font-editorial text-xl font-medium text-foreground">
-                  {company.company}
-                </h3>
-                <p class="text-xs font-mono text-muted mt-0.5">
-                  {company.location}
-                </p>
+                <h2 class="type-h2 text-foreground">{company.company}</h2>
               </div>
             </div>
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-surface-raised text-muted">
+              {company.location}
+            </span>
           </div>
 
-          <div class="mt-5 space-y-5 sm:pl-5">
+          <div class="mt-6 space-y-7">
             {company.roles.map((role, rIndex) => (
               <div
-                class={`relative ${rIndex > 0 ? 'border-t border-line pt-5' : ''}`}
+                class={`relative ${rIndex > 0 ? 'border-t border-line pt-7' : ''}`}
               >
-                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
-                  <h4 class="text-sm font-semibold text-foreground sm:text-[15px]">
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
+                  <h3 class="font-sans text-[19px] font-semibold text-foreground">
                     {role.title}
-                  </h4>
-                  <span class="text-xs font-mono text-muted font-medium">
+                  </h3>
+                  <span class="text-[13px] font-mono text-accent font-semibold">
                     {role.period}
                   </span>
                 </div>
 
-                <ul class="space-y-1.5 pl-4">
+                <ul class="space-y-2.5 pl-5">
                   {role.highlights
                     .slice(
                       0,
@@ -58,7 +54,7 @@ import { careerTimeline, education } from '../../data/career';
                           : 2,
                     )
                     .map((highlight) => (
-                      <li class="list-disc text-xs leading-[1.65] text-body marker:text-accent">
+                      <li class="type-body list-disc text-body marker:text-accent">
                         {highlight}
                       </li>
                     ))}
@@ -70,24 +66,23 @@ import { careerTimeline, education } from '../../data/career';
       ))
     }
 
-    <article class="border-t-2 border-foreground py-6">
-      <h3 class="font-editorial text-2xl font-medium text-foreground">
-        Education
-      </h3>
+    <article class="rounded-xl border border-line bg-surface p-7 sm:p-8">
+      <div class="flex items-center justify-between pb-4 border-b border-line">
+        <h2 class="type-h2 text-foreground">Education</h2>
+        <span
+          class="text-xs font-mono px-2.5 py-1 rounded bg-surface-raised text-muted"
+        >
+          {education.period}
+        </span>
+      </div>
 
       <div class="mt-5">
-        <div>
-          <div
-            class="text-xs font-mono text-accent uppercase tracking-wider mb-1 font-semibold"
-          >
-            Degree
-          </div>
-          <div class="text-sm font-semibold text-foreground mb-0.5">
-            {education.degree}
-          </div>
-          <div class="text-xs font-mono text-muted">
-            {education.institution} · {education.period}
-          </div>
+        <div class="type-label text-accent mb-1.5">Degree</div>
+        <div class="text-[19px] font-semibold text-foreground mb-1">
+          {education.degree}
+        </div>
+        <div class="text-[14px] font-mono text-muted">
+          {education.institution}
         </div>
       </div>
     </article>

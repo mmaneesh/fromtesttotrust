@@ -21,15 +21,15 @@ export const aboutData = {
       keyPoints: [
         {
           label: 'Fresh eyes',
-          text: 'Explore what actually happens, not only what the team hopes will happen.',
+          text: 'Test what actually happens, not just what the team expects.',
         },
         {
           label: 'User first',
-          text: 'Test interruptions, messy data, rapid actions, and real-world constraints.',
+          text: 'Test interruptions, messy data, and real-world edge cases.',
         },
         {
           label: 'Ask early',
-          text: 'Challenge risky assumptions before they become expensive implementation.',
+          text: 'Challenge risky assumptions before implementation begins.',
         },
       ],
     },
@@ -43,15 +43,15 @@ export const aboutData = {
       keyPoints: [
         {
           label: 'Use tools directly',
-          text: 'Build with Playwright or Cypress without unnecessary wrapper layers.',
+          text: 'Use Playwright or Cypress directly without wrapper layers.',
         },
         {
           label: 'Test at the right level',
-          text: 'Place UI, API, visual, component, and accessibility coverage where each gives the clearest signal.',
+          text: 'Run UI, API, visual, and a11y checks where signal is clearest.',
         },
         {
           label: 'Maintain trust',
-          text: 'Fast, stable tests and obvious failure traces keep the suite credible.',
+          text: 'Keep suites credible with fast runs and clear failure traces.',
         },
       ],
     },
@@ -65,15 +65,15 @@ export const aboutData = {
       keyPoints: [
         {
           label: 'Evaluate continuously',
-          text: 'Score accuracy, safety, and structure before an agent takes action.',
+          text: 'Score accuracy, safety, and structure before any agent acts.',
         },
         {
           label: 'Constrain behavior',
-          text: 'Validate inputs, schemas, tool calls, and outputs beyond prompt wording.',
+          text: 'Validate prompts, schemas, tool calls, and model responses.',
         },
         {
           label: 'Design for resilience',
-          text: 'Use scoped tools, observable routing, and graceful provider failover.',
+          text: 'Combine scoped tools, observable routing, and safe failover.',
         },
       ],
     },

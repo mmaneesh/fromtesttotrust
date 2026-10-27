@@ -13,31 +13,13 @@ export interface AISystem {
   subtitle: string;
   /** Plain "what it does" line shown on the AI Systems card (2-3 lines, present tense). */
   blurb: string;
-  category:
-    | 'Multi-Agent Systems'
-    | 'LLM Evals & Guardrails'
-    | 'Test Architecture'
-    | 'Governance';
   summary: string;
   problem: string;
   architecture: string[];
   impact: string[];
   technologies: string[];
-  links?: {
-    label: string;
-    url: string;
-    type: 'deck' | 'code' | 'article' | 'external';
-  }[];
-  featured: boolean;
   workflow?: {
     nodes: { label: string; command?: string; humanGate?: boolean }[];
-    phases: {
-      label: string;
-      title: string;
-      command: string;
-      summary: string;
-      scenarioFloors?: { label: string; value: string }[];
-    }[];
     handoffs: {
       from: string;
       to: string;
@@ -48,13 +30,8 @@ export interface AISystem {
     roles: {
       name: string;
       model: string;
-      reads: string;
-      writes: string;
-      boundary: string;
     }[];
-    guardrails: string[];
     reviewLabel: string;
-    futureDirection: string;
   };
 }
 
@@ -66,7 +43,6 @@ export const aiSystems: AISystem[] = [
       'From a Jira comment to an isolated agent that opens a pull request, with governed model access and agent-to-agent interop.',
     blurb:
       'Runs each Jira ticket as an isolated agent that works in its own sandbox and opens a pull request, with every model call routed through one governed gateway.',
-    category: 'Multi-Agent Systems',
     summary:
       'Our team built Dev Loop as one shared path from a Jira comment to a reviewed pull request. The comment starts an isolated agent, the agent works the ticket in its own sandbox, and every model call goes through one governed route.',
     problem:
@@ -90,7 +66,6 @@ export const aiSystems: AISystem[] = [
       'ECS Fargate',
       'Python',
     ],
-    featured: true,
   },
   {
     id: 'shared-skills-platform',
@@ -99,7 +74,6 @@ export const aiSystems: AISystem[] = [
       'From every team building skills in isolation to one GitHub repository the whole company publishes to and reuses.',
     blurb:
       'A GitHub repository of shared Claude skills, generic and team-specific: developers browse it directly, non-technical staff search it through a Claude Desktop connector.',
-    category: 'Governance',
     summary:
       'Our team built a shared skills repository on GitHub where any team can publish its skills and check for an existing one before building a new copy. Every skill carries its author’s username, so a broken or unclear one traces straight back.',
     problem:
@@ -123,14 +97,6 @@ export const aiSystems: AISystem[] = [
       'Claude Enterprise',
       'Knowledge Sharing',
     ],
-    links: [
-      {
-        label: 'View Everyday AI Coding Slides ↗',
-        url: 'https://everyday-ai-coding.vercel.app/',
-        type: 'deck',
-      },
-    ],
-    featured: false,
   },
   {
     id: 'multi-agent-sdlc',
@@ -139,7 +105,6 @@ export const aiSystems: AISystem[] = [
       'From Jira ticket to reviewed test scenarios, TestRail coverage, and Playwright tests.',
     blurb:
       'Turns a Jira ticket into reviewed test scenarios, TestRail coverage, and Playwright tests, stopping for human approval before each stage.',
-    category: 'Multi-Agent Systems',
     summary:
       'The workflow I built carries one Jira ticket through scenario design, TestRail coverage, and Playwright automation as a single reviewed path. It stops for a person before it changes coverage, writes code, or opens a pull request.',
     problem:
@@ -163,7 +128,6 @@ export const aiSystems: AISystem[] = [
       'Git',
       'POM',
     ],
-    featured: true,
     workflow: {
       nodes: [
         { label: 'Jira ticket', command: '/start-planning' },
@@ -181,34 +145,6 @@ export const aiSystems: AISystem[] = [
         },
         { label: 'Playwright implementation' },
         { label: 'Review + PR', humanGate: true },
-      ],
-      phases: [
-        {
-          label: '01 // Plan',
-          title: 'Context + scenario design',
-          command: '/start-planning',
-          summary:
-            'Read acceptance criteria, technical notes, attachments, references, the parent epic, and completed or in-review sibling tickets.',
-          scenarioFloors: [
-            { label: 'Low', value: '5+' },
-            { label: 'Medium', value: '6-8+' },
-            { label: 'Critical', value: '10-15+' },
-          ],
-        },
-        {
-          label: '02 // Cover',
-          title: 'TestRail coverage',
-          command: '/test-cases',
-          summary:
-            'Inspect project folders, update matching cases, or create missing structure and coverage; then return every case link for review.',
-        },
-        {
-          label: '03 // Automate',
-          title: 'Playwright implementation',
-          command: '/automate',
-          summary:
-            'Route UI, API, visual, or component work; reuse page objects and fixtures, prefer user-facing locators, and run focused tests.',
-        },
       ],
       handoffs: [
         {
@@ -273,65 +209,14 @@ export const aiSystems: AISystem[] = [
         },
       ],
       roles: [
-        {
-          name: 'Human',
-          model: 'Decision owner',
-          reads: 'Every stage artifact and the execution evidence.',
-          writes:
-            'Approvals, refinements, commands, and the final PR decision.',
-          boundary:
-            'No consequential stage advances without explicit human approval.',
-        },
-        {
-          name: 'Planner',
-          model: 'Opus',
-          reads:
-            'Jira ticket, acceptance criteria, epic history, attachments, technical notes, and design references.',
-          writes: 'scenarios.md with cited, risk-tiered coverage.',
-          boundary: 'Cannot write test code, page objects, or TestRail cases.',
-        },
-        {
-          name: 'TestRail',
-          model: 'Sonnet',
-          reads: 'Approved scenarios.md and existing TestRail structure.',
-          writes:
-            'testrail-cases.md plus links to updated or newly created coverage.',
-          boundary: 'Cannot modify repository source or implement automation.',
-        },
-        {
-          name: 'Coder',
-          model: 'Sonnet',
-          reads:
-            'Approved testrail-cases.md, repository conventions, page objects, fixtures, and suite structure.',
-          writes: 'Scoped page objects, specs, and changes.md.',
-          boundary:
-            'Cannot alter package, config, or CI files, run the full suite, or perform git actions.',
-        },
-        {
-          name: 'Tester',
-          model: 'Sonnet',
-          reads: 'changes.md and the approved implementation scope.',
-          writes: 'Root-cause fixes within scope and test-results.md.',
-          boundary:
-            'Cannot touch files outside the approved change set or broaden the requested scope.',
-        },
-        {
-          name: 'Reviewer',
-          model: 'Opus',
-          reads: 'The full diff, test-results.md, and repository checklist.',
-          writes: 'review.md with a final verdict and actionable findings.',
-          boundary: 'Cannot edit code, merge, push, or open a pull request.',
-        },
-      ],
-      guardrails: [
-        'File-scope discipline: each stage changes only the files required for its assigned job; anything outside that boundary is flagged for a human.',
-        'No silent scope creep: implementation stays anchored to the Jira ticket and approved scenarios.',
-        'End-to-end traceability: Jira acceptance criteria, epic context, and design references remain connected through TestRail coverage and final test source.',
-        'No false-green results: test.skip() requires a Jira-tracked TODO; assertions are never weakened and valid cases are never deleted to force a pass.',
-        'Merge and pull-request actions remain human decisions.',
+        { name: 'Human', model: 'Decision owner' },
+        { name: 'Planner', model: 'Opus' },
+        { name: 'TestRail', model: 'Sonnet' },
+        { name: 'Coder', model: 'Sonnet' },
+        { name: 'Tester', model: 'Sonnet' },
+        { name: 'Reviewer', model: 'Opus' },
       ],
       reviewLabel: 'Human Review',
-      futureDirection: 'Future: evidence-gated autonomy',
     },
   },
   {
@@ -341,7 +226,6 @@ export const aiSystems: AISystem[] = [
       'We pull recent monocart-html reports from S3 and turn them into a reliability report for the Playwright suite, on demand.',
     blurb:
       'We analyze the latest 1-50 monocart-html reports from S3 and show which specs are flaky, still failing after retries, or getting slower.',
-    category: 'Test Architecture',
     summary:
       'We built this agent to turn that report history into a clear reliability picture. Instead of comparing runs by hand, we can ask for the last 30 reports and see the patterns across the suite in one place.',
     problem:
@@ -364,7 +248,6 @@ export const aiSystems: AISystem[] = [
       'LLM Analysis',
       'Test Reliability',
     ],
-    featured: true,
   },
   {
     id: 'support-intake-agent',
@@ -373,7 +256,6 @@ export const aiSystems: AISystem[] = [
       'From requests scattered across email, Slack, and Jira to one Teams queue and a routed Asana task.',
     blurb:
       'Funnels support requests from email, Slack, and Jira into one Microsoft Teams queue, then turns a triaged message into a routed Asana task on demand.',
-    category: 'Multi-Agent Systems',
     summary:
       'The intake workflow I built for the support team funnels email, Slack, and Jira into one Microsoft Teams channel, where an engineer turns a real request into a routed Asana task with one action.',
     problem:
@@ -397,7 +279,6 @@ export const aiSystems: AISystem[] = [
       'Jira',
       'Workflow Design',
     ],
-    featured: true,
   },
   {
     id: 'office-hours-agent',
@@ -406,7 +287,6 @@ export const aiSystems: AISystem[] = [
       'From raw office-hours recordings to organized answers that span every past session.',
     blurb:
       'Turns recorded office-hours sessions into titled, indexed transcripts, then answers questions from Claude Desktop by drawing on every session that touches the topic.',
-    category: 'Multi-Agent Systems',
     summary:
       'The office-hours agent I built converts each recorded session into a titled, indexed transcript, then answers questions from Claude Desktop by pulling from every session that touches the topic. Its answers stay grounded in what was said in the room.',
     problem:
@@ -431,7 +311,6 @@ export const aiSystems: AISystem[] = [
       'Semantic Search',
       'Markdown',
     ],
-    featured: true,
   },
   {
     id: 'brand-unification-skill',
@@ -440,7 +319,6 @@ export const aiSystems: AISystem[] = [
       'From a public URL to a scored brand-migration audit with a routed escalation.',
     blurb:
       'Audits a URL, doc, PDF, or deck against the unified brand’s rules, scores it on a fixed rubric, rewrites off-brand copy, and routes anything sensitive to the content or legal team.',
-    category: 'Governance',
     summary:
       'To address it, I proposed a Claude skill and built it: content and creative teams import it, hand it a URL, and it audits the page against the unified brand’s rules. Every finding traces to a written rule, and the skill rewrites and recommends but never publishes.',
     problem:
@@ -464,6 +342,5 @@ export const aiSystems: AISystem[] = [
       'Guardrails',
       'Governance',
     ],
-    featured: true,
   },
 ];

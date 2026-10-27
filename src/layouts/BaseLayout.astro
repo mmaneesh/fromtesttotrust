@@ -84,7 +84,7 @@ const ogImage = new URL(image, `${origin}/`).href;
     <!-- Skip to main content for keyboard a11y -->
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-slate-900 focus:font-semibold focus:rounded-md"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:font-semibold focus:rounded-md"
     >
       Skip to main content
     </a>
@@ -92,23 +92,5 @@ const ogImage = new URL(image, `${origin}/`).href;
     <div class="relative z-10 flex flex-col min-h-screen">
       <slot />
     </div>
-
-    <!-- Mouse spotlight glow tracker -->
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const cards = document.querySelectorAll('.interactive-spotlight-card');
-
-        cards.forEach((card) => {
-          card.addEventListener('mousemove', (e: Event) => {
-            const mouseEvent = e as MouseEvent;
-            const rect = (card as HTMLElement).getBoundingClientRect();
-            const x = mouseEvent.clientX - rect.left;
-            const y = mouseEvent.clientY - rect.top;
-            (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
-            (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
-          });
-        });
-      });
-    </script>
   </body>
 </html>

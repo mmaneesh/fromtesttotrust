@@ -389,4 +389,32 @@ test('rejects a gated-content submission without campaign source', async ({ requ
       'CI/CD',
     ],
   },
+  {
+    id: 'repeatable-quality-engineering',
+    title: 'From AI Experiments to Repeatable Quality',
+    subtitle: 'How skills and plugins make AI work consistent across a team',
+    organization: 'BrowserStack',
+    date: 'October 23, 2026',
+    published: true,
+    format: 'Conference Talk',
+    kind: 'speaking',
+    abstract:
+      'How skills, plugins, guardrails, and human review turn individual AI experiments into consistent quality engineering across a team.',
+    brief:
+      'I gave a conference talk at BrowserStack Stack Connect on why individual AI adoption makes engineers faster without making a team consistent—and how to fix it. When three engineers prompt AI for checkout tests in the same sprint, the codebase gets three different styles: hard-coded waits, retries that hide flaky runs, and weak assertions. We first tried solving this with a single autonomous agent across discovery, test design, and automation, and watched it invent cases and skip judgment calls. What worked was marking a shared trail: team standards captured as reusable skills and plugins, bounded by guardrails, checked by evaluations, and gated by human approval across planning, TestRail case design, Playwright automation, and review—cutting a full day of test work to about two hours while catching real accessibility and rendering defects.',
+    keyTakeaways: [
+      'Turning unwritten team conventions into versioned skills and plugins that AI reads before writing code.',
+      'Routing a ticket through skill-guided planning, case design, Playwright automation, and review with human approval at every gate.',
+      'Combining deterministic guardrails, evaluations, and multi-browser visual and accessibility checks so speed does not scale inconsistency.',
+    ],
+    deckUrl:
+      'https://repeatable-quality-engineering.vercel.app/?event=stack-connect-2026#1',
+    tags: [
+      'Agent Skills',
+      'Quality Engineering',
+      'Playwright',
+      'Guardrails',
+      'Human-in-the-Loop',
+    ],
+  },
 ];

@@ -8,21 +8,21 @@ Personal portfolio for Maneesh Maddala, a Principal SDET Engineer at Morningstar
 
 This is a static Astro portfolio designed around one simple idea: quality engineering is broader than testing alone. The site connects test architecture, risk management, trustworthy AI, and the systems that make those practices repeatable.
 
-The homepage is organized as a tabbed single-page experience:
+The site is organized across dedicated routes:
 
-- **About** — profile, current focus, and evidence-backed career metrics.
-- **Experience** — career history and education.
-- **AI Systems** — case-study cards and detail pages for agentic SDLC, model routing, guardrails/evals, and reusable skills.
-- **Speaking** — talks and workshop material.
+- **About (`/`)** — profile, portrait, and the three chapters of practice.
+- **Experience (`/experience`)** — career history and education.
+- **AI Systems (`/ai-systems`)** — case-study cards and architecture briefs (`/ai-systems/[id]`).
+- **Insights (`/insights`)** — field-note articles and conference/workshop briefs (`/insights/[id]`).
 
 ## What we built
 
 - A responsive, editorial portfolio with light and dark themes.
-- Keyboard-accessible tab navigation that keeps the active view in the URL hash (`#about`, `#experience`, `#ai-systems`, and `#speaking`).
-- Data-driven content models for profile information, career history, AI systems, speaking, and field notes.
-- Static detail pages for each AI system and speaking engagement.
+- Dedicated routes for About, Experience, AI Systems, and Insights with legacy hash redirects from `/`.
+- Data-driven content models for profile information, career history, AI systems, and insights.
+- Static detail pages for each AI system and insight entry with custom SVG architecture diagrams and Shiki code highlighting.
 - Distinct inline SVG field-note illustrations for each AI System card. Artwork intentionally swaps contrast by theme: light art on dark cards and dark art on light cards.
-- Source-level regression tests that protect the AI System cards, Experience content, company naming, and hash navigation.
+- Regression tests that protect the AI System cards, Experience content, company naming, Insights, and navigation routes.
 
 ## Tech stack
 
@@ -70,10 +70,10 @@ Astro prints the local URL when it starts, usually `http://localhost:4321`.
 
 Useful local URLs:
 
-- `/#about`
-- `/#experience`
-- `/#ai-systems`
-- `/#speaking`
+- `/`
+- `/experience`
+- `/ai-systems`
+- `/insights`
 
 ## Commands
 
@@ -97,9 +97,9 @@ npm run build
 
 ## How the site works
 
-Astro builds the site statically. Content is kept in TypeScript data modules rather than a CMS, which keeps portfolio updates reviewable in version control. The homepage loads all four top-level views and the navigation controls visibility client-side; the active view is mirrored to the URL hash for shareable links and browser history consistency.
+Astro builds the site statically. Content is kept in TypeScript data modules rather than a CMS, which keeps portfolio updates reviewable in version control. Each top-level section renders at its own route with canonical metadata and JSON-LD structured data.
 
-AI System and speaking detail pages are generated from the IDs defined in their respective data modules. The AI System cards use inline SVG artwork rather than external images, preserving sharp rendering, predictable theme contrast, and fast static delivery.
+AI System and Insight detail pages are generated from the IDs defined in their respective data modules. The AI System cards use inline SVG artwork rather than external images, preserving sharp rendering, predictable theme contrast, and fast static delivery.
 
 ## Contributing
 

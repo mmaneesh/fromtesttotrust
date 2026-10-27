@@ -61,6 +61,10 @@ test('insight dates vary across the last three months without changing Ministry 
     events,
     /id: 'guardrails-and-evals'[\s\S]*?date: 'September 23, 2026'/,
   );
+  assert.match(
+    events,
+    /id: 'repeatable-quality-engineering'[\s\S]*?organization: 'BrowserStack'[\s\S]*?date: 'October 23, 2026'[\s\S]*?published: true/,
+  );
 });
 
 test('Playwright reliability insight is published with marketing-system examples', async () => {

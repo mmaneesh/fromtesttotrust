@@ -1,11 +1,49 @@
 ---
 import SectionLayout from '../../layouts/SectionLayout.astro';
 import SpeakingView from '../../components/views/SpeakingView.astro';
+import { insightEntries } from '../../data/insights';
+import { siteOrigin } from '../../lib/seo';
+
+const site = siteOrigin(Astro.site);
+const visibleInsights = insightEntries.filter(
+  (entry) => entry.published !== false,
+);
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Insights & Speaking — Maneesh Maddala',
+    url: `${site}/insights`,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: visibleInsights.map((entry, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: entry.title,
+        url: `${site}/insights/${entry.id}`,
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'About', item: `${site}/` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Insights',
+        item: `${site}/insights`,
+      },
+    ],
+  },
+];
 ---
 
 <SectionLayout
   title="Insights & Speaking — Maneesh Maddala"
   description="Notes from the work: how we test, build AI systems, and make release decisions with evidence we can trust."
+  structuredData={structuredData}
 >
   <SpeakingView />
 </SectionLayout>

@@ -85,7 +85,7 @@ test('home navigation keeps the brand mark compact and Connect readable through 
   assert.match(header, /href="\/"/);
   assert.doesNotMatch(dock, /<span>From Test to Trust<\/span>/);
   assert.match(dock, /min-height: 64px;/);
-  assert.match(dock, /width: 88px;/);
+  assert.match(dock, /width: 100px;/);
   assert.match(
     dock,
     /\.brand-mark :global\(svg\) \{\s*display: block;\s*width: 100%;\s*height: auto;/,
@@ -99,14 +99,11 @@ test('home navigation keeps the brand mark compact and Connect readable through 
     dock,
     /\.nav-tab-btn\.active,\s*\.nav-tab-btn:hover \{\s*color: rgb\(var\(--accent\)\);/,
   );
-  assert.match(
-    dock,
-    /\.nav-tab-btn\.active::before \{[\s\S]*top: 6px;[\s\S]*height: 2px;[\s\S]*background: rgb\(var\(--accent\)\);/,
-  );
+  assert.doesNotMatch(dock, /\.nav-tab-btn\.active::before/);
   assert.doesNotMatch(dock, /\.nav-tab-btn\.active::after/);
 });
 
-test('site chrome uses a 1024px shell with full-bleed navigation and footer rules', async () => {
+test('site chrome uses a 1440px shell with full-bleed navigation and footer rules', async () => {
   const [home, dock, header, footer] = await Promise.all([
     readSource('src/pages/index.astro'),
     readSource('src/components/ViewSwitcherDock.astro'),
@@ -114,15 +111,15 @@ test('site chrome uses a 1024px shell with full-bleed navigation and footer rule
     readSource('src/components/Footer.astro'),
   ]);
 
-  assert.match(home, /<ViewSwitcherDock \/>\s*<main[\s\S]*max-w-\[1024px\]/);
+  assert.match(home, /<ViewSwitcherDock \/>\s*<main[\s\S]*max-w-\[1440px\]/);
   assert.match(
     dock,
     /\.view-switcher \{\s*background: rgb\(var\(--canvas\)\);\s*border-bottom: 1px solid rgb\(var\(--line\)\);/,
   );
-  assert.match(header, /max-w-\[1024px\]/);
+  assert.match(header, /max-w-\[1440px\]/);
   assert.match(
     footer,
-    /class="w-full border-t border-line bg-canvas py-6 mt-auto"/,
+    /class="w-full border-t border-line bg-canvas py-7 mt-auto"/,
   );
-  assert.match(footer, /max-w-\[1024px\]/);
+  assert.match(footer, /max-w-\[1440px\]/);
 });

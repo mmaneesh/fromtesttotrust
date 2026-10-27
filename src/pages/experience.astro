@@ -1,11 +1,55 @@
 ---
 import SectionLayout from '../layouts/SectionLayout.astro';
 import CareerImpactView from '../components/views/CareerImpactView.astro';
+import { siteConfig } from '../data/site-config';
+import { careerTimeline, education } from '../data/career';
+import { siteOrigin } from '../lib/seo';
+
+const site = siteOrigin(Astro.site);
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: 'Experience — Maneesh Maddala',
+    url: `${site}/experience`,
+    mainEntity: {
+      '@type': 'Person',
+      name: siteConfig.name,
+      jobTitle: siteConfig.role,
+      worksFor: { '@type': 'Organization', name: siteConfig.employer },
+      alumniOf: {
+        '@type': 'CollegeOrUniversity',
+        name: education.institution,
+      },
+      hasOccupation: careerTimeline.flatMap((company) =>
+        company.roles.map((role) => ({
+          '@type': 'Role',
+          roleName: role.title,
+          description: `${company.company} (${role.period})`,
+        })),
+      ),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'About', item: `${site}/` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Experience',
+        item: `${site}/experience`,
+      },
+    ],
+  },
+];
 ---
 
 <SectionLayout
   title="Experience — Maneesh Maddala | Principal SDET Engineer"
   description="15+ years in quality engineering and technical leadership — Maneesh Maddala's roles at Morningstar, CSG, Creospan, and TCS across fintech, insurance, and enterprise platforms."
+  structuredData={structuredData}
 >
   <CareerImpactView />
 </SectionLayout>

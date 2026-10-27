@@ -17,6 +17,18 @@ const structuredData = [
     image: `${site}/images/maneesh-portrait-2026.jpg`,
     jobTitle: siteConfig.role,
     worksFor: { '@type': 'Organization', name: siteConfig.employer },
+    alumniOf: {
+      '@type': 'CollegeOrUniversity',
+      name: 'JNTUH College of Engineering Hyderabad',
+    },
+    knowsAbout: [
+      'Quality Engineering',
+      'Playwright Test Automation',
+      'AI Evaluation and Guardrails',
+      'Multi-Agent SDLC Workflows',
+      'LiteLLM Model Gateway Architecture',
+      'API and Contract Testing',
+    ],
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Chicago',
@@ -63,9 +75,9 @@ const structuredData = [
 
   <main
     id="main-content"
-    class="mx-auto w-full max-w-[1024px] flex-1 px-4 sm:px-7"
+    class="mx-auto w-full max-w-[1440px] flex-1 px-4 sm:px-8 lg:px-12"
   >
-    <div class="mx-auto min-h-[500px] max-w-[1024px] pt-3 sm:pt-4">
+    <div class="mx-auto min-h-[500px] max-w-[1440px] pt-3 sm:pt-4">
       <FieldNotesView />
     </div>
   </main>

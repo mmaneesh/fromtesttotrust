@@ -6,7 +6,7 @@ interface Props {
   diagramsOnly?: boolean;
 }
 
-const { workflow, diagramsOnly = false } = Astro.props;
+const { workflow } = Astro.props;
 const lanes = workflow.roles.map((role) => role.name);
 const handoffs = workflow.handoffs.map((handoff) => {
   const from = lanes.indexOf(handoff.from) + 1;
@@ -30,15 +30,8 @@ const handoffs = workflow.handoffs.map((handoff) => {
       class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6"
     >
       <div>
-        <div
-          class="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-accent mb-2"
-        >
-          Workflow chart
-        </div>
-        <h2
-          id="pipeline-workflow-heading"
-          class="text-lg sm:text-xl font-display font-bold text-foreground"
-        >
+        <div class="type-label text-accent mb-2">Workflow chart</div>
+        <h2 id="pipeline-workflow-heading" class="type-h3 text-foreground">
           From sprint-ready ticket to final verdict
         </h2>
       </div>

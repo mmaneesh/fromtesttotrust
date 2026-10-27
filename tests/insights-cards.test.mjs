@@ -10,7 +10,7 @@ test('insight cards contain only community, title, description, and brief link',
 
   assert.match(view, /divide-y divide-line border-t border-line/);
   assert.doesNotMatch(view, /border-y border-line/);
-  assert.match(view, /sm:grid-cols-\[minmax\(9rem,0\.32fr\)_minmax\(0,1fr\)\]/);
+  assert.match(view, /sm:grid-cols-\[minmax\(9rem,0\.28fr\)_minmax\(0,1fr\)\]/);
   assert.doesNotMatch(view, /sm:grid-cols-2/);
   assert.match(view, /event\.organization/);
   assert.match(view, /event\.title/);
@@ -134,7 +134,7 @@ test('scrollable insight examples keep their background across the full code wid
 test('insight detail content can shrink around long code examples', async () => {
   const detailPage = await readSource('src/pages/insights/[id].astro');
 
-  assert.match(detailPage, /class="flex-1 min-w-0 w-full max-w-\[1024px\]/);
+  assert.match(detailPage, /class="flex-1 min-w-0 w-full max-w-\[1440px\]/);
 });
 
 test('output format insight explains each format with a sample', async () => {

@@ -93,45 +93,44 @@ const structuredData = [
   <Header />
 
   <main
-    class="flex-1 min-w-0 w-full max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16"
+    id="main-content"
+    class="flex-1 min-w-0 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-14"
   >
-    <div class="mb-10">
+    <div class="mb-8">
       <a
         href="/insights"
-        class="inline-flex items-center gap-2 text-xs font-mono text-accent hover:text-foreground transition-colors"
+        class="inline-flex items-center gap-2 text-xs font-mono font-medium text-accent hover:text-foreground transition-colors"
       >
         <span>← Back to Insights</span>
       </a>
     </div>
 
-    <article class="pb-16">
-      <header class="mb-12">
+    <article class="pb-14">
+      <header class="mb-10 pb-8 border-b border-line">
         <h1
-          class="text-3xl sm:text-5xl font-display font-bold text-foreground leading-[1.05] tracking-tight mb-5"
+          class="text-[34px] sm:text-[42px] font-editorial font-medium text-foreground leading-[1.08] tracking-[-0.028em] mb-4"
         >
           {event.title}
         </h1>
-        <p class="text-base sm:text-lg text-body leading-relaxed mb-7">
+        <p class="type-lead text-body mb-5">
           {event.subtitle}
         </p>
-        <p class="font-mono text-[11px] leading-6 text-muted">
+        <p class="font-mono text-xs leading-6 text-muted">
           {event.organization} · {event.format} · {event.date}
         </p>
-        <p class="font-mono text-[11px] leading-6 text-muted">
+        <p class="font-mono text-xs leading-6 text-muted">
           {event.tags.join(' · ')}
         </p>
       </header>
 
-      <div class="text-base text-body leading-8 space-y-7">
+      <div class="type-prose text-body space-y-6">
         <p>{event.brief}</p>
         {
           sections ? (
             <div class="space-y-10">
               {sections.map((section) => (
                 <section class="space-y-4">
-                  <h2 class="font-editorial text-2xl font-medium leading-snug text-foreground">
-                    {section.heading}
-                  </h2>
+                  <h2 class="type-h2 text-foreground">{section.heading}</h2>
                   {section.paragraphs.map((paragraph) => (
                     <p>{paragraph}</p>
                   ))}

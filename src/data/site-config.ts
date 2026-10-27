@@ -8,7 +8,6 @@ export interface SiteConfig {
     id: 'linkedin' | 'github';
     name: string;
     url: string;
-    label: string;
   }[];
 }
 
@@ -23,13 +22,11 @@ export const siteConfig: SiteConfig = {
       id: 'linkedin',
       name: 'LinkedIn',
       url: 'https://www.linkedin.com/in/maneesh-maddala/',
-      label: 'linkedin.com/in/maneesh-maddala',
     },
     {
       id: 'github',
       name: 'GitHub',
       url: 'https://github.com/mmaneesh',
-      label: 'github.com/mmaneesh',
     },
   ],
 };

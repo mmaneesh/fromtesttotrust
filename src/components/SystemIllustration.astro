@@ -11,7 +11,7 @@ const { systemId } = Astro.props;
 <div class="system-illustration" aria-hidden="true">
   {
     systemId === 'multi-agent-sdlc' && (
-      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+      <svg viewBox="0 0 360 156" preserveAspectRatio="xMidYMid meet">
         <path
           class="line"
           d="M27 78H89L124 40L159 78L195 40L230 78L265 40L300 78H334"
@@ -44,7 +44,7 @@ const { systemId } = Astro.props;
   }
   {
     systemId === 'litellm-gateway' && (
-      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+      <svg viewBox="0 0 360 156" preserveAspectRatio="xMidYMid meet">
         <path
           class="line"
           d="M26 78H94M126 78H182M214 38H300M214 78H300M214 118H300"
@@ -81,7 +81,7 @@ const { systemId } = Astro.props;
   }
   {
     systemId === 'office-hours-agent' && (
-      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+      <svg viewBox="0 0 360 156" preserveAspectRatio="xMidYMid meet">
         <>
           <rect class="outline" x="20" y="22" width="84" height="32" rx="2" />
           <rect class="outline" x="20" y="62" width="84" height="32" rx="2" />
@@ -117,7 +117,7 @@ const { systemId } = Astro.props;
   }
   {
     systemId === 'shared-skills-platform' && (
-      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+      <svg viewBox="0 0 360 156" preserveAspectRatio="xMidYMid meet">
         <>
           <rect class="outline" x="42" y="49" width="72" height="52" rx="2" />
           <rect class="outline" x="144" y="49" width="72" height="52" rx="2" />
@@ -151,7 +151,7 @@ const { systemId } = Astro.props;
   }
   {
     systemId === 'support-intake-agent' && (
-      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+      <svg viewBox="0 0 360 156" preserveAspectRatio="xMidYMid meet">
         <path class="muted" d="M28 38H102M28 78H102M28 118H102" />
         <path
           class="accent"
@@ -183,7 +183,7 @@ const { systemId } = Astro.props;
   }
   {
     systemId === 'defect-triaging-agent' && (
-      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+      <svg viewBox="0 0 360 156" preserveAspectRatio="xMidYMid meet">
         <rect class="outline" x="28" y="42" width="94" height="72" rx="2" />
         <rect class="outline" x="36" y="33" width="94" height="72" rx="2" />
         <rect class="outline" x="44" y="24" width="94" height="72" rx="2" />
@@ -215,7 +215,7 @@ const { systemId } = Astro.props;
   }
   {
     systemId === 'brand-unification-skill' && (
-      <svg viewBox="0 0 360 156" preserveAspectRatio="none">
+      <svg viewBox="0 0 360 156" preserveAspectRatio="xMidYMid meet">
         <rect class="outline" x="34" y="32" width="86" height="64" rx="2" />
         <rect class="outline" x="82" y="60" width="86" height="64" rx="2" />
         <rect class="outline" x="130" y="18" width="86" height="64" rx="2" />
@@ -255,7 +255,8 @@ const { systemId } = Astro.props;
     --image-ink: #40362e;
     --image-accent: #9f4938;
     --image-check: #047857;
-    height: 156px;
+    height: 196px;
+    padding: 6px 8px;
     overflow: hidden;
     background: var(--image-background);
   }

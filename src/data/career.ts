@@ -2,7 +2,6 @@ export interface CareerRole {
   title: string;
   period: string;
   highlights: string[];
-  skills?: string[];
 }
 
 export interface CareerCompany {
@@ -27,16 +26,6 @@ export const careerTimeline: CareerCompany[] = [
           'Caught a critical integration failure during testing of a major marketing campaign where form submissions silently failed to reach downstream systems; escalated and drove a fix within 24 hours, protecting roughly 20% of expected campaign leads.',
           'Identified synthetic bot traffic inflating Google Analytics metrics by 50-60%; partnered with Ops to implement WAF rules that blocked bad traffic while preserving genuine user data, restoring analytics integrity.',
         ],
-        skills: [
-          'AI SDLC',
-          'LiteLLM',
-          'Multi-Agent Systems',
-          'Claude Plugins',
-          'Playwright',
-          'TypeScript',
-          'AWS',
-          'Azure DevOps',
-        ],
       },
       {
         title: 'Lead Software Development Engineer in Test (Lead SDET)',
@@ -44,18 +33,6 @@ export const careerTimeline: CareerCompany[] = [
         highlights: [
           'Reduced regression feedback loops from days to hours by architecting standardized multi-framework automation suites (Playwright, Cypress, Nightwatch, Selenium).',
           'Built API test coverage with Playwright, RestAssured, Postman, and Newman for critical financial data services.',
-          'Implemented performance testing infrastructure (K6, Google Lighthouse) for continuous Core Web Vitals monitoring.',
-          'Delivered WCAG-compliant accessibility testing and visual regression pipelines, reducing accessibility defect escape rate to near zero.',
-        ],
-        skills: [
-          'Playwright',
-          'Cypress',
-          'RestAssured',
-          'Postman',
-          'K6',
-          'WCAG 2.2',
-          'Splunk',
-          'Kibana',
         ],
       },
       {
@@ -64,14 +41,6 @@ export const careerTimeline: CareerCompany[] = [
         highlights: [
           'Reduced QA project cycle time by 20% by designing process improvements (kick-offs, hand-offs, pair programming, code reviews) adopted across a 6-person distributed US/India team.',
           'Mentored a cross-functional team of 6 QA engineers, establishing automation standards that raised team output quality and consistency.',
-          'Delivered a Node.js framework proof of concept, presenting findings directly to senior leadership and influencing technology adoption decisions.',
-        ],
-        skills: [
-          'Node.js',
-          'Process Engineering',
-          'Team Leadership',
-          'Test Strategy',
-          'Agile QA',
         ],
       },
     ],
@@ -88,15 +57,6 @@ export const careerTimeline: CareerCompany[] = [
           'Automated regression coverage for Angular and React applications and designed Cucumber/Gherkin frameworks that made test intent clearer across teams.',
           'Expanded quality coverage across API, mobile, load, performance, and accessibility testing using Postman, RestAssured, Appium, and non-functional test standards.',
         ],
-        skills: [
-          'Selenium WebDriver',
-          'Cypress',
-          'RestAssured',
-          'Appium',
-          'Cucumber BDD',
-          'Postman',
-          'Performance Testing',
-        ],
       },
     ],
   },
@@ -110,14 +70,6 @@ export const careerTimeline: CareerCompany[] = [
         highlights: [
           'Built Selenium (Java) automation frameworks spanning functional UI, integration, regression, performance, and end-to-end testing.',
           'Integrated automated smoke and sanity suites directly into Jenkins CI pipelines.',
-          'Developed LoadRunner performance scripts and automated iOS/Android mobile applications.',
-        ],
-        skills: [
-          'Selenium Java',
-          'Jenkins CI',
-          'LoadRunner',
-          'Mobile QA',
-          'Integration Testing',
         ],
       },
     ],
@@ -132,13 +84,6 @@ export const careerTimeline: CareerCompany[] = [
         highlights: [
           'Designed template-based test automation frameworks (HP QTP, Quality Center) for enterprise e-commerce and B2B procurement platforms, spanning UI, regression, integration, and performance testing.',
           'Established and managed an onsite-offshore Global Delivery Model, mentoring offshore QA teams and maintaining consistent quality standards across distributed delivery.',
-        ],
-        skills: [
-          'HP QTP',
-          'HP Quality Center',
-          'Global Delivery',
-          'Enterprise E-Commerce',
-          'Test Automation Architecture',
         ],
       },
     ],

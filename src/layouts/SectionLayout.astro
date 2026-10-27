@@ -6,19 +6,30 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description: string;
+  structuredData?: unknown;
 }
 
-const { title, description } = Astro.props;
+const { title, description, structuredData } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
+  {
+    structuredData !== undefined && (
+      <Fragment slot="head">
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData)}
+        />
+      </Fragment>
+    )
+  }
   <ViewSwitcherDock />
 
   <main
     id="main-content"
-    class="mx-auto w-full max-w-[1024px] flex-1 px-4 sm:px-7"
+    class="mx-auto w-full max-w-[1440px] flex-1 px-4 sm:px-8 lg:px-12"
   >
-    <div class="mx-auto min-h-[500px] max-w-[1024px] pt-3 sm:pt-4">
+    <div class="mx-auto min-h-[500px] max-w-[1440px] pt-3 sm:pt-4">
       <slot />
     </div>
   </main>

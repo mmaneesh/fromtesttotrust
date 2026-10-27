@@ -21,7 +21,6 @@ export interface InsightEntry {
   keyTakeaways: string[];
   sections?: InsightSection[];
   deckUrl?: string;
-  repoUrl?: string;
   tags: string[];
 }
 
